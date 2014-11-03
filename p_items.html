@@ -1,0 +1,62 @@
+<div class="well" style="margin-top: 20px;">
+<div class="row">
+	<div class="col-md-12" style="text-align: center;"><h1>Item List<h1></div>
+</div>
+<div class="row">
+<div class="col-md-12" style="text-align: center;">
+	
+	<div class="input-group col-md-2">
+	<label for="title_query">filter by title:  </label>
+	<input type="text" id="title_query" ng-model="query.title">
+	</div>
+
+	<div class="input-group col-md-2">
+	<label for="artist_query">filter by artist:  </label>
+	<input type="text" id="artist_query" ng-model="query.artist">
+	</div>
+
+	<div class="input-group col-md-2">
+	<label for="album_query">filter by album:  </label>
+	<input type="text" id="album_query" ng-model="query.album">
+	</div>
+	
+	<div class="input-group col-md-2">
+	<label for="tag_query">filter by tags:  </label>
+	<input type="text" id="tag_query" ng-model="query.tags">
+	</div>
+
+	<div class="input-group col-md-2">
+	<label for="category_query">filter by category:  </label>
+	<input type="text" id="category_query" ng-model="query.category">
+	</div>
+
+				<table class="table table-rounded table-hover table-cursor" style="margin-top: 20px;">
+				  <thead>
+
+				    <th>Title</th>
+				    <th>Artist</th>
+				    <th>Source</th>
+				    <th>Date</th>
+				    <th>Type</th>
+				    <th>ID</th>
+				   <th>ShortID</th>
+
+				  </thead>
+				  <tbody>
+		<!--		    <tr ng-repeat="item in audioitems (filteredAudioitems = (taga= | filter: query))| orderBy:predicate:reverse"> -->
+				      <tr ng-repeat="item in audioitems | filter: query: strict | orderBy:predicate:reverse">
+				      <th>{{ item.title }}</th>
+				      <th>{{ item.artist }}</th>
+				      <th>{{ item.album }}</th>
+				      <th>{{ item.otimestamp * 1000 | date:'MM/dd/yyyy @ h:mma'}}</th>
+				      <th>{{ item.item_type }}</th>
+				     <th><a href="#/detail/{{ item._id }}">{{ item._id }}</a></th>
+
+				     <th><a href="#/play/{{ item.short_id }}">{{ item.short_id }}</a></th>
+
+				    </tr>
+				  </tbody>
+				</table>
+
+</div>
+</div>

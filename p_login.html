@@ -1,0 +1,104 @@
+
+ <nav ng-hide="userstatus == 0" style="margin-top: 20px" class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" ng-model="user" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a ng-href="{{urls.uprofilelink}}{{user._id}}">Profile</a></li>
+        <li><a ng-href="{{urls.uaudioslink}}{{user._id}}">Audio</a></li>
+        <li><a ng-href="{{urls.upicslink}}{{user._id}}">Pictures</a></li>
+        <li><a ng-href="{{urls.ukeyslink}}{{user._id}}">Keys</a></li>
+        <li><a ng-href="{{urls.usceneslink}}{{user._id}}">Scenes</a></li>
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">Welcome {{userstatus}}</a></li>
+       
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div class="well" style="margin-top: 20px;">
+  <div class="row">
+	
+  <!-- <h2 style="text-align: center";>Login</h2>
+      
+
+    	<form class="form-horizontal" role="form" name="loginform">
+        <div class="col-md-3"></div>
+    	<div class="col-md-6">
+      
+        <div class="form-group">
+        <label for="login_usernameinput" >Username: </label> 
+        <input type="text" class="form-control" ng-model="user.uname" name="login_username" id="login_usernameinput" placeholder="Username" required>
+        </div>
+
+        <div class="form-group">
+        <label for="login_emailinput" >Email: </label>	
+        <input type="text" class="form-control" ng-model="user.umail" name="login_email" id="login_emailinput" placeholder="Email"/>
+        </div>
+
+        <div class="form-group">
+        <label for="itemdetail_authorinput" >Password: </label>
+        <input type="password" class="form-control"  ng-model="user.upass" name="login_pass" id="itemdetail_authorinput" placeholder="Password"/>
+      	</div>
+        
+        <button class="btn btn-primary btn-large pull-right" ng-click="Login()" ng-disabled="!loginform.$valid">Login</button>
+
+
+        <button class="btn btn-primary btn-large pull-right" ng-click="Logout()" >Logout</button>
+        </div>
+        
+       </form>
+       
+       <div class="col-md-3"></div>
+       </div>
+      
+       </div> -->
+
+        <span> <p class="pull-left">{{headermessage}}</p><br/></span>
+
+      <h2 style="text-align: center";>Login</h2>
+      
+
+      <form class="form-horizontal" role="form" name="loginform">
+        <div class="col-md-3"></div>
+      <div class="col-md-6">
+      
+        <div class="form-group">
+        <label for="login_usernameinput" >Username or Email Address: </label> 
+        <input type="text" class="form-control" ng-model="user.uname" name="login_username" id="login_usernameinput" placeholder="Username" required>
+        </div>
+
+        <div class="form-group">
+        <label for="itemdetail_authorinput" >Password: </label>
+        <input type="password" class="form-control"  ng-model="user.upass" name="login_pass" id="login_pword" placeholder="Password"/>
+        </div>
+        
+        <button class="btn btn-primary btn-large pull-right" ng-click="Login()" ng-show="userstatus == 0" ng-disabled="!loginform.$valid">Login</button>
+
+
+        <button class="btn btn-primary btn-large pull-left" ng-click="Logout()" ng-hide="userstatus == 0 " >Logout</button>
+        </div>
+        
+       </form>
+       
+       <div class="col-md-3">
+
+       </div>
+       </div>
+       <a class="pull-right" href="#/reset">reset password</a>
+       <!-- <pre>{{user}}</pre> -->
+       </div> 

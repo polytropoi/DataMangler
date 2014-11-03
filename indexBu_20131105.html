@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="elnoiseApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+
+    <title>Eloquent Noise</title>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!--<link href="ng-grid.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" type="text/css" href="http://angular-ui.github.com/ng-grid/css/ng-grid.css" />
+    <!-- Custom styles for this template -->
+    <!-- <link href="css/navbar-fixed-top.css" rel="stylesheet"> -->
+
+    <script src="http://code.angularjs.org/1.2.0-rc.3/angular.min.js"></script>
+    <script src="http://code.angularjs.org/1.2.0-rc.3/angular-route.min.js"></script>
+    <script src="ng-grid.207.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
+    <script src="audiodata.js"></script>
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  <style>
+
+    .navbar-default {
+    background-color: #333333;
+    border-color: #111111;
+    }
+    .gridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 800px; 
+    height: 600px;
+    }
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 999px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        background: red;
+        cursor: inherit;
+        display: block;
+    }
+    input[readonly] {
+      background-color: white !important;
+      cursor: text !important;
+    }
+  </style>
+
+  <script>
+    $(document)
+      .on('change', '.btn-file :file', function() {
+        var input = $(this),
+        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.trigger('fileselect', [numFiles, label]);
+    });
+    
+    $(document).ready( function() {
+      $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+        
+        var input = $(this).parents('.input-group').find(':text'),
+          log = numFiles > 1 ? numFiles + ' files selected' : label;
+        
+        if( input.length ) {
+          input.val(log);
+        } else {
+          if( log ) alert(log);
+        }
+        
+      });
+    });   
+  </script>
+
+      <script type="text/javascript" src="http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>
+    <script type="text/javascript">
+    <!--
+    function GetUnity() {
+      if (typeof unityObject != "undefined") {
+        return unityObject.getObjectById("unityPlayer");
+      }
+      return null;
+    }
+    if (typeof unityObject != "undefined") {
+      var params = {
+        disableContextMenu: true
+      };
+      unityObject.embedUnity("unityPlayer", "http://korkus3.s3.amazonaws.com/elnoise_20131104.unity3d", 1280, 720, params);
+      
+    }
+    -->
+    </script>
+    <style type="text/css">
+    <!--
+    body {
+      font-family: Helvetica, Verdana, Arial, sans-serif;
+      background-color: #333333;
+      color: black;
+      text-align: center;
+      min-height: 2000px;
+      padding-top: 50px;
+    }
+    
+    a:link, a:visited {
+      color: #000;
+    }
+    a:active, a:hover {
+      color: #ffffff;
+    }
+    p.header {
+      font-size: small;
+    }
+    p.header span {
+      font-weight: bold;
+    }
+    p.footer {
+      font-size: x-small;
+    }
+    div.content {
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+      margin-bottom: 100px;     
+    }
+    div.missing {
+      margin: auto;
+      position: relative;
+      top: 50%;
+      width: 193px;
+    }
+    div.missing a {
+      height: 63px;
+      position: relative;
+      top: -31px;
+    }
+    div.missing img {
+      border-width: 0px;
+    }
+    div#unityPlayer {
+      cursor: default;
+      height: 720px;
+      width: 1280px;
+    }
+    -->
+    </style>
+    
+    <script type="text/javascript">
+      <!--
+      function UnityFill() {
+        var unity = GetUnity();
+        if( unity !== undefined && unity !== null ) {       
+          unity.style.left = "0px";
+          unity.style.top = "0px";
+          unity.style.width = window.innerWidth - 15 + "px";
+          unity.style.height = window.innerHeight  - 85 + "px";
+        }
+      }
+      //<body onload="UnityFill()" onresize="UnityFill()">
+      -->
+    </script>
+  </head>
+
+  <body onload="UnityFill()" onresize="UnityFill()">
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Eloquent Noise</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class=""><a href="#/webplayer">Webplayer</a></li>
+            <li class=""><a href="#/list">List</a></li>
+            <!--
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Playlists <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Recent</a></li>
+                <li><a href="#">Random</a></li>
+                <li><a href="#">Minze</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          -->
+          </ul>
+
+            <form class="navbar-form navbar-right"role="form">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="enter code">
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+            
+            </form>
+        
+        </div><!--/.nav-collapse -->
+           
+
+      </div>
+    </div>
+
+
+        <div class="content">
+      <div id="unityPlayer">
+        <div class="missing">
+          <a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
+            <img alt="Unity Web Player. Install now!" src="http://webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+      <!-- Main component for a primary marketing message or call to action -->
+      
+
+      <!--  <h1>Eloquent Noise</h1>
+        <p>Enter a shortcode or tag above, or select a playlist.</p>
+       --> 
+            <div ng-view> </div>
+<!--
+          <li ng-repeat="item in audioitems">
+          <span>{{item.title}}</span>
+        </li>
+      <form role="form">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Code or Tag">
+      </div>
+      <button type="submit" class="btn btn-default">Search</button>
+      </form>
+              <h4>Upload File</h4>
+        <div class="input-group">
+          <span class="input-group-btn">
+            <span class="btn btn-primary btn-file">
+              Browse&hellip; <input type="file" multiple>
+            </span>
+          </span>
+          <input type="text" class="form-control" readonly>
+        </div>
+    
+        <span class="help-block">
+          Try selecting one or more files and watch the feedback
+        </span>
+-->
+    
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+  </body>
+</html>

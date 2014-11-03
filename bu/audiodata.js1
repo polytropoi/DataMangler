@@ -1,0 +1,170 @@
+var elnoiseApp = angular.module('elnoiseApp', ['ngRoute','ngGrid', 'ui.bootstrap']);
+
+	//$scopeaudioitems = [];
+
+	elnoiseApp.config(['$routeProvider', 
+		function ($routeProvider) {
+		$routeProvider.
+		when('/', {controller:AudioDataCtrl, templateUrl:'p_home.html'}).
+		when('/home', {controller:AudioDataCtrl, templateUrl:'p_home.html'}).	
+	      when('/list', {controller:ListCtrl, templateUrl:'p_list.html'}).
+	      when('/upload', {controller:UploadCtrl, templateUrl:'p_upload.html'}).
+	      when('/webplayer', {controller:WebplayerCtrl, templateUrl:'p_wp.html'}).
+	      otherwise({redirectTo:'/'});
+  		}]);
+
+
+  		function AudioDataCtrl($scope, $http, $location) {
+
+  			console.log("tryna load AudioDataCtrl controller");
+
+  			$scope.goNext = function (hash) { 
+  				console.log("gotsa location:" + hash);
+			$location.path(hash);
+			}
+
+  			$http.get('/audiodata.json').success(function (data) {
+			$scope.audioitems = data;
+			});		 
+
+  		   	
+  			$.backstretch("http://elnoise.s3.amazonaws.com/psychNoise.jpg");
+
+			$scope.myInterval = 5000;
+			  var slides = $scope.slides = [];
+			  $scope.addSlide = function() {
+			    var newWidth = 200 + ((slides.length + (25 * slides.length)) % 150);
+			    slides.push({
+			      image: 'http://placekitten.com/' + newWidth + '/200',
+			      text: ['More','Extra','Lots of','Surplus'][slides.length % 4] + ' ' +
+			        ['Cats', 'Kittys', 'Felines', 'Cutes'][slides.length % 4]
+			    });
+			  };
+			  for (var i=0; i<4; i++) {
+		    $scope.addSlide();
+		  }
+
+  		}
+
+ 		function WebplayerCtrl($scope, $http) {
+  			console.log("tryna load WebplayerCtrl controller");
+
+
+  		}
+
+  		function ListCtrl($scope, $http) {
+
+  		//	$http.get('/audiodata.json').success(function (data) {
+			//$scope.listitems = data;
+		//	$scope.audioitems = data;
+		//	});		 
+
+			$scope.filterOptions = {
+		        filterText: "",
+		        useExternalFilter: true
+		    }; 
+		    $scope.totalServerItems = 0;
+		    $scope.pagingOptions = {
+		        pageSizes: [20, 50, 100],
+		        pageSize: 20,
+		        currentPage: 1
+
+		    };	
+
+		    $scope.setPagingData = function(data, page, pageSize){	
+		        var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
+		        $scope.audioitems = pagedData;
+		        $scope.totalServerItems = data.length;
+		        if (!$scope.$$phase) {
+		            $scope.$apply();
+		        }
+		    };
+		    $scope.getPagedDataAsync = function (pageSize, page, searchText) {
+		        setTimeout(function () {
+		            var data;
+		            if (searchText) {
+		                var ft = searchText.toLowerCase();
+		                $http.get('/audiodata.json').success(function (largeLoad) {		
+		                    data = largeLoad.filter(function(item) {
+		                        return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
+		                    });
+		                    $scope.audioitems = data;
+		                    $scope.setPagingData(data,page,pageSize);
+		                });            
+		            } else {
+		                $http.get('/audiodata.json').success(function (largeLoad) {
+		                    $scope.audioitems = data;
+		                    $scope.setPagingData(largeLoad,page,pageSize);
+		                });
+		            }
+		        }, 100);
+		    };
+
+			$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+		    			
+		    $scope.$watch('pagingOptions', function (newVal, oldVal) {
+		        //if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+		        if (newVal !== oldVal) {	
+		          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+		        }
+		    }, true);
+		    $scope.$watch('filterOptions', function (newVal, oldVal) {
+		        if (newVal !== oldVal) {
+		          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+		        }
+		    }, true);
+			
+		
+			$scope.gridOptions = { data: 'audioitems',  
+				enablePaging: true,
+				showFooter: true,
+		        totalServerItems: 'totalServerItems',
+		        pagingOptions: $scope.pagingOptions,
+		        filterOptions: $scope.filterOptions,
+				columnDefs: [
+				{field:'title', displayName:'Title'}, 
+				{field:'artist', displayName:'Artist'},
+				{field:'album', displayName:'Album'},
+				{field:'short_id', displayName:'Code'}
+				]};
+
+			$.backstretch("http://elnoise.s3.amazonaws.com/psychNoise.jpg");	
+  		}
+
+  		function DetailCtrl($scope, $http) {
+
+  			$http.get('/audio/:id').success(function (data) {
+			$scope.audioitem = data;
+			});
+
+  		}
+  		function UploadCtrl($scope, $http) {
+  			$.backstretch("http://elnoise.s3.amazonaws.com/psychNoise.jpg");	
+  			$http.get('/audiodata.json').success(function (data) {
+			$scope.audioitems = data;
+			});
+
+  		}
+/*
+elnoiseApp.controller('AudioDataCtrl'	, function AudioDataCtrl($scope, $http) {
+
+
+		//$scope.audioitems = [];
+
+		$http.get('/audiodata.json').success(function (data) {
+			$scope.audioitems = data;
+			});
+	});
+
+
+
+		$scope.countitems = function() {
+			var count = 0;
+			angular.forEach($scope.audioitems, function (item) {
+
+					count += 1;
+
+				});
+			return count;
+			}
+*/

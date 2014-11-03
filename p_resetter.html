@@ -1,0 +1,30 @@
+
+<div class="well" style="margin-top: 20px;">
+  <div class="row">
+
+
+      <span> <p class="pull-left">{{headermessage}}</p><br/></span>
+
+      <h2 style="text-align: center";>Enter New Password</h2>
+      
+
+      <form class="form-horizontal" role="form" name="passwordform">
+        <div class="col-md-3"></div>
+      <div class="col-md-6">
+
+        <div class="form-group">
+        <label for="reset_emailinput" >New Password: </label>  
+        <input type="text" class="form-control" ng-model="user.password" name="user_password" id="user_password" placeholder="Password" required/>
+        </div>
+
+        <button class="btn btn-primary btn-large pull-right" ng-click="SavePassword()" ng-disabled="!passwordform.$valid ">Save Password</button>
+
+
+        </div>
+        
+       </form>
+       
+       <div class="col-md-3"></div>
+       </div>
+       <!-- <pre>{{user}}</pre> -->
+       </div> 

@@ -1,0 +1,80 @@
+<div class="row well" style="margin-top: 20px;">
+
+<div class="col-md-6 col-md-offset-3">
+    <h4>Upload Audio File</h4>
+      	<form class="form-horizontal" role="form" ng-submit="UpdateItem()">
+        
+          <span>Enter title, author and source for the audio file, then select a file to upload. <br><br></span>
+        
+          <div class="form-group">
+        <label for="itemdetail_titleinput" >Title: </label> 
+        <input type="text" class="form-control" ng-model="title" name="title" id="itemdetail_titleinput" placeholder="Enter Title"/>
+        </div>
+
+        <div class="form-group">
+        <label for="itemdetail_authorinput" >Author: </label>
+        <input type="text" class="form-control"  ng-model="artist" name="artist" id="itemdetail_authorinput" placeholder="Enter Artist"/>
+        </div>
+        
+        <div class="form-group">
+        <label for="itemdetail_sourceinput"  >Source: </label>
+        <input type="text" class="form-control" ng-model="album" name="album" id="itemdetail_albuminput" placeholder="Enter Source/Album"/>
+        </div>
+       
+            choose a file: <input class="btn btn-block btn-primary btn-lg btn-file" type="file" ng-file-select="onFileSelect($files)">
+            <br/>
+       <!--     or multiple files: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="file" ng-file-select="onFileSelect($files)" multiple> -->
+            <br/>
+            <br/>
+            <div ng-show="dropSupported" class="drop-box" ng-file-drop="onFileSelect($files);" ng-file-drop-available="dropSupported=true" style="color: #000000">or drop files here</div>
+            <div ng-show="!dropSupported">HTML5 Drop File is not supported on this browser</div>
+            <br/>
+            Progress:
+            <br/>
+            <div ng-show="selectedFiles != null">
+              <div class="sel-file" ng-repeat="f in selectedFiles">
+                <div ng-if="selectedFiles[0].type === image/jpg">
+                <span class="progress">           
+                  <div style="width:{{progress[$index]}}%">{{progress[$index]}}%</div>
+                </span>       
+                <button class="button" ng-click="upload[$index].abort(); upload[$index]=null" 
+                  ng-show="upload[$index] && progress[$index] < 100">Abort</button>
+                {{f.name}} - size: {{f.size}}B - type: {{f.type}}
+              </div>
+               </div>
+            </div>
+            <div class="response" ng-show="uploadResult.length > 0">
+              Server Response:
+              <ul>
+                <li ng-repeat="result in uploadResult">
+                  <ul>
+                    <li ng-repeat="item in result">
+                      <div data-ng-show="item.name">file name: {{item.name}}</div>
+                      <div data-ng-show="item.fieldName">name: {{item.fieldName}}</div>
+                      <div data-ng-show="item.size">size on the serve: {{item.size}}</div>
+                      <div data-ng-show="item.value">value: {{item.value}}</div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            </div> 
+             <div ng-show="selectedFiles != null"> <input class="btn btn-primary btn-lg pull-right" type="submit" id="submit" value="Submit" style="margin-top: 20px;" ng-click="onSubmitUpload()"/></div>
+      </form>
+       
+
+      </div>   
+<!--
+        <div class="input-group">
+          <span class="input-group-btn">
+            <span class="btn btn-primary btn-file">
+              Browse&hellip; <input type="file" multiple>
+            </span>
+          </span>
+          <input type="text" class="form-control" readonly>
+        </div>
+        </div>
+        <br>  
+-->
+      
+       

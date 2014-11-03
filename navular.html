@@ -1,0 +1,26 @@
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+<div class="collapse navbar-collapse" ng-model="user" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+        <li><a ng-href="{{urls.uprofilelink}}{{user._id}}">Profile</a></li>
+        <li><a ng-href="{{urls.uaudioslink}}{{user._id}}">Audio</a></li>
+        <li><a ng-href="{{urls.upicslink}}{{user._id}}">Pictures</a></li>
+        <li><a ng-href="{{urls.ukeyslink}}{{user._id}}">Keys</a></li>
+        <li><a ng-href="{{urls.ugroupslink}}{{user._id}}">Groups</a></li>
+        <li><a ng-href="{{urls.usceneslink}}{{user._id}}">Scenes</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Welcome {{userstatus}}</a></li>
+
+    </ul>
+</div>
+    </div>

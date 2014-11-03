@@ -1,0 +1,30 @@
+
+<div class="well" style="margin-top: 20px;">
+  <div class="row">
+
+
+      <span> <p class="pull-left">{{headermessage}}</p><br/></span>
+
+      <h2 style="text-align: center";>Reset Password</h2>
+      
+
+      <form class="form-horizontal" role="form" name="resetform">
+        <div class="col-md-3"></div>
+      <div class="col-md-6">
+
+        <div class="form-group">
+        <label for="reset_emailinput" >Email: </label>  
+        <input type="text" class="form-control" ng-model="user.email" name="user_email" id="user_emailinput" placeholder="Email" required/>
+        </div>
+
+        <button class="btn btn-primary btn-large pull-right" ng-click="Reset()" ng-disabled="!resetform.$valid">Send Reset Link</button>
+
+
+        </div>
+        
+       </form>
+       
+       <div class="col-md-3"></div>
+       </div>
+       <!-- <pre>{{user}}</pre> -->
+       </div> 

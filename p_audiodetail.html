@@ -1,0 +1,128 @@
+<nav ng-hide="userstatus == 0" style="margin-top: 20px" class="navbar navbar-default" role="navigation"><navular/></nav>
+
+<div class="well" style="margin-top: 20px;">
+  <div class="row">
+	
+    <span class"pull-right">{{headermessage}}</span>
+      <h2 style="text-align: center";>{{item[0].item_type}} item {{item[0].short_id}} details:</h2>
+     
+      
+
+    	<form class="form-horizontal" role="form" ng-submit="UpdateItem()">
+    	<div class="col-md-5">
+      
+        <div class="form-group">
+        <label for="itemdetail_titleinput" >User: </label> 
+        <label class="form-control-static">{{item[0].username}}</label>
+        </div>
+
+        <div class="form-group">
+        <label for="itemdetail_titleinput" >Title: </label>	
+        <input type="text" class="form-control" ng-model="item[0].alt_title" name=" alt title" id="itemdetail_titleinput" placeholder="{{item[0].title}}"/>
+        </div>
+
+        <div class="form-group">
+        <label for="itemdetail_authorinput" >Author: </label>
+        <input type="text" class="form-control"  ng-model="item[0].alt_artist" name="alt artist" id="itemdetail_authorinput" placeholder="{{item[0].artist}}"/>
+      	</div>
+        
+      	<div class="form-group">
+      	<label for="itemdetail_sourceinput"  >Source: </label>
+        <input type="text" class="form-control" ng-model="item[0].alt_album" name="alt album" id="itemdetail_albuminput" placeholder="{{item[0].album}}"/>
+      	</div>
+       	
+        <div class="form-group">
+        <label for="itemdetail_sourceinput"  >Date: </label>
+       <!-- <input type="text" class="form-control-static" ng-model="album" name="album" pid="itemdetail_albuminput" placeholder="{{item[0].date}}"/> -->
+        <label class="form-control-static">{{item[0].otimestamp * 1000 | date:'MM/dd/yyyy @ h:mma'}}</label>
+        </div>
+        <div class="form-group">
+        <label for="itemdetail_sourceinput"  >Size: </label>
+       <!-- <input type="text" class="form-control-static" ng-model="album" name="album" pid="itemdetail_albuminput" placeholder="{{item[0].date}}"/> -->
+        <label class="form-control-static">{{item[0].ofilesize | number:0}}</label>
+        </div>
+       <label>Item JSON:</label>
+        <pre>
+          <!--{{item[0] | json}}-->
+        </pre>
+        </div>
+
+        <div class="col-md-7">
+
+          <!--<span>-->
+          <!--<a role="button" class"btn btn-lg" href="{{item[0].URLogg}}" >Download Ogg</a>-->
+
+          <!--<a role="button" class"btn btn-lg" href="{{item[0].URLmp3}}" >Download Mp3</a>-->
+          <!--</span>-->
+          
+      <!--  <div ng-show"item[0].short_id.length < 5"> <button type="button" class="btn btn-primary" ng-click="GenShortID()">Generate Short ID</button></div> -->
+              
+            <h4>Status</h4>
+            <pre>{{item[0].item_status}}</pre>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" ng-model="item[0].item_status" btn-radio="'public'">Public</button>
+                <button type="button" class="btn btn-primary" ng-model="item[0].item_status" btn-radio="'private'">Private</button>
+            </div>
+
+            <h4>Tags</h4>
+            <pre>{{item[0].tags}}</pre>
+            <ng-form name="tagForm">
+            <table><tr>
+            <div ng-repeat="t in item[0].tags">      
+            <td><input name="tagInput" type="text" class="form-control" ng-model="t" placeholder="{{t}}"></td>
+            <td><button class="btn btn-md btn-primary pull-right" ng-click="AddTag(t)"><span class="glyphicon glyphicon-plus"></span></button></td>
+            <td><button class="btn btn-md btn-danger pull-left" ng-click="RemoveTag(t)"><span class="glyphicon glyphicon-remove"></span> </button></td>
+            
+            </div>
+            </table>
+            </ng-form>
+
+            <!-- <ul>
+            <div ng-repeat="tag in item[0].tags">
+              <li>{{tag}}</li>
+            </ul> -->
+
+<!--
+            
+            <select class="multiselect" multiple="multiple" ng-model="item[0].item_categories" ng-options="option for option in ['Rock', 'Blues', 'Electronic', Instrumental', 'Vocal']">
+           
+            </select>
+
+                        -->
+            <h4>Categories</h4>
+            <pre>{{item[0].item_categories}}</pre>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" ng-model="item[0].item_categories.Instrumental" btn-checkbox>Instrumental</button>
+                <button type="button" class="btn btn-primary" ng-model="item[0].item_categories.Vocal" btn-checkbox>Vocal</button>
+                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.InstrumentalVocal" btn-checkbox>Instrumental and Vocal</button>                              
+                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Spoken" btn-checkbox>Spoken</button>
+                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Ambient" btn-checkbox>Ambient</button>
+                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Environmental" btn-checkbox>Environmental</button>
+                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Educational" btn-checkbox>Educational</button>
+                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Poetic" btn-checkbox>Poetic</button>
+                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Funny" btn-checkbox>Funny</button>
+                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Scary" btn-checkbox>Scary</button>                 
+                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Philosophical" btn-checkbox>Philosophical</button> 
+                                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Intuitive" btn-checkbox>Intuitive</button>
+                                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Thoughful" btn-checkbox>Thoughful</button>   
+                                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Emotional" btn-checkbox>Emotional</button>  
+                                <button type="button" class="btn btn-primary" ng-model=" item[0].item_categories.Sensory" btn-checkbox>Sensory</button>                                 
+            </div>
+
+            <br>
+            <img class="img-rounded" src="{{item[0].URLpng}}" style="margin-top: 20px;">
+            <br>
+            <input class="btn btn-primary btn-lg pull-right" style="margin-top: 20px;" value="Update Item Details" ng-click="onUpdateItemDetails()"/>
+        </div>
+
+        </div>
+
+        </form>
+        </br>
+        <button class="btn btn-primary pull-right" ng-click="DeleteItem(item[0]._id)">Delete Item</button>
+        
+  </div> 
+  
+ 
+</div> 
+

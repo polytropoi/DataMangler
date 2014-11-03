@@ -1,0 +1,233 @@
+<div class="scontainer">
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+	<ul class="nav nav-pills nav-stacked">
+  		<li class="nav-header">Audio</li>
+  		<li class="active"><a href="#" id="audiorandomlink">Random</a></li>
+  		<li><a href="#" id="audionewlink">New</a></li>
+		<li><a href="#" id="audiooldlink">Old</a></li>
+		<li class="nav-header">Images</li>
+                <li><a href="#">New</a></li>
+                <li><a href="#">Random</a></li>
+		<li class="nav-header">Text</li>
+                <li><a href="#">New</a></li>
+                <li><a href="#">Random</a></li>
+	</ul>
+      <!--Sidebar content-->
+    </div>
+    <div class="span10">
+      <!--Body content-->
+                <form class="navbar-search pull-right">
+        <input type="text" class="search-query" placeholder="Search">
+        <input type="button" class="btn" value="Search">
+        </form><br>
+	<br>
+	<div class="table table-striped" name="div-my-table" id="div-my-table"></div>
+           <hr>
+	</div>
+	<ul class="pager">
+  		<li><a name="previousPage" href="#">Previous</a></li>
+  		<li><a name="nextPage" href="#">Next</a></li>
+		</ul>
+            <footer>
+                <p>&copy; ServiceMedia.net 2013</p>
+            </footer>
+    			</div>
+  		</div>
+	</div>
+</div> <!-- /container -->
+
+
+	<script type="text/javascript">
+        //triggered by jquery on page load 
+	$(':checkbox').change(function(){
+    	alert($('form').serialize());
+	});	
+	
+	$(document).ready(function() {
+	
+
+
+	$.getJSON("/audiodata.json", function(data)  {
+       	RandomList();
+
+	var currentID = "";
+	var currentIndex = 0;
+	var randArr = new Array();
+
+	$(function() {
+   	$("li").click(function() {
+      // remove classes from all
+      	$("li").removeClass("active");
+      // add class to the one we clicked
+      	$(this).addClass("active");
+   		});
+	});
+     
+	 
+	function AudioDetail(id) {
+		var getString = "/audio/" + id;
+		console.log(getString);
+               $.getJSON(getString, function(data) {
+		if (!data) {
+		
+		} else {
+		console.log("gotsa id: " + JSON.stringify(data));
+		$("#div-my-table").text("");
+		var detailArr = jQuery.makeArray(data);
+		var originalDate = new Date(data[0].otimestamp * 1000);
+		$("#div-my-table").append("<br><br><p class=\"lead\">" + data[0].title + " by " + data[0].artist + "</p>" +
+			"<form action=\"/update_item_status\" enctype=\"multipart/form-data\" method=\"post\"><fieldset>" +
+                        "<label>Status</label>" +
+			"<div class=\"btn-group\" data-toggle=\"buttons-radio\">" +
+  			"<button type=\"button\" id=\"publicButton\" class=\"btn btn-success\">Public</button>" +
+  			"<button type=\"button\" id=\"privateButton\" class=\"btn btn-danger\">Private</button>" + 
+  			"<button type=\"button\" id=\"promotedButton\" class=\"btn btn-primary\">Promoted</button>" +
+                        "<button type=\"button\" id=\"deprecatedButton\" class=\"btn btn-warning\">Deprecated</button>" +			
+			"</div><hr>" +
+			"<label>Title</label>" +
+                        "<input type=\"text\" placeholder=\"" + data[0].title + "\">" +
+                        "<label>Artist</label>" +
+                        "<input type=\"text\" placeholder=\"" + data[0].artist + "\">" +
+                        "<label>Album</label>" +
+                        "<input type=\"text\" placeholder=\"" + data[0].album + "\">" +
+                        "<label>Date</label>" +
+                        "<input type=\"text\" placeholder=\"" + originalDate + "\">" +			
+			"<input type=\"submit\" class=\"btn pull-right\">Update</button>" +
+			"</fieldset>" +
+                        "</form><hr>" +
+			"<label>Play</label>" +
+			"<a class=\"btn\" href=\"#\" name=\"audioplay\" data-audio_id=" + data[0]._id + "><i class=\"icon-play\"></i></a>");
+			}
+		});
+            }; 	
+	
+        function AudioPlay(id) {
+	
+                var getString = "/audio/" + id;
+                console.log(getString);
+               $.getJSON(getString, function(data) {
+                if (!data) {
+                
+                } else {
+                console.log("iAudioplay gotsa id: " + JSON.stringify(data));
+		$("#div-my-table").text("");
+                $("#div-my-table").append("<br><br><p class=\"lead\">" + data[0].title + " by " + data[0].artist + "</p>" +
+			"<img src=\"" + data[0].URLpng + "\" class=\"img-rounded\"><br>" + 
+                     	"<audio controls><source src=\"" + data[0].URLmp3 + "\" type=\"audio/mpeg\">" +
+                        "<source src=\"" + data[0].URLogg + "\" type=\"application/ogg\">" +
+                        "<source src=\"" + data[0].URLogg + "\" type=\"audio/ogg\"></audio>" +
+       			"<hr><label>Edit</label>" +
+                        "<a class=\"btn\" href=\"#\" name=\"audiodetail\" data-audio_id=" + data[0]._id + "><i class=\"icon-edit\"></i></a>");         	
+		        }
+                }); 
+	
+		};
+	
+	
+        $(document).on("click", 'a[name="previousPage"]', function(event) {
+                //event.preventDefault();
+                currentIndex--;
+		AudioPlay(randArr[currentIndex]._id);
+        });
+
+        $(document).on("click", 'a[name="nextPage"]', function(event) {
+                //event.preventDefault();
+		currentIndex++;
+		AudioPlay(randArr[currentIndex]._id);
+        });
+
+	$(document).on("click", 'a[name="audiodetail"]', function(event) {
+		event.preventDefault();
+		var aID = $(this).data('audio_id');
+		console.log("audiodetail link: " + aID);
+		currentID = aID;
+		AudioDetail(aID);
+	});
+
+        $(document).on("click", 'a[name="audioplay"]', function(event) {
+                event.preventDefault();
+                var currentID = $(this).data('audio_id');
+                var currentIndex = $(this).data('indexint');
+		console.log("audiomodal jhit: " + currentID);
+		//$('#audioModal').modal.html();
+		AudioPlay(currentID);
+        });
+
+	//alert('tryna load...');
+	$("#audiorandomlink").click(function(event) {
+		event.preventDefault();
+		RandomList();
+		});
+
+	function ReturnDate(timestamp) {
+        //var originalDate = new Date(timestamp * 1000)
+	var originalDate = moment.unix(timestamp);
+	return originalDate.format("MMM Do YYYY");
+	}	
+	function RandomList(){
+		$.getJSON("/audiodata.json", function(data)  {
+                randArr = jQuery.makeArray(data);
+                
+		Shuffle(randArr);
+	        $("#div-my-table").text("");
+                $("#div-my-table").append("<thead><tr><td><h3>Title</h3></td><td><h3>Artist</h3></td><td><h3>Album</h3></td><td><h3>User</h3><td><h3>Date</h3></td></td><td><h3>ID</h3></td><td><h3>Play</h3></td></tr></thead>");  
+                $("#div-my-table").append("<tbody>");
+		$.each(randArr, function(i, item) {
+                $("#div-my-table").append("<tr><td>" + item.title +"</td><td>" + item.artist + "</td><td>" + item.album + "</td><td>" + item.username + "</td><td>" + ReturnDate(item.otimestamp) + "</td><td>" + item.short_id + "</td>" +
+                <!--	"<td><a class=\"btn\" href=\"#\" name=\"audiodetail\" data-audio_id=" + item._id + "><i class=\"icon-edit\"></i></a></td>" -->
+			"<td><a class=\"btn\" href=\"#\" name=\"audioplay\" data-indexint=" + i + " data-audio_id=" + item._id + "><i class=\"icon-play\"></i></a></td>" +
+			"</tr>");
+                        return i<15;
+			});
+		});
+		$("#div-my-table").append("</tbody>");
+		};
+
+
+       	$("#audionewlink").click(function(event) {
+		event.preventDefault();
+		
+        	$.getJSON("/audiodata.json", function(data)  {
+                var audioArr = jQuery.makeArray(data);
+                		
+               	audioArr.reverse();
+		$("#div-my-table").text("");
+                $("#div-my-table").append("<tr><td><h3>Title</h3></td><td><h3>Artist</h3></td><td><h3>Album</h3></td><td><h3>User</h3></td><td><h3>Date</h3></td><td><h3>ID</h3></td><td><h3>Play</h3></td></tr>");                   
+		$.each(audioArr, function(i, item) {
+                $("#div-my-table").append("<tr><td>" + item.title +"</td><td>" + item.artist + "</td><td>" + item.album + "</td><td>" + item.username + "</td><td>" + ReturnDate(item.otimestamp) + "</td><td>" + item.short_id + "</td>" +
+                   <!-- "<td><a class=\"btn\" href=\"#\" name=\"audiodetail\" data-audio_id=" + item._id + "><i class=\"icon-edit\"></i></a></td>" + --> 
+			                       
+                        "<td><a class=\"btn\" href=\"#\" name=\"audioplay\" data-indexint=" + i + " data-audio_id=" + item._id + "><i class=\"icon-play\"></i></a></td>" +
+                        "</tr>");
+                        return i<15;
+                        });                
+		$("#div-my-table").append("</table>");          
+                });
+		});
+        $("#audiooldlink").click(function(event) {
+	event.preventDefault();
+	$.getJSON("/audiodata.json", function(data)  {
+                var audioOldArr = jQuery.makeArray(data);
+                $("#div-my-table").text("");
+               	$("#div-my-table").append("<tr><td><h3>Title</h3></td><td><h3>Artist</h3></td><td><h3>Album</h3></td><td><h3>User</h3></td><td><h3>Date</h3></td><td><h3>Edit</h3></td><td><h3>Play</h3></td></tr>");  
+		$.each(audioOldArr, function(i, item) {
+                $("#div-my-table").append("<tr><td>" + item.title +"</td><td>" + item.artist + "</td><td>" + item.album + "</td><td>" + item.username + "</td><td>" + ReturnDate(item.otimestamp) + "</td>" +
+                <!--    "<td><a class=\"btn\" href=\"/audio/" + item._id + "\"><i class=\"icon-edit\"></i></a></td>" + -->
+                        "<td><a class=\"btn\" href=\"#\" name=\"audiodetail\" data-audio_id=" + item._id + "><i class=\"icon-edit\"></i></a></td>" +                        
+                        "<td><a class=\"btn\" href=\"#\" name=\"audioplay\" data-indexint=" + i + " data-audio_id=" + item._id + "><i class=\"icon-play\"></i></a></td>" +
+                        "</tr>");
+                        return i<15;
+                        });                
+		$("#div-my-table").append("</table>");          
+                });
+		});
+	
+	function Shuffle(o) {
+		  for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+  			return o;
+ 			 };
+	});
+	});
+	</script>

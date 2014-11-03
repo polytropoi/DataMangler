@@ -1,0 +1,192 @@
+<nav ng-hide="userstatus == 0" style="margin-top: 20px" class="navbar navbar-default" role="navigation"><navular/></nav>
+
+
+<div class="well" style="margin-top: 20px;">
+  <div class="row">
+    <span><p>{{headermessage}}</p> Path<span>
+
+        <pre>{{path}}</pre>
+
+<form name="form">
+
+
+  <button class="btn btn-primary pull-right" ng-click="onSavePath()" ng-show="form.$dirty">Save</button>
+	 <!--<div class="col-md-2"></div>-->
+    <form class="form-horizontal" role="form" name="newpathform">
+    <!--<div class="col-md-3"></div>-->
+        <!--<div class="col-md-6">-->
+        <div class="col-md-12">
+            <img ng-src="{{pathPictureIDthumb}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+            <img ng-src="{{pathMapPictureIDthumb}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+            <img ng-src="{{pathArcanumPictureIDthumb}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+            <img ng-src="{{audioWaveformPngTrigger}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+            <img ng-src="{{audioWaveformPngSpoken}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+            <img ng-src="{{audioWaveformPngBackground}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+            <img ng-src="{{audioWaveformPngEnvironment}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+        </div>
+        <div class="col-md-12"><hr></div>
+        <div class="col-md-2">
+        <div class="form-group">
+            <label for="path_pathNumberInput" >Path Number: </label>
+            <input type="text" class="form-control" ng-model="path.pathNumber" name="path_pathNumber" id="path_pathNumberInput" placeholder="Path Number" required>
+        </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="path_pathTitleInput" >Path Title: </label>
+                <input type="text" class="form-control" ng-model="path.pathTitle" name="path_pathTitle" id="path_pathTitleInput" placeholder="Path Title" required>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="path_pathTitleInput" >Path Meaning: </label>
+                <input type="text" class="form-control" ng-model="path.pathMeaning" name="path_pathMeaning" id="path_pathMeaningInput" placeholder="Path Title" required>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="path_pathTitleInput" >Path Attribution: </label>
+                <input type="text" class="form-control" ng-model="path.pathAttribution" name="path_pathAttribution" id="path_pathAttibutionInput" placeholder="Path Attribution" required>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <label >Path Color1: </label>
+                <input class="change-element-color" my-bgcolor="path.pathColor1" colorpicker ng-model="path.pathColor1" type="text" required>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label >Path Color2: </label>
+                <input class="change-element-color" my-bgcolor="path.pathColor2" colorpicker ng-model="path.pathColor2" type="text">
+            </div>
+        </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Path Picture:</label><select name="pathPicture" class="form-control" ng-model="path.pathPictureID" ng-options="p._id as p.title for p in pictureitems" required>
+                    <option value="" selected="selected">Select Image:</option>
+                </select>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Path Map Picture:</label><select name="pathMapPicture" class="form-control" ng-model="path.pathMapPictureID" ng-options="p._id as p.title for p in pictureitems" required>
+                    <option value="" selected="selected">Select Image:</option>
+                </select>
+                </div>
+            </div>
+
+
+        <div class="col-md-12"><hr></div>
+            <div class="col-md-2">
+            <div class="form-group">
+                <label for="path_pathArcanumNumber" >Arcanum Number: </label>
+                <input type="text" class="form-control"  ng-model="path.pathArcanumNumber" name="path_pathArcanum" id="path_pathArcanumNumber" placeholder="Number"/>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="path_pathArcanumTitle" >Arcanum Title: </label>
+                <input type="text" class="form-control"  ng-model="path.pathArcanumTitle" name="path_pathArcanum" id="path_pathArcanumTitle" placeholder="Arcanum"/>
+            </div>
+        </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Arcanum Picture:</label><select name="arcanumPicture" class="form-control" ng-model="path.pathArcanumPictureID" ng-options="p._id as p.title for p in pictureitems" >
+                    <option value="" selected="selected">Select Image:</option>
+                </select>
+                </div>
+            </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="path_arcanumTextInput" >Arcanum Text: </label>
+                <textarea class="form-control" name="path_arcanumText" id="path_arcanumTextInput" ng-model="path.pathArcanumText" rows="3"></textarea></div>
+        <div class="col-md-12"><hr></div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Path Trigger Audio:</label><select name="pathAudio" class="form-control" ng-model="path.pathTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >
+                    <option value="" selected="selected">Select Audio:</option>
+                </select>
+                    <br>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Path Spoken Audio:</label><select name="pathAudio" class="form-control" ng-model="path.pathSpokenAudioID" ng-options="a._id as a.title for a in audioitems" >
+                    <option value="" selected="selected">Select Audio:</option>
+                </select>
+                    <br>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Path Background Audio:</label><select name="pathAudio" class="form-control" ng-model="path.pathBackgroundAudioID" ng-options="a._id as a.title for a in audioitems" >
+                    <option value="" selected="selected">Select Audio:</option>
+                </select>
+                    <br>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Path Environment Audio:</label><select name="pathAudio" class="form-control" ng-model="path.pathEnvironmentAudioID" ng-options="a._id as a.title for a in audioitems" >
+                    <option value="" selected="selected">Select Audio:</option>
+                </select>
+                    <br>
+                </div>
+            </div>
+        <br>
+            <!--<div class="col-md-10">-->
+                <!--<img ng-src="{{audioWaveformPng}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">-->
+                <!--<br>-->
+            <!--</div>-->
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="path_pathKeynote" >Path Keynote: </label>
+                <input type="text" class="form-control"  ng-model="path.pathKeynote" name="path_pathKeynote" id="path_pathKeynote" placeholder="Keynote"/>
+            </div>
+        </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="path_pathDescription" >Path Description: </label>
+                    <textarea type="text" class="form-control"  ng-model="path.pathDescription" name="path_pathDescription" id="path_pathDescription" rows="3" placeholder="Description"/></textarea>
+                </div>
+            </div>
+        <div class="col-md-12">
+        <div class="form-group">
+            <label for="path_pathTextInput" >Path Text: </label>
+        <textarea class="form-control" name="path_pathText" id="path_pathTextInput" ng-model="path.pathText" placeholder="Text" rows="5"></textarea></div>
+        <!--<button class="btn btn-primary btn-large pull-right" ng-click="Login()" ng-show="userstatus == 0" ng-disabled="!form.$valid">Login</button>-->
+        <!--<button class="btn btn-primary btn-large pull-left" ng-click="Logout()" ng-hide="userstatus == 0 " >Logout</button>-->
+    </div>
+</form>
+       <!--<label >Update Title: </label> -->
+      <!--<input type="textarea" class="form-control" ng-model="item.title" name="imagetitle" placeholder="{{item.title}}"/> </br>-->
+
+
+      <!--<label>Update Status: </label>-->
+            <!--<div class="btn-group">-->
+                <!--<button type="button" class="btn btn-primary" ng-model="item.item_status" btn-radio="'public'">Public</button>-->
+                <!--<button type="button" class="btn btn-primary" ng-model="item.item_status" btn-radio="'private'">Private</button>-->
+                <!--</br>-->
+            <!--</div>-->
+</br></br>
+
+      <!-- <div ng-repeat="t in item[0].tags"> --> 
+    <!--<div>-->
+       <!--<label>Update Tags: </label>-->
+       <!--<input name="tagInput" type="text" class="form-control" ng-model="tag" placeholder="Add Tag"></td>-->
+            <!--<button class="btn btn-md btn-primary pull-right" ng-click="AddTag(tag)"><span class="glyphicon glyphicon-plus"></span></button>-->
+            <!--<button class="btn btn-md btn-danger pull-left" ng-click="RemoveTag(tag)"><span class="glyphicon glyphicon-remove"></span> </button>-->
+    	<!--</br></br><pre>{{item.tags}}</pre></br>-->
+      <!--</div>-->
+
+
+</div>
+</div>
+
+

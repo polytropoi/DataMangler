@@ -1,0 +1,52 @@
+<nav ng-hide="userstatus == 0" style="margin-top: 20px" class="navbar navbar-default" role="navigation"><navular/></nav>
+
+
+<div class="well" style="margin-top: 20px;">
+  <div class="row">
+    <span><p>{{headermessage}}</p><span>
+<form name="form">
+    
+  <button class="btn btn-primary pull-right" ng-click="onUpdateItemDetails()" ng-show="form.$dirty">Update</button>
+	 <div class="col-md-3"></div>
+      
+      <div class="col-md-6"><img src="{{item.URLhalf}}">
+
+      <h4 style="text-align: center">picture id: {{item._id}} </h4>
+
+
+       <label >Update Title: </label> 
+      <input type="text" class="form-control" ng-model="item.title" name="imagetitle" placeholder="{{item.title}}"/> </br>
+
+
+      <label>Update Status: </label>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" ng-model="item.item_status" btn-radio="'public'">Public</button>
+                <button type="button" class="btn btn-primary" ng-model="item.item_status" btn-radio="'private'">Private</button>
+                </br>
+            </div>
+</br></br>
+
+      <!-- <div ng-repeat="t in item[0].tags"> --> 
+       <label>Update Tags: </label>
+       <input name="tagInput" type="text" class="form-control" ng-model="tag" placeholder="Add Tag"></td>
+            <button class="btn btn-md btn-primary pull-right" ng-click="AddTag(tag)"><span class="glyphicon glyphicon-plus"></span></button>
+            <button class="btn btn-md btn-danger pull-left" ng-click="RemoveTag(tag)"><span class="glyphicon glyphicon-remove"></span> </button>
+    	</br></br><pre>{{item.tags}}</pre></br>
+      </div>
+
+   <div class="col-md-3"></div>
+  </div>
+  </form>
+    <div class="row">
+      <div class="col-md-12"  style="margin-top: 20px; text-align: center">
+      
+      <pre>{{item}}</pre>
+        </div>
+        <button class="btn btn-primary pull-left" ng-click="DeleteItem(item._id)">Delete</button>
+        </div>
+
+       
+       
+
+       </div> 
+       </div> 

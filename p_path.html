@@ -1,0 +1,103 @@
+<<nav ng-hide="userstatus == 0" style="margin-top: 20px" class="navbar navbar-default" role="navigation"><navular/></nav>
+
+
+<div class="well" style="margin-top: 20px; text-align: center">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="btn btn-primary btn-sm " ng-click="prev()">Prev</div>
+        </div>
+        <div class="col-md-8">
+        <h4>Paths on the Tree of Life</h4>
+        </div>
+
+
+            <div class="col-md-2">
+
+                <div class="btn btn-primary btn-sm " ng-click="next()">Next</div>
+            </div>
+    </div>
+    <div class="col-md-12"><hr></div>
+    <div class="row">
+    <!--<span><p>{{headermessage}}</p>Path <span>-->
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-2">
+            <span>path # <h1><span class="label change-element-color" my-textcolor="path.pathColor2" my-bgcolor="path.pathColor1">{{path.pathNumber}}</span></h1></span>
+
+        </div>
+
+        <div class="col-md-2">
+            <span>Title: <h3>{{path.pathTitle}}</h3></span>
+
+
+        </div>
+        <div class="col-md-2">
+            <span>Meaning: <h3>{{path.pathMeaning}}</h3></span>
+
+        </div>
+
+        <div class="col-md-2">
+            <span>Attribution: <h3>{{path.pathAttribution}}</h3></span>
+
+        </div>
+
+
+        <div class="col-md-2">
+            <div class="player-control">
+                <!--<a class="pull-right"</a>-->
+                <audio media-player="audioPlayer" data-playlist="audioPlaylist"></audio>
+                <div class="btn btn-primary btn-sm" ng-click="audioPlayer.playPause()">
+                    <i class="fa" ng-class="{ 'fa-pause': audioPlayer.playing, 'fa-play': !audioPlayer.playing }"></i>
+                    <span ng-show="audioPlayer.playing">Stop Spoken Audio</span>
+                    <span ng-show="!audioPlayer.playing">Play Spoken Audio </span>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-1">
+
+        </div>
+
+        <div class="col-md-12"><hr></div>
+
+
+        <div class="col-md-12">
+            <img ng-src="{{pathPictureQuarterURL}}" >
+
+            <img ng-src="{{pathArcanumHalfURL}}" >
+            <img ng-src="{{pathMapQuarterURL}}" >
+        </div>
+ <div class="col-md-12"><hr></div>
+        <div class="col-md-12" style="text-align: left">
+        <span>Keynote:<h4>{{path.pathKeynote}}</h4></span>
+    </div>
+        <div class="col-md-12" style="text-align: left">
+            <span>Description:<h4> {{path.pathDescription}}</h4></span>
+        </div>
+        <div class="col-md-12" style="text-align: left">
+           <span> Aspiration:
+            <h4>{{path.pathText}}</h4></span>
+    </div>
+        <!--<div class="col-md-2">-->
+            <!--<div class="form-group">-->
+                <!--<label >Path Color1: </label>-->
+                <!--<input class="change-element-color" my-bgcolor="path.pathColor1" colorpicker ng-model="path.pathColor1" type="text">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-2">-->
+            <!--<div class="form-group">-->
+                <!--<label >Path Color2: </label>-->
+                <!--<input class="change-element-color" my-bgcolor="path.pathColor2" colorpicker ng-model="path.pathColor2" type="text">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-3">-->
+        <!--<img ng-src="{{pathTolPictureIDthumb}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">-->
+        <!--<br>-->
+        <!--</div>-->
+
+</div>
+
+
