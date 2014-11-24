@@ -786,7 +786,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         $('#unityPlayer').toggleClass('hidden', true);
         $.backstretch("http://servicemedia.s3.amazonaws.com/servmed_c1.jpg");
         $scope.scene = {};
-        //$scope.scene.scenePictures = [];
+
+        $scope.scenePictures = [];
         $scope.scenePictureThumbs = [];
         $scope.pictureitems = [];
         $scope.audioitems = [];
@@ -802,6 +803,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 $scope.predicate = '-otimestamp';
                 //  $scope.setPagingData(largeLoad,page,pageSize);
                 console.log("pictureitems.length: ", $scope.pictureitems.length);
+
                 for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
                     for (var k = 0, kk = $scope.scene.scenePictures.length; k < kk; k++) {
                     if ($scope.scene.scenePictures[k] === $scope.pictureitems[i]._id) {
@@ -830,6 +832,41 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             });
 
         });
+        $scope.AddScenePicture = function(pictureID) {
+//                if (id != null && id != undefined && id.length > 0) {
+            console.log("XXX gotsa new pictureID: " + pictureID);
+            if (pictureID) {
+//                    pictures.forEach(function (picture) {
+//                console.log(pictureID);
+//                      $scope.scenePictureThumbs = [];
+                if ($scope.scene && pictureID) {
+                    $scope.scenePictures.push(pictureID);
+                    //TODO get the value directly from the pictureitems object?
+                    for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
+                        //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
+                        if (pictureID === $scope.pictureitems[i]._id) {
+                            $scope.scenePictureThumbs[i] = $scope.pictureitems[i].URLthumb;
+                            console.log($scope.scenePictureThumbs[i]);
+                        }
+                    }
+                }
+                $scope.scene.scenePictures = $scope.scenePictures;
+            }
+        };
+
+        $scope.onSaveScene = function() {
+            console.log("tryna update " + $scope.scene);
+
+            $http.post('/update_scene/' + $routeParams.scene_id,  $scope.scene).success(function(response){
+                console.log("submit response:  " + response);
+                if (response == "noauth") {
+                    $scope.headermessage = "You must be logged in to do that!"
+                } else {
+                    $scope.headermessage = response;
+                   // $location.path( "#/uscenes/" + $cookies._id.replace (/"/g,''));
+                }
+            });
+        }
     }
 
     function NewSceneCtrl($scope, $http, $routeParams, $cookies, $location) {
@@ -909,8 +946,11 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 }
             }
 
+
+
             $scope.$watch('newScenePicture', function(pictureID){
 //                if (id != null && id != undefined && id.length > 0) {
+                console.log("XXX gotsa new pictureID: " + pictureID);
                 if (pictureID) {
 //                    pictures.forEach(function (picture) {
                         console.log(pictureID);

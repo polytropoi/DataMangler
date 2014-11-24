@@ -1692,25 +1692,18 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                 console.log("tryna update path " + req.body._id);
 
                 db.scenes.update( { "_id": o_id }, { $set: {
-                    pathUserID : req.body.user_id,
-                    pathNumber : req.body.pathNumber,
-                    pathTitle : req.body.pathTitle,
-                    pathMeaning : req.body.pathMeaning,
-                    pathAttribution : req.body.pathAttribution,
-                    pathColor1 : req.body.pathColor1,
-                    pathColor2 : req.body.pathColor2,
-                    pathMapPictureID : req.body.pathMapPictureID,
-                    pathPictureID : req.body.pathPictureID,
-                    pathArcanumNumber : req.body.pathArcanumNumber,
-                    pathArcanumTitle : req.body.pathArcanumTitle,
-                    pathArcanumPictureID : req.body.pathArcanumPictureID,
-                    pathTriggerAudioID : req.body.pathTriggerAudioID,
-                    pathSpokenAudioID : req.body.pathSpokenAudioID,
-                    pathBackgroundAudioID : req.body.pathBackgroundAudioID,
-                    pathEnvironmentAudioID : req.body.pathEnvironmentAudioID,
-                    pathKeynote : req.body.pathKeynote,
-                    pathDescription : req.body.pathDescription,
-                    pathText : req.body.pathText }
+                    scenePictures : req.body.scenePictures,
+                    sceneNumber : req.body.sceneNumber,
+                    sceneTitle : req.body.sceneTitle,
+                    sceneColor1 : req.body.sceneColor1,
+                    sceneColor2 : req.body.sceneColor2,
+                    sceneTriggerAudioID : req.body.sceneTriggerAudioID,
+                    sceneSpokenAudioID : req.body.sceneSpokenAudioID,
+                    sceneBackgroundAudioID : req.body.sceneBackgroundAudioID,
+                    sceneEnvironmentAudioID : req.body.sceneEnvironmentAudioID,
+                    sceneKeynote : req.body.sceneKeynote,
+                    sceneDescription : req.body.sceneDescription,
+                    sceneText : req.body.sceneText }
                 });
             } if (err) {res.send(error)} else {res.send("updated " + new Date())}
         });

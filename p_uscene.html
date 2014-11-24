@@ -54,6 +54,7 @@
                 <label>Add Scene Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as p.title for p in pictureitems" required>
                 <option value="" selected="selected">Select Image:</option>
             </select>
+                <button class="btn-default btn-default-sm" ng-click="AddScenePicture(newScenePicture)">Add</button>
             </div>
         </div>
 
