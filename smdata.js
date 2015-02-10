@@ -22,6 +22,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 		when('/uaudio/:audio_id', {controller:UAudioCtrl, templateUrl:'p_uaudio.html'}).
 		when('/upics/:u_id', {controller:UPicsCtrl, templateUrl:'p_upics.html'}).
         when('/upic/:pic_id', {controller:UPicCtrl, templateUrl:'p_upic.html'}).
+        when('/uobjs/:u_id', {controller:UObjsCtrl, templateUrl:'p_uobjs.html'}).
+        when('/uobj/:obj_id', {controller:UObjCtrl, templateUrl:'p_uobj.html'}).
         when('/upaths/:u_id', {controller:UPathsCtrl, templateUrl:'p_upaths.html'}).
         when('/upath/:user_id/:path_id', {controller:UPathCtrl, templateUrl:'p_upath.html'}).
         when('/path/:path_id', {controller:PathCtrl, templateUrl:'p_path.html'}).
@@ -48,6 +50,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 	      when('/uploadaudio', {controller:NewAudioCtrl, templateUrl:'p_add_audio.html'}).
 	      when('/uploadtext', {controller:NewAudioCtrl, templateUrl:'p_uploadtext.html'}).
 	      when('/uploadpicture', {controller:NewPictureCtrl, templateUrl:'p_add_picture.html'}).
+        when('/uploadobject', {controller:NewObjectCtrl, templateUrl:'p_add_object.html'}).
 	      when('/uploadtext', {controller:UploadTextCtrl, templateUrl:'p_uploadtext.html'}).
 	      when('/webplayer', {controller:WebplayerCtrl, templateUrl:'p_webplayer.html'}).
 	      otherwise({redirectTo:'/'});
@@ -58,6 +61,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 urls: {
                     uaudioslink: "#/uaudios/",
                     upicslink: "#/upics/",
+                    uobjslink: "#/uobjs/",
                     ukeyslink: "#/ukeys/",
                     ugroupslink: "#/upaths/",
                     usceneslink: "#/uscenes/",
@@ -495,6 +499,116 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             }
 
         }
+
+
+    function UObjsCtrl($scope, $http, $routeParams, usernav) {
+        $scope.urls = usernav.urls;
+        $('#unityPlayer').toggleClass('hidden', true);
+        $.backstretch("http://servicemedia.s3.amazonaws.com/servmed_c1.jpg");
+        $http.get('/userobjs/' + $routeParams.u_id).success(function (data) {
+            $scope.obj_items = data;
+            $scope.predicate = '-otimestamp';
+            console.log($scope.obj_items[0]);
+            //  $scope.setPagingData(largeLoad,page,pageSize);
+            //   $scope.setPagingData(page,pageSize);
+        });
+    }
+
+    function UObjCtrl($scope, $http, $routeParams, $cookies, $location, usernav) {
+        $scope.urls = usernav.urls;
+        $('#unityPlayer').toggleClass('hidden', true);
+        $.backstretch("http://servicemedia.s3.amazonaws.com/servmed_c1.jpg");
+
+        $('#unityPlayer').toggleClass('hidden', true);
+        $scope.headermessage = "";
+        $scope.user = {};
+        $scope.updatestring = "";
+        $scope.item_id = $routeParams.obj_id.toString();
+        $scope.headermessage = "You are not logged in...";
+        $scope.urls = usernav.urls;
+        if ($cookies._id !== null && $cookies._id !== undefined) {
+
+            $http.get('/amirite/' + $cookies._id).success(function (data) {  //check server if this cookie is still valid
+                console.log(data);
+                $scope.userstatus = data;
+                if ($scope.userstatus != "0") {
+                    $scope.headermessage = "You are logged in as " + $scope.userstatus; //a bit cornfusing, it's returning username
+                } else {
+                    $scope.headermessage = "You are not logged in...";
+                    delete $cookies._id; //if server session doesn't match, the client cookie is bad
+                }
+            }).error(function (errdata) {
+                console.log(errdata);
+                $scope.userstatus = "0";
+                $scope.headermessage = "You are not logged in...";
+                delete $cookies._id; //if server session doesn't match, the client cookie is bad
+            });
+
+        } else {
+            $scope.userstatus = "0";
+            $scope.headermesssage = "You are not logged in...";
+            delete $cookies._id; //if server session doesn't match, the client cookie is bad
+        }
+
+        $http.get('/userobj/' + $routeParams.obj_id).success(function (data) {
+            $scope.item = data;
+            $scope.predicate = '-otimestamp';
+            //  $scope.setPagingData(largeLoad,page,pageSize);
+            //   $scope.setPagingData(page,pageSize);
+
+            if ($scope.item.tags === null) {
+                $scope.item.tags = [];
+            }
+
+        });
+
+
+        $scope.AddTag = function (tag) {
+            console.log("tryna AddTag");
+            $scope.item.tags.push(tag);
+        }
+
+        $scope.RemoveTag = function (tag) {
+            console.log("tryna RemovePerson...");
+            for (var i = 1, ii = $scope.item.tags.length; i < ii; i++) {
+                if (tag === $scope.item.tags[i]) {
+                    $scope.item.tags.splice(i, 1);
+                }
+            }
+        }
+
+        $scope.onUpdateItemDetails = function () {
+            console.log("tryna update " + $scope.item);
+
+            $http.post('/update_obj/' + $scope.item_id, $scope.item).success(function (response) {
+                console.log("submit response:  " + response);
+                if (response == "noauth") {
+                    $scope.headermessage = "You must be logged in to do that!"
+                } else {
+                    $scope.headermessage = response;
+
+                }
+            });
+        }
+
+        $scope.DeleteItem = function () {
+            console.log("tryna delete obj " + $scope.item);
+            $http.post('/delete_obj/', $scope.item).success(function(response){
+                console.log(response);
+                if (response == "noauth") {
+                    $scope.headermessage = "You must be logged in to do that!"
+                } else if (response !== "deleted") {
+
+                    $scope.headermessage = response;
+
+                } else {
+                    $location.path( "#/uobjs/" + $cookies._id.replace (/"/g,''));
+                }
+            });
+        }
+
+    }
+
         function UPathsCtrl($scope, $http, $routeParams, $cookies, usernav, $location) {
 //            $scope.urls = usernav.urls;
             $scope.urls = usernav.urls;
@@ -807,7 +921,12 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
                     for (var k = 0, kk = $scope.scene.scenePictures.length; k < kk; k++) {
                     if ($scope.scene.scenePictures[k] === $scope.pictureitems[i]._id) {
-                        $scope.scenePictureThumbs.push($scope.pictureitems[i].URLthumb);
+                        var stump = {};
+                        stump._id = $scope.pictureitems[i]._id;
+                        stump.thumbUrl = $scope.pictureitems[i].URLthumb;
+                        stump.title = $scope.pictureitems[i].title;
+                        stump.filename = $scope.pictureitems[i].filename;
+                        $scope.scenePictureThumbs.push(stump);
                         console.log($scope.scenePictureThumbs);
                         }
                     }
@@ -831,6 +950,18 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 location.$path("/login");
             });
 
+            $http.get('/userobjs/' + $routeParams.u_id).success(function (data) {
+                $scope.objitems = data;
+                $scope.predicate = '-otimestamp';
+                //  $scope.setPagingData(largeLoad,page,pageSize);
+                console.log($scope.objitems[0]);
+                //   $scope.setPagingData(page,pageSize);
+            }).error(function	(data) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                location.$path("/login");
+            });
+
         });
         $scope.AddScenePicture = function(pictureID) {
 //                if (id != null && id != undefined && id.length > 0) {
@@ -839,19 +970,55 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //                    pictures.forEach(function (picture) {
 //                console.log(pictureID);
 //                      $scope.scenePictureThumbs = [];
-                if ($scope.scene && pictureID) {
-                    $scope.scenePictures.push(pictureID);
+                if ($scope.scene.scenePictures) {
+                    if ($scope.scene.scenePictures.indexOf(pictureID) == -1)
+                        $scope.scene.scenePictures.push(pictureID);
                     //TODO get the value directly from the pictureitems object?
                     for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
+//                        if ($scope.scenePictureItems)
                         //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
                         if (pictureID === $scope.pictureitems[i]._id) {
-                            $scope.scenePictureThumbs[i] = $scope.pictureitems[i].URLthumb;
-                            console.log($scope.scenePictureThumbs[i]);
+                            var stump = {};
+                            stump._id = $scope.pictureitems[i]._id;
+                            stump.thumbUrl = $scope.pictureitems[i].URLthumb;
+                            stump.title = $scope.pictureitems[i].title;
+                            stump.filename = $scope.pictureitems[i].filename;
+
+//                            $scope.scenePictureThumbs.push($scope.pictureitems[i].URLthumb);
+                            $scope.scenePictureThumbs.push(stump);
+                            console.log("XXXX scene pic thumbs: " + $scope.scenePictureThumbs);
                         }
                     }
                 }
-                $scope.scene.scenePictures = $scope.scenePictures;
+                //$scope.scene.scenePictures = $scope.scenePictures;
             }
+        };
+        $scope.DeleteScenePicture = function(id) {
+
+//                if (id != null && id != undefined && id.length > 0) {
+
+
+            console.log("XXX gotsa new pictureID: " + id + " " + JSON.stringify($scope.scenePictureThumbs[0]));
+            if (id != undefined) {
+//                    pictures.forEach(function (picture) {
+//                console.log(pictureID);
+//                      $scope.scenePictureThumbs = [];
+                if ($scope.scene.scenePictures) {
+                    var scenePicIndex = $scope.scene.scenePictures.indexOf(id);
+                    if (scenePicIndex != -1) {
+                        $scope.scene.scenePictures.splice(scenePicIndex, 1);
+                    }
+                    //TODO get the value directly from the pictureitems object?
+
+                    for (var i = 0, ii = $scope.scenePictureThumbs.length - 1; i < ii; i++) {
+                        if (($scope.scenePictureThumbs != undefined) && (id === $scope.scenePictureThumbs[i]._id)) {
+                              $scope.scenePictureThumbs.splice(i, 1);
+
+                        }
+                    }
+                    $scope.form.$dirty = true;
+                    }
+                }
         };
 
         $scope.onSaveScene = function() {
@@ -2009,7 +2176,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
   			console.log("tryna load NewPictureCtrl controller");
 
 		    $scope.inprogress = false;
-  			$scope.upstatus = "choose a file (jpeg or png) or drag/drop into the outlined area";
+  			$scope.upstatus = "choose a file (mp3, ogg, wav, aif) or drag/drop into the outlined area";
 
 			$scope.urls = usernav.urls;
   				if ($cookies._id !== null && $cookies._id !== undefined) {
@@ -2078,7 +2245,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 		      	$scope.inprogress = true;
 		      $scope.upload = $upload.upload({
 
-		        url: '/uploadaudio', //upload.php script, node.js route, or servlet url
+		        url: '/uploadaudio', //node.js route
 
 		        // headers: {'headerKey': 'headerValue'}, withCredential: true,
 		        data: {title: "", tags: ""},
@@ -2118,90 +2285,14 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		}
 
 /*
-		function UploadAudioCtrl($scope, $http, $timeout, $upload, $route) {  //uses angular-file-upload.js
 
-  			$('#unityPlayer').toggleClass('hidden', true);
-  			//$.backstretch("http://servicemedia.s3.amazonaws.com/servmed_c1.jpg");
-
-  			console.log("tryna load UploadAudioCtrl controller");
-
-  		//	$scope.theFiles = [];
-  			$scope.validFileType = false;
-  			$scope.uploadInProgress = false;
-  			$scope.uploadComplete = false;
-
-
-			$scope.onFileSelect = function($files) {
-
-				$scope.selectedFiles = [];
-				$scope.selectedFiles = $files;
-
-				if ($scope.selectedFiles[0].type === "audio/mp3" || $scope.selectedFiles[0].type === "audio/ogg" || $scope.selectedFiles[0].type === "audio/wav" || $scope.selectedFiles[0].type === "audio/aiff"|| $scope.selectedFiles[0].type === "audio/aif" ) {
-
-				$scope.validFileType = true;
-				console.log("gotsa file: " + $scope.selectedFiles[0].type + " validFileType = " + $scope.validFileType);
-
-				}
-			};
-
-			$scope.onFileSubmit = function($files) {
-			//	$scope.selectedFiles = [];
-			$scope.validFileType = false;
-				$scope.uploadInProgress = true;
-				$scope.progress = [];
-				if ($scope.upload && $scope.upload.length > 0) {
-					for (var i = 0; i < $scope.upload.length; i++) {
-						$scope.upload[i].abort();
-						$scope.upload[i].success = null;
-					}
-				}
-				$scope.upload = [];
-				$scope.uploadResult = [];
-				$scope.selectedFiles = $files;
-
-				for ( var i = 0; i < $files.length; i++) {
-					var $file = $files[i];
-					$scope.progress[i] = 0;
-					(function() {
-						var index = i;
-						$scope.upload[index] = $upload.upload({
-							url : '/uploadaudio',
-							headers: {'myHeaderKey': 'myHeaderVal'},
-							data : {
-								title : $scope.itemTitle,
-								artist : $scope.itemArtist,
-								album : $scope.itemAlbum,
-							},
-							file : $file,
-
-							fileFormDataName: 'audio_upload',
-							progress: function(evt) {
-								$scope.progress[index] = parseInt(100.0 * evt.loaded / evt.total);
-								if (!$scope.$$phase) {
-									$scope.$apply();
-								}
-							}
-						}).success(function(data, status, headers, config) {
-							$scope.uploadResult.push(data.result);
-							// to fix IE not updating the dom
-							$scope.uploadInProgress = false;
-							$scope.uploadComplete = true;
-							if (!$scope.$$phase) {
-								$scope.$apply();
-							}
-						});
-					})();
-					}
-				};
-
-			}
 */
 function NewPictureCtrl($scope, $http, $routeParams, $cookies, $location, $timeout, $upload, $route, usernav) {
 
   			console.log("tryna load NewPictureCtrl controller");
 
 		    $scope.inprogress = false;
-  			$scope.upstatus = "choose a file (mp3, ogg, wav, aif) or drag/drop into the outlined area";
+  			$scope.upstatus = "choose a file (jpg or png) or drag/drop into the outlined area";
 
 			$scope.urls = usernav.urls;
   				if ($cookies._id !== null && $cookies._id !== undefined) {
@@ -2310,6 +2401,119 @@ function NewPictureCtrl($scope, $http, $routeParams, $cookies, $location, $timeo
  		}
 
 
+
+    function NewObjectCtrl($scope, $http, $routeParams, $cookies, $location, $timeout, $upload, $route, usernav) {
+
+        console.log("tryna load NewPictureCtrl controller");
+
+        $scope.inprogress = false;
+        $scope.upstatus = "choose a .obj file or drag/drop into the outlined area";
+
+        $scope.urls = usernav.urls;
+        if ($cookies._id !== null && $cookies._id !== undefined) {
+            $http.get('/amirite/' + $cookies._id).success(function (data) {  //check server if this cookie is still valid
+                console.log(data);
+                //$scope.user._id = $cookies._id;
+                $scope.userstatus = data;
+                $scope.urls = usernav.urls;
+                if ($scope.userstatus != "0") {
+                    $scope.headermessage = "You are logged in as " + $scope.userstatus;
+                    $scope.validFileType = false;
+                } else {
+                    $scope.headermessage = "You are not logged in...no upload for you";
+                    $scope.validFileType = false;
+                    delete $cookies._id; //if server session doesn't match, the client cookie is bad
+                }
+            }).error(function (errdata) {
+                console.log(errdata);
+                $scope.userstatus = "0";
+                $scope.headermessage = "You are not logged in...no upload for you";
+                $scope.validFileType = false;
+                delete $cookies._id; //if server session doesn't match, the client cookie is bad
+            });
+        } else {
+            $scope.userstatus = "0";
+            $scope.headermesssage = "You are not logged in...no upload for you";
+            delete $cookies._id; //if server session doesn't match, the client cookie is bad
+        }
+
+        $scope.object = {};
+        //	$scope.theFiles = [];
+        $scope.validFileType = false;
+        $scope.uploadInProgress = false;
+        $scope.uploadComplete = false;
+
+        $scope.tags = [];
+
+        //$scope.upload = [];
+
+        $scope.onFileSelect = function($files) {
+
+            $scope.selectedFiles = [];
+            $scope.selectedFiles = $files;
+            $scope.selectedFile = $scope.selectedFiles[0];
+
+//            if ($scope.selectedFile.type === "application/octet-stream") { ? wtf is proper mime type for .obj?
+                if (1 == 1) {
+                $scope.validFileType = true;
+
+                $scope.upstatus = "valid file selected";
+                console.log("gotsa file: " + $scope.selectedFile.type + " validFileType = " + $scope.validFileType);
+
+            } else {
+                $scope.validFileType = false;
+                $scope.upstatus = "invalid file selected";
+            }
+        }
+
+        $scope.onFileSubmit = function() {
+
+            //	$scope.selectedFiles = [];
+            $scope.percent = 0;
+            //for (var i = 0; i < $files.length; i++) {
+            //var $file = $files[i];
+            if ($scope.selectedFile != null && $scope.validFileType === true && $scope.inprogress === false) {
+                $scope.inprogress = true;
+                $scope.upload = $upload.upload({
+
+                    url: '/uploadobject', //upload.php script, node.js route, or servlet url
+
+                    // headers: {'headerKey': 'headerValue'}, withCredential: true,
+                    data: {title: "", tags: ""},
+                    file: $scope.selectedFile,
+                    /* set file formData name for 'Content-Desposition' header. Default: 'file' */
+                    fileFormDataName: 'obj_upload'
+                    /* customize how data is added to formData. See #40#issuecomment-28612000 for example */
+                    //formDataAppender: function(formData, key, val){}
+                }).progress(function(evt) {
+                    $scope.percent = parseInt(100.0 * evt.loaded / evt.total);
+                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                    $scope.upstatus = "upload in progress, " + $scope.percent + " % complete";
+                }).success(function(data, status, headers, config) {
+                    // file is uploaded successfully
+                    console.log(data);
+                    $scope.inprogress = false;
+                    $location.path( "/uobj/" + data);
+                });
+            } else {
+                $scope.upstatus = "could not upload obj"
+                console.log("could not submit obj");
+            }
+        }
+
+        $scope.hasUploader = function() {
+            if ($scope.upload) {
+                return $scope.upload != null;
+            }
+        };
+        $scope.abort = function() {
+            if ($scope.upload) {
+                $scope.upload.abort();
+                $scope.upload = null;
+                $route.reload();
+            }
+        };
+    }
 
   		function UploadTextCtrl($scope, $http) {
   			$('#unityPlayer').toggleClass('hidden', true);

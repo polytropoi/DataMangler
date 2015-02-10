@@ -57,13 +57,13 @@ app = express();
          // This is our basic configuration                                                                                                                     
     app.configure(function () {
     app.use(express.static(path.join(__dirname, './'), { maxAge: oneDay }));
-   // app.use(cors());
-        //cors stuff
+//   app.use(cors());
+////        cors stuff
 //    app.use(allowCrossDomain);   // make sure this is is called before the router
 //        app.use(function(req, res, next) {
-////            res.header('Access-Control-Allow-Credentials', true);
-//            res.header('Access-Control-Allow-Origin', '*');
-//            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//            res.header('Access-Control-Allow-Credentials', true);
+//            res.header('Access-Control-Allow-Origin', 'kork.us');
+//            res.header('Access-Control-Allow-Methods', 'GET,POST');
 //            res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
 //            if ('OPTIONS' == req.method) {
 //                res.send(200);
@@ -88,7 +88,7 @@ app = express();
 
        // Create the http server and get it to listen on the specified port 8084                                                                                                                   
   var databaseUrl = "asterion:menatar@linus.mongohq.com:10093/servmed";
-  var collections = ["auth_req", "users", "audio_items", "audio_item_keys", "image_items", "paths", "keys", "scenes"];
+  var collections = ["auth_req", "users", "audio_items", "audio_item_keys", "image_items", "obj_items", "paths", "keys", "scenes"];
   var db = require("mongojs").connect(databaseUrl, collections);
   var BSON = mongo.BSONPure;
   
@@ -999,6 +999,44 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
         });
     });
 
+    app.get('/userobjs/:u_id', requiredAuthentication, function(req, res) {
+        console.log('tryna return userobjs for: ' + req.params.u_id);
+        db.obj_items.find({userID: req.params.u_id}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, obj_items) {
+
+            if (err || !obj_items) {
+                console.log("error getting obj items: " + err);
+
+            } else {
+                console.log("# " + obj_items.length);
+                for (var i = 0; i < obj_items.length; i++) {
+
+                    var item_string_filename = JSON.stringify(obj_items[i].filename);
+                    item_string_filename = item_string_filename.replace(/\"/g, "");
+                    var item_string_filename_ext = getExtension(item_string_filename);
+                    var expiration = new Date();
+                    expiration.setMinutes(expiration.getMinutes() + 30);
+                    var baseName = item_string_filename;
+//                    var baseName = path.basename(item_string_filename, (item_string_filename_ext));
+                    console.log(baseName);
+//                    var thumbName = 'thumb.' + baseName + item_string_filename_ext;
+//                    var halfName = 'half.' + baseName + item_string_filename_ext;
+//                    var standardName = 'standard.' + baseName + item_string_filename_ext;
+
+                    //var pngName = baseName + '.png';
+
+                    var objUrl = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + obj_items[i].userID, Key: obj_items[i]._id + "." + baseName, Expires: 6000}); //just send back thumbnail urls for list
+                    //var urlPng = knoxClient.signedUrl(audio_item[0]._id + "." + pngName, expiration);
+                    obj_items[i].objUrl = objUrl; //jack in teh signed urls into the object array
+                    //console.log("picture item: " + urlThumb, picture_items[0]);
+
+                }
+
+                res.json(obj_items);
+                console.log("returning obj_items for " + req.params.u_id);
+            }
+        });
+    });
+
     app.get('/userpics', requiredAuthentication, function(req, res) {
         console.log('tryna return userpics for: ' + req.body.userID);
     db.image_items.find({userID: req.params.u_id}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, picture_items) {
@@ -1073,6 +1111,49 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                         }
                 });
     });
+
+    app.get('/userobj/:p_id', requiredAuthentication, function(req, res) {
+
+        console.log('tryna return userpic : ' + req.params.p_id);
+        var pID = req.params.p_id;
+        var o_id = new BSON.ObjectID(pID);
+        db.obj_items.findOne({"_id": o_id}, function(err, obj_item) {
+            if (err || !obj_item) {
+                console.log("error getting picture items: " + err);
+
+            } else {
+
+                //   for (var i = 0; i < picture_items.length; i++) {
+
+                var item_string_filename = JSON.stringify(obj_item.filename);
+                item_string_filename = item_string_filename.replace(/\"/g, "");
+                var item_string_filename_ext = getExtension(item_string_filename);
+                var expiration = new Date();
+                expiration.setMinutes(expiration.getMinutes() + 30);
+                var baseName = item_string_filename;
+                console.log(baseName);
+
+                //TODO screen scrape the obj from a webplayer?
+//                var thumbName = 'thumb.' + baseName + item_string_filename_ext;
+//                var halfName = 'half.' + baseName + item_string_filename_ext;
+//                var standardName = 'standard.' + baseName + item_string_filename_ext;
+//
+//                //var pngName = baseName + '.png';
+//
+//                var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID, Key: picture_item._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
+//                var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID, Key: picture_item._id + "." + halfName, Expires: 6000}); //just send back thumbnail urls for list
+//                var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID, Key: picture_item._id + "." + standardName, Expires: 6000}); //just send back thumbnail urls for list
+//                //var urlPng = knoxClient.signedUrl(audio_item[0]._id + "." + pngName, expiration);
+//                picture_item.URLthumb = urlThumb; //jack in teh signed urls into the object array
+//                picture_item.URLhalf = urlHalf;
+//                picture_item.URLstandard = urlStandard;
+
+                res.json(obj_item);
+                console.log("returning obj_item for " + obj_item);
+            }
+        });
+    });
+
 
     app.get('/useraudio/:username', function(req, res) {
         console.log('tryna return audiolist: ' + req.params.tag);
@@ -1673,7 +1754,15 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
         } else {
             var item_id = saved._id.toString();
             console.log('new scene id: ' + item_id);
-            res.send(item_id);
+            tempID = "";
+            newShortID = "";
+            tempID = item_id;
+            newShortID = shortId(tempID);
+            var o_id = new BSON.ObjectID(tempID);
+            console.log(tempID + " = " + newShortID);
+            db.scenes.update( { _id: o_id }, { $set: { short_id: newShortID }});
+
+            res.send(newShortID);
 
         }
     });
@@ -1691,7 +1780,10 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
             } else {
                 console.log("tryna update path " + req.body._id);
 
+
                 db.scenes.update( { "_id": o_id }, { $set: {
+                    sceneDomain : req.body.sceneDomain,
+                    sceneEnvironment : req.body.sceneEnvironment,
                     scenePictures : req.body.scenePictures,
                     sceneNumber : req.body.sceneNumber,
                     sceneTitle : req.body.sceneTitle,
@@ -1741,61 +1833,74 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 
     });
 
-    app.get('/path/:_id', function (req, res) {
+    //return a short code that will be unique for the spec'd type (scene, pic, audio)
+    app.get('/newshortcode/:type', requiredAuthentication, function (req, res) {
 
-        console.log("tryna get path id: ", req.params._id);
+
+    });
+
+    //check uniqueness and websafeness (can be used as path) of title for the spec'd type, return bool
+    app.get('/checktitle/:type', requiredAuthentication, function (req, res) {
+
+
+    });
+
+    app.get('/scene/:_id', function (req, res) {
+
+        console.log("tryna get scene id: ", req.params._id);
         var audioResponse = {};
         var pictureResponse = {};
-        var pathResponse = {};
+        var sceneResponse = {};
         var requestedPictureItems = [];
         var requestedAudioItems = [];
-     pathResponse.audio = [];
-     pathResponse.pictures = [];
+     sceneResponse.audio = [];
+     sceneResponse.pictures = [];
 
         async.waterfall([
 
                     function (callback) {
-                        db.paths.find({ pathNumber: req.params._id }, function (err, pathData) { //fetch the path info
-                            if (err || !pathData || !pathData.length) {
-                                console.log("error getting path items: " + err);
+                        db.scenes.find({ sceneTitle: req.params._id }, function (err, sceneData) { //fetch the path info by title TODO: urlsafe string
+                            if (err || !sceneData || !sceneData.length) {
+                                console.log("error getting scene items: " + err);
                                 callback("", err);
-                            } else { //make arrays of the pics and audio items in the path
-                                console.log("path: ", pathData);
-                                requestedPictureItems = [ BSON.ObjectID(pathData[0].pathPictureID), BSON.ObjectID(pathData[0].pathMapPictureID), BSON.ObjectID(pathData[0].pathArcanumPictureID) ];
+                            } else { //make arrays of the pics and audio items
+                                console.log("scene: ", sceneData);
+                                sceneData[0].scenePictures.forEach(function (picture){
+                                    var p_id = new BSON.ObjectID(picture); //convert to binary to search by _id beloiw
+                                    requestedPictureItems.push(p_id); //populate array
+                                });
 
-                                requestedAudioItems = [ BSON.ObjectID(pathData[0].pathTriggerAudioID), BSON.ObjectID(pathData[0].pathSpokenAudioID), BSON.ObjectID(pathData[0].pathBackgroundAudioID), BSON.ObjectID(pathData[0].pathEnvironmentAudioID) ];
+                                requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneSpokenAudioID), BSON.ObjectID(sceneData[0].sceneBackgroundAudioID), BSON.ObjectID(sceneData[0].sceneEnvironmentAudioID) ];
 
-                                pathResponse = pathData[0];
-//                                pathResponse.audio = [];
-//                                pathResponse.pictures = [];
-                                callback(null, pathData);
-//                var pathAudioObjects = [];
+                                sceneResponse = sceneData[0];
+                                callback(null, sceneData);
                             }
 
                         });
 
                     },
 
-                    function (nPaths, callback) { //if it didn't find it above as a simple number, try the ID
-                        if (!nPaths || !nPaths.length) {
+                    function (nScenes, callback) { //if it didn't find it above as a simple number, try the ID
+                        if (!nScenes || !nScenes.length) {
 
                             //var o_id = new BSON.ObjectID(req.params._id);
                             if (Buffer.byteLength(req.params._id) == 24 || Buffer.byteLength(req.params._id) == 12) {
-                                db.paths.find({ _id: ObjectId(req.params._id) }, function (err, pathData) { //fetch the path info
-                                    if (err || !pathData || !pathData.length) {
-                                        console.log("error getting path items: " + err);
+                               // var o_id = new BSON.ObjectID(req.params._id);
+                                db.scenes.find({ _id: ObjectId(req.params._id) }, function (err, sceneData) { //fetch the path info
+                                    if (err || !sceneData || !sceneData.length) {
+                                        console.log("error getting scene items: " + err);
                                         callback(err);
-                                    } else { //make arrays of the pics and audio items in the path
-                                        console.log("path: ", pathData);
-                                        requestedPictureItems = [ BSON.ObjectID(pathData[0].pathPictureID), BSON.ObjectID(pathData[0].pathMapPictureID), BSON.ObjectID(pathData[0].pathArcanumPictureID) ];
+                                    } else {
+                                        console.log(sceneData);
+                                        sceneData[0].scenePictures.forEach(function (picture){
+                                            var p_id = new BSON.ObjectID(picture); //convert to binary to search by _id beloiw
+                                            requestedPictureItems.push(p_id); //populate array
+                                        });
 
-                                        requestedAudioItems = [ BSON.ObjectID(pathData[0].pathTriggerAudioID), BSON.ObjectID(pathData[0].pathSpokenAudioID), BSON.ObjectID(pathData[0].pathBackgroundAudioID), BSON.ObjectID(pathData[0].pathEnvironmentAudioID) ];
+                                        requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneSpokenAudioID), BSON.ObjectID(sceneData[0].sceneBackgroundAudioID), BSON.ObjectID(sceneData[0].sceneEnvironmentAudioID) ];
 
-                                        pathResponse = pathData[0];
-//                                pathResponse.audio = [];
-//                                pathResponse.pictures = [];
+                                        sceneResponse = sceneData[0];
                                         callback(null);
-//                var pathAudioObjects = [];
                                     }
 
                                 });
@@ -1803,7 +1908,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                                 callback("bad input");
                             }
                         } else {
-                            pathResponse = nPaths[0];
+                            sceneResponse = nScenes[0];
 //                                pathResponse.audio = [];
 //                                pathResponse.pictures = [];
                             callback(null);
@@ -1854,7 +1959,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 
                      //   console.log('tryna send ' + audio_items);
                         audioResponse = audio_items;
-                        pathResponse.audio = audioResponse;
+                        sceneResponse.audio = audioResponse;
 //                        console.log("audio", audioResponse);
                         callback(null, audio_items);
                     },
@@ -1912,13 +2017,13 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     },
 
                     function (callback) {
-                        pathResponse.audio = audioResponse;
-                        pathResponse.pictures = pictureResponse;
+                        sceneResponse.audio = audioResponse;
+                        sceneResponse.pictures = pictureResponse;
                         callback(null);
                     }
                 ],
                 function (err, result) { // #last function, close async
-                    res.json(pathResponse);
+                    res.json(sceneResponse);
                     console.log("waterfall done: " + result);
                 }
             );
@@ -1977,7 +2082,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
             } else {
                 console.log('reset request from: ' + req.body.email);
                 // ws.send("authorized");
-                var subject = "Philosophers' Garden user " + req.session.user.userName + " has shared a node with you";
+                var subject = "ServiceMedia user " + req.session.user.userName + " has shared a node with you";
                 var from = "polytropoi@gmail.com";
                 var to = [req.body.email];
                 var bcc = [];
@@ -2051,6 +2156,24 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
         });
     });
 
+
+    app.post('/update_obj/:_id', requiredAuthentication, function (req, res) {
+        console.log(req.params._id);
+
+        var o_id = new BSON.ObjectID(req.params._id);  //convert to BSON for searchie
+        console.log('pic requested : ' + req.body._id);
+        db.obj_items.find({ "_id" : o_id}, function(err, obj_item) {
+            if (err || !obj_item) {
+                console.log("error getting audio items: " + err);
+            } else {
+                console.log("tryna update " + req.body._id + " to status " + req.body.item_status);
+                db.obj_items.update( { _id: o_id }, { $set: { item_status: req.body.item_status,
+                    tags: req.body.tags,
+                    title: req.body.title
+                }});
+            } if (err) {res.send(error)} else {res.send("updated " + new Date())}
+        });
+    });
 
     app.post('/update_audio/:_id', requiredAuthentication, function (req, res) {
         console.log(req.params._id);
@@ -2322,7 +2445,7 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
     },
 
 
-    function(callback) { //check that we gotsa bucket with this user's
+    function(callback) { //check that we gotsa bucket with this user's id
         
        // var bucketFolder = 'elnoise1/' + req.session.user._id + '/';
 
@@ -2513,7 +2636,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
     if (fname_ext === ".jpeg" || fname_ext === ".jpg" || fname_ext === ".png" || fname_ext === ".gif") {
         callback(null);
         } else {
-        callback(err);
+        callback();
         res.send("bad file");
         }
     },
@@ -2683,7 +2806,180 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
         }
       );  
     }); //end app.post /upload
-     
+
+
+app.post('/uploadobject', requiredAuthentication, function (req, res) {
+
+
+    console.log("tryna upload obj");
+
+    var returnString = "";
+    var uName = req.body.username;
+    var uPass = req.body.userpass;
+    var expires = new Date();
+    expires.setMinutes(expires.getMinutes() + 30);
+    var ts = Math.round(Date.now() / 1000);
+    var fname = req.files.obj_upload.name;
+    fname =  fname.replace(/ /g, "_");
+    var fsize = req.files.obj_upload.size;
+    console.log("filename: " + fname);
+    var fpath = req.files.obj_upload.path;
+    var parsedTags = {};
+    //var item_id = "";
+
+    async.waterfall([ //flow control for functions below, do one at a time, and pass vars to next as needed
+
+            function(callback) { //check for proper extensions
+                var fname_ext = getExtension(fname);
+                console.log("extension of " + fname + "is " + fname_ext);
+                if (fname_ext === ".obj") {
+                    callback(null);
+                } else {
+                    callback(err);
+                    res.send("bad file");
+                }
+            },
+
+            function(callback) { //check that we gotsa bucket with this user's
+
+
+                var bucketFolder = 'servicemedia.' + req.session.user._id;
+                console.log(bucketFolder);
+                s3.headBucket({Bucket:bucketFolder},function(err,data){
+                    if(err){
+                        s3.createBucket({Bucket:bucketFolder},function(err2,data){
+                            if (err2){
+                                console.log(err2);
+                                callback(err2);
+                            } else {
+                                console.log("bucket creation");
+                                callback(null, bucketFolder);
+                            }
+                        });
+                    } else {
+                        console.log("Bucket exists and we have access");
+                        callback(null, bucketFolder);
+                    }
+                });
+
+            },
+
+
+//            function(theBucketFolder, callback) { //upload orig file to s3
+//
+//                var stream = fs.createReadStream(fpath);
+//                var data = {Bucket: theBucketFolder, Key: fname, Body: stream};
+//                console.log("orignal file to: " + data);
+//                s3.putObject(data, function(err, data) {
+//                    if (err) {
+//                        console.log("Error uploading data: ", err);
+//                        callback(err);
+//                    } else {
+//                        console.log("Successfully uploaded data to " + theBucketFolder);
+//                        callback(null, 'uploaded orig file');
+//                    }
+//
+//                });
+//            },
+
+            function(bucket, callback) { //#3 save data to mongo, get object ID
+
+                var itemTitle = "";
+
+                db.obj_items.save(
+                    {type : "uploadedObj",
+                        userID : req.session.user._id,
+                        username : req.session.user.userName,
+                        title : "",
+                        filename : fname,
+                        item_type : 'obj',
+                        //alt_title : req.files.audio_upload.title,
+                        //alt_artist : req.files.audio_upload.artist,
+                        //alt_album : req.files.audio_upload.album,
+                        tags: [],
+                        item_status: "private",
+                        otimestamp : ts,
+                        ofilesize : fsize},
+                    function (err, saved) {
+                        if ( err || !saved ) {
+                            console.log('obj not saved..');
+                            callback (err);
+                        } else {
+                            var item_id = saved._id.toString();
+                            console.log('new item id: ' + item_id);
+                            callback(null,bucket,item_id);
+                        }
+                    }
+                );
+            },
+
+            function(theBucketFolder, item_id, callback) { //upload orig file to s3
+
+                var stream = fs.createReadStream(fpath);
+                var data = {Bucket: theBucketFolder, Key: item_id + "." + fname, Body: stream};
+                console.log("orignal file to: " + data);
+                s3.putObject(data, function(err, data) {
+                    if (err) {
+                        console.log("Error uploading data: ", err);
+                        callback(err);
+                    } else {
+                        console.log("Successfully uploaded data to " + theBucketFolder);
+                        callback(null, item_id);
+                    }
+
+                });
+            },
+
+//            function(itemID, callback) {//get a URL of the original file now in s3, to send down the line
+//                var bucketFolder = 'servicemedia.' + req.session.user._id;
+//                //var tempURL = knoxClient.signedUrl(fname, expires);
+//                var params = {Bucket: bucketFolder, Key: item_id + "." + fname };
+//
+//                s3.getSignedUrl('getObject', params, function (err, url) {
+//                    if (err) {
+//                        console.log(err);
+//                        callback(err);
+//                    } else {
+//                        console.log("The URL is", url);
+//                        callback(null, url, itemID);
+//                    }
+//                });
+//
+//                //if (tempURL != null || tempURL.length > 10) {
+//                //    console.log("gotsa url: " + tempURL);
+//                //callback(null, tempURL, itemID);
+//                //} else {
+//                //callback("can't get signed URL...");
+//                //}
+//            },
+
+
+
+//            function(url, itemID2, callback) {  //gen a short code and insert //not for picss
+//                /*
+//                 tempID = "";
+//                 newShortID = "";
+//                 tempID = itemID2;
+//                 newShortID = shortId(tempID);
+//                 var o_id = new BSON.ObjectID(tempID);
+//                 console.log(tempID + " = " + newShortID);
+//                 db.audio_items.update( { _id: o_id }, { $set: { short_id: newShortID }});
+//                 */
+//                callback(null,url);
+//            }
+
+
+        ], //end async flow
+
+        function(err, result) { // #last function, close async
+            console.log("waterfall done: " + result);
+            //  res.redirect('/upload.html');
+            res.send(result);
+        }
+    );
+}); //end app.post /upload
+
+
 function Shuffle(o) {
                   for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
                         return o;

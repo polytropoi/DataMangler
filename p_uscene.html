@@ -16,22 +16,38 @@
         <!--<div class="col-md-3"></div>-->
         <!--<div class="col-md-6">-->
         <div class="col-md-12">
-            {{scene.scenePictures}}
+            <!--{{scenePictureThumbs}}-->
             <div ng-repeat="picture in scenePictureThumbs">
-                <img ng-src="{{picture}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+
+                <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+                <button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button>ID: {{picture._id}} Filename:  {{picture.filename}} Title:  {{picture.title}}
             </div>
         </div>
         <div class="col-md-12"><hr></div>
+        <span>{{scene.short_id}}</span>
         <div class="col-md-2">
             <div class="form-group">
-                <label for="scene_sceneNumberInput" >Scene Number: </label>
-                <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNumberInput" placeholder="Scene Number" required>
+                <label for="scene_sceneDomainInput" > Domain: </label>
+                <input type="text" class="form-control" ng-model="scene.sceneDomain" name="scene_sceneDomain" id="scene_sceneDomainInput" placeholder=" Domain" required>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="scene_sceneEnvironmentInput" > Environment: </label>
+                <input type="text" class="form-control" ng-model="scene.sceneEnvironment" name="scene_sceneEnvironment" id="scene_sceneEnvironmentInput" placeholder=" Environment" required>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="scene_sceneNumberInput" > Number: </label>
+                <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNumberInput" placeholder=" Number" required>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group">
                 <label for="scene_sceneTitleInput" >Scene Title: </label>
-                <input type="text" class="form-control" ng-model="scene.sceneTitle" name="scene_sceneTitle" id="scene_sceneTitleInput" placeholder="Scene Title" required>
+                <input type="text" class="form-control" ng-model="scene.sceneTitle" name="scene_sceneTitle" id="scene_sceneTitleInput" placeholder=" Title" required>
             </div>
         </div>
 
@@ -51,13 +67,20 @@
 
         <div class="col-md-3">
             <div class="form-group">
-                <label>Add Scene Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as p.title for p in pictureitems" required>
+                <label>Add Scene Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as (p.title ? p.title : p.filename) for p in pictureitems " required>
                 <option value="" selected="selected">Select Image:</option>
             </select>
                 <button class="btn-default btn-default-sm" ng-click="AddScenePicture(newScenePicture)">Add</button>
             </div>
         </div>
-
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Add Scene Obj:</label><select name="newSceneObj" class="form-control" ng-model="newSceneObj" ng-options="p._id as (p.title ? p.title : p.filename) for p in objitems " required>
+                <option value="" selected="selected">Select Obj:</option>
+            </select>
+                <button class="btn-default btn-default-sm" ng-click="AddSceneObj(newSceneObj)">Add</button>
+            </div>
+        </div>
 
         <div class="col-md-12"><hr></div>
 

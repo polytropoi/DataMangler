@@ -1,0 +1,99 @@
+<nav ng-hide="userstatus == 0" style="margin-top: 20px" class="navbar navbar-default" role="navigation"><navular/></nav>
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!--<div class="collapse navbar-collapse" ng-model="user" id="bs-example-navbar-collapse-1">-->
+            <!--<ul class="nav navbar-nav">-->
+                <!--<li><a ng-href="{{urls.uprofilelink}}">Profile</a></li>-->
+                <!--<li><a ng-href="{{urls.uaudioslink}}">Audio</a></li>-->
+                <!--<li><a ng-href="{{urls.upicslink}}">Pictures</a></li>-->
+                <!--<li><a ng-href="{{urls.ukeyslink}}">Keys</a></li>-->
+                <!--<li><a ng-href="{{urls.usceneslink}}">Scenes</a></li>-->
+            <!--</ul>-->
+
+            <!--<ul class="nav navbar-nav navbar-right">-->
+                <!--<li><a href="#">Welcome {{userstatus}}</a></li>-->
+
+            <!--</ul>-->
+        <!--</div>&lt;!&ndash; /.navbar-collapse &ndash;&gt;-->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div style="margin-top: 10px;">
+
+    <div class="row">
+
+        <div class="col-md-12 well">
+
+
+
+
+
+            <!--<input class="btn btn-primary pull-right" ng-disabled="!picForm.$valid" type="submit" id="submit" value="Submit">  -->
+
+
+            <div class="row">
+                <span> <p class="pull-left">{{headermessage}}</p><br/></span>
+                <div class="text-center">
+                    <h2>New Object</h2>
+                    <h4> {{upstatus}} </h4>
+                </div>
+                <br/>
+                <div class="col-md-3"></div>
+                <div class="col-md-6 well">
+                    <form name="picForm" novalidate>
+                        <div class="fileUpload btn btn-primary pull" >
+                            <span>Choose File</span>
+                            <input type="file" class="upload" ng-file-select="onFileSelect($files)"/>
+                        </div>
+
+
+                        <br/>
+                        <br/>
+                        <div ng-show="dropSupported" class="drop-box" ng-file-drop="onFileSelect($files);" ng-file-drop-available="dropSupported=true">or drop files here</div>
+                        <div ng-show="!dropSupported">HTML5 Drop File is not supported on this browser</div>
+                        <br/>
+                        <!-- <input type="checkbox" ng-model="uploadRightAway">Upload right away/> -->
+                        <br/>
+                        <br/>
+
+                        <br/>
+                        <br/>
+                        <div ng-show="selectedFiles != null && validFileType == true">
+                            File Selected: {{selectedFile.name}} <br/>size: {{selectedFile.size}} <br/>type: {{selectedFile.type}} <br/> - Press Upload Button to Begin...
+                            <button class="btn btn-primary pull-right" ng-click="onFileSubmit()" ng-show="selectedFiles != null && validFileType == true" ng-disabled="!percent == 0">Upload</button><br/><br/>
+                            <button class="btn btn-primary pull-right" ng-click="abort()" ng-show="selectedFiles != null" ng-disabled="percent == 0 || percent == null">Abort</button>
+                                <span class="progress" ng-show="percent >= 0"> 
+                                 <div style="width:{{percent}}%">{{percent}}%</div>
+                                </span>
+
+                        </div>
+
+                    </form>
+
+
+
+                </div>
+                <div class="response" ng-show="uploadResult.length > 0">
+                    Server Response:  {{uploadResult}}
+
+                    <pre>{{progress}}</pre>
+
+                </div>
+
+                <div class="col-md-3"></div>
+
+
+            </div>
+
+        </div> </div> </div>
