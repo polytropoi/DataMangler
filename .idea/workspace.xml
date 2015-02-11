@@ -2,19 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="007fd320-610d-407e-83b6-eb72f4a4f5d4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/p_add_object.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/p_uobj.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/p_uobjs.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/uobj.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/navular.html" afterPath="$PROJECT_DIR$/navular.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/p_add_audio.html" afterPath="$PROJECT_DIR$/p_add_audio.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/p_add_picture.html" afterPath="$PROJECT_DIR$/p_add_picture.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/p_newscene.html" afterPath="$PROJECT_DIR$/p_newscene.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/p_upics.html" afterPath="$PROJECT_DIR$/p_upics.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/p_uscene.html" afterPath="$PROJECT_DIR$/p_uscene.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smdata.js" afterPath="$PROJECT_DIR$/smdata.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smnode.js" afterPath="$PROJECT_DIR$/smnode.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webplayer.html" afterPath="$PROJECT_DIR$/webplayer.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="servmed_web.iws" />
@@ -41,7 +30,7 @@
       <file leaf-file-name="uobj.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uobj.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.5" vertical-offset="0" max-vertical-offset="855">
+            <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="855">
               <caret line="12" column="58" selection-start-line="12" selection-start-column="58" selection-end-line="12" selection-end-column="58" />
               <folding />
             </state>
@@ -88,10 +77,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="p_uscene.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="p_uscene.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/p_uscene.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.73214287" vertical-offset="581" max-vertical-offset="2415">
+            <state vertical-scroll-proportion="-43.291668" vertical-offset="116" max-vertical-offset="2415">
               <caret line="77" column="36" selection-start-line="77" selection-start-column="36" selection-end-line="77" selection-end-column="36" />
               <folding />
             </state>
@@ -101,7 +90,7 @@
       <file leaf-file-name="p_newscene.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/p_newscene.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-21.875" vertical-offset="0" max-vertical-offset="2625">
+            <state vertical-scroll-proportion="-0.0" vertical-offset="525" max-vertical-offset="2625">
               <caret line="35" column="14" selection-start-line="24" selection-start-column="7" selection-end-line="35" selection-end-column="14" />
               <folding />
             </state>
@@ -118,12 +107,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="smnode.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="smnode.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/smnode.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.0" vertical-offset="14740" max-vertical-offset="44955">
-              <caret line="1001" column="20" selection-start-line="1001" selection-start-column="14" selection-end-line="1001" selection-end-column="20" />
-              <folding />
+            <state vertical-scroll-proportion="0.42521632" vertical-offset="46" max-vertical-offset="44970">
+              <caret line="26" column="100" selection-start-line="26" selection-start-column="100" selection-end-line="26" selection-end-column="100" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -131,10 +122,10 @@
       <file leaf-file-name="smdata.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smdata.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="13952" max-vertical-offset="38265">
-              <caret line="967" column="65" selection-start-line="967" selection-start-column="65" selection-end-line="967" selection-end-column="65" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="13667" max-vertical-offset="38265">
+              <caret line="941" column="41" selection-start-line="941" selection-start-column="41" selection-end-line="941" selection-end-column="41" />
               <folding>
-                <marker date="1423341642000" expanded="true" signature="89662:89676" placeholder="..." />
+                <marker date="1423586814000" expanded="false" signature="89668:89682" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -163,17 +154,17 @@
         <option value="$PROJECT_DIR$/uobj.html" />
         <option value="$PROJECT_DIR$/p_uobj.html" />
         <option value="$PROJECT_DIR$/p_uobjs.html" />
-        <option value="$PROJECT_DIR$/smnode.js" />
         <option value="$PROJECT_DIR$/p_newscene.html" />
         <option value="$PROJECT_DIR$/p_uscene.html" />
         <option value="$PROJECT_DIR$/smdata.js" />
+        <option value="$PROJECT_DIR$/smnode.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
     <option name="width" value="2560" />
-    <option name="height" value="1344" />
+    <option name="height" value="1345" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -247,6 +238,14 @@
     <property name="DefaultHtmlFileTemplate" value="Html5" />
   </component>
   <component name="RunManager" selected="Node.js.local">
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
+      <method />
+    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -257,12 +256,14 @@
       <option name="showConsoleOnStdOut" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
+    <configuration default="true" type="CucumberJavaScriptRunConfigurationType" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" />
+      <option name="executablePath" />
       <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
@@ -270,16 +271,6 @@
       <setting name="settingsFile" value="" />
       <setting name="serverType" value="INTERNAL" />
       <setting name="preferredDebugBrowser" value="Chrome" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="CucumberJavaScriptRunConfigurationType" factoryName="Cucumber.js">
-      <option name="cucumberJsArguments" />
-      <option name="executablePath" />
-      <option name="filePath" />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
@@ -310,26 +301,26 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="2560" height="1344" extended-state="6" />
-    <editor active="false" />
+    <frame x="0" y="22" width="2560" height="1345" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16384403" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31810766" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3178484" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21581395" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -356,7 +347,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="26101" max-vertical-offset="40515">
           <caret line="1783" column="77" selection-start-line="1783" selection-start-column="77" selection-end-line="1783" selection-end-column="77" />
-          <folding />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -372,7 +365,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="35805">
           <caret line="415" column="70" selection-start-line="415" selection-start-column="70" selection-end-line="415" selection-end-column="70" />
           <folding>
-            <marker date="1423341642000" expanded="true" signature="89662:89676" placeholder="..." />
+            <marker date="1423586814000" expanded="false" signature="89668:89682" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -402,7 +395,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="26655" max-vertical-offset="40500">
           <caret line="1794" column="68" selection-start-line="1794" selection-start-column="68" selection-end-line="1794" selection-end-column="68" />
-          <folding />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -411,7 +406,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="35805">
           <caret line="415" column="70" selection-start-line="415" selection-start-column="70" selection-end-line="415" selection-end-column="70" />
           <folding>
-            <marker date="1423341642000" expanded="true" signature="89662:89676" placeholder="..." />
+            <marker date="1423586814000" expanded="false" signature="89668:89682" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -441,7 +436,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="11895" max-vertical-offset="40530">
           <caret line="0" column="96" selection-start-line="0" selection-start-column="96" selection-end-line="0" selection-end-column="96" />
-          <folding />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -450,7 +447,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="12755" max-vertical-offset="35805">
           <caret line="883" column="77" selection-start-line="883" selection-start-column="77" selection-end-line="883" selection-end-column="77" />
           <folding>
-            <marker date="1423341642000" expanded="true" signature="89662:89676" placeholder="..." />
+            <marker date="1423586814000" expanded="false" signature="89668:89682" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -480,7 +477,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="26115" max-vertical-offset="40530">
           <caret line="1741" column="7" selection-start-line="1741" selection-start-column="7" selection-end-line="1741" selection-end-column="7" />
-          <folding />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -489,7 +488,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="35205">
           <caret line="842" column="57" selection-start-line="842" selection-start-column="57" selection-end-line="842" selection-end-column="57" />
           <folding>
-            <marker date="1423341642000" expanded="true" signature="89662:89676" placeholder="..." />
+            <marker date="1423586814000" expanded="false" signature="89668:89682" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -519,7 +518,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="22335" max-vertical-offset="40515">
           <caret line="1695" column="55" selection-start-line="1695" selection-start-column="55" selection-end-line="1695" selection-end-column="55" />
-          <folding />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -528,7 +529,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="34605">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1423341642000" expanded="true" signature="89662:89676" placeholder="..." />
+            <marker date="1423586814000" expanded="false" signature="89668:89682" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -552,7 +553,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="40635">
           <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-          <folding />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -702,45 +705,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/p_newscene.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.875" vertical-offset="0" max-vertical-offset="2625">
-          <caret line="35" column="14" selection-start-line="24" selection-start-column="7" selection-end-line="35" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/uobj.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.5" vertical-offset="0" max-vertical-offset="855">
+        <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="855">
           <caret line="12" column="58" selection-start-line="12" selection-start-column="58" selection-end-line="12" selection-end-column="58" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/smnode.js">
+    <entry file="file://$PROJECT_DIR$/p_newscene.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.0" vertical-offset="14740" max-vertical-offset="44955">
-          <caret line="1001" column="20" selection-start-line="1001" selection-start-column="14" selection-end-line="1001" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="525" max-vertical-offset="2625">
+          <caret line="35" column="14" selection-start-line="24" selection-start-column="7" selection-end-line="35" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/p_uscene.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-43.291668" vertical-offset="116" max-vertical-offset="2415">
+          <caret line="77" column="36" selection-start-line="77" selection-start-column="36" selection-end-line="77" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/smdata.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="13952" max-vertical-offset="38265">
-          <caret line="967" column="65" selection-start-line="967" selection-start-column="65" selection-end-line="967" selection-end-column="65" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="13667" max-vertical-offset="38265">
+          <caret line="941" column="41" selection-start-line="941" selection-start-column="41" selection-end-line="941" selection-end-column="41" />
           <folding>
-            <marker date="1423341642000" expanded="true" signature="89662:89676" placeholder="..." />
+            <marker date="1423586814000" expanded="false" signature="89668:89682" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/p_uscene.html">
+    <entry file="file://$PROJECT_DIR$/smnode.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.73214287" vertical-offset="581" max-vertical-offset="2415">
-          <caret line="77" column="36" selection-start-line="77" selection-start-column="36" selection-end-line="77" selection-end-column="36" />
-          <folding />
+        <state vertical-scroll-proportion="0.42521632" vertical-offset="46" max-vertical-offset="44970">
+          <caret line="26" column="100" selection-start-line="26" selection-start-column="100" selection-end-line="26" selection-end-column="100" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

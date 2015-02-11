@@ -24,34 +24,34 @@
 
 app = express();
 
-//    var whitelist = ['elnoise.com', 'philosphersgarden.com'];
-//    var corsOptions = function (origin) {
-//            if ( whitelist.indexOf(origin) !== -1 ) {
-    //            return true;
-//            } else {
-//            return false;
-//            }
-//        };
+    var whitelist = ['elnoise.com', 'philosphersgarden.com', 'mvmv.us', 'strr.us', 'servicemedia.net'];
+    var corsOptions = function (origin) {
+            if ( whitelist.indexOf(origin) !== -1 ) {
+                return true;
+            } else {
+            return false;
+            }
+        };
 
-//  var allowCrossDomain = function(req, res, next) {
-//
-//  var origin = req.header.origin;
-//
-//  //if (corsOptions(origin))
-//  res.header('Access-Control-Allow-Origin', origin);
-//
-//  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-////  res.header('Access-Control-Allow-Headers', 'X-Requested-With, Accept, Origin, Referer, User-Agent, Content-Type, Authorization');
-//  res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, Cookie, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-//  //res.header('Access-Control-Allow-Credentials', true);
-//  // intercept OPTIONS method
-//  if (req.method === 'OPTIONS') {
-//    res.send(200);
-//  }
-//  else {
-//    next();
-//  }
-//};
+  var allowCrossDomain = function(req, res, next) {
+
+  var origin = req.header.origin;
+
+  //if (corsOptions(origin))
+  res.header('Access-Control-Allow-Origin', origin);
+
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//  res.header('Access-Control-Allow-Headers', 'X-Requested-With, Accept, Origin, Referer, User-Agent, Content-Type, Authorization');
+  res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, Cookie, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  //res.header('Access-Control-Allow-Credentials', true);
+  // intercept OPTIONS method
+  if (req.method === 'OPTIONS') {
+    res.send(200);
+  }
+  else {
+    next();
+  }
+};
   
   var oneDay = 86400000; 
          // This is our basic configuration                                                                                                                     

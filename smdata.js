@@ -938,7 +938,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 location.$path("/login");
             });
 
-            $http.get('/useraudio/' + $routeParams.u_id).success(function (data) {
+            $http.get('/useraudio/' + $routeParams.user_id).success(function (data) {
                 $scope.audioitems = data;
                 $scope.predicate = '-otimestamp';
                 //  $scope.setPagingData(largeLoad,page,pageSize);
@@ -950,7 +950,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 location.$path("/login");
             });
 
-            $http.get('/userobjs/' + $routeParams.u_id).success(function (data) {
+            $http.get('/userobjs/' + $routeParams.user_id).success(function (data) {
                 $scope.objitems = data;
                 $scope.predicate = '-otimestamp';
                 //  $scope.setPagingData(largeLoad,page,pageSize);
