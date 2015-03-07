@@ -3,16 +3,18 @@
 
 <div class="well" style="margin-top: 20px;">
     <div class="row">
-    <span><p>{{headermessage}}</p> Scene<span>
+    <span><p>{{headermessage}}</p>
+        <h3>Scene: <a target="_blank" href="http://strr.us/?scene={{scene.short_id}}">{{scene.short_id}}</a></h3></span>
 
         <pre>{{scene}}</pre>
+
 
 <form name="form">
 
 
     <button class="btn btn-primary pull-right" ng-click="onSaveScene()" ng-show="form.$dirty">Save</button>
     <!--<div class="col-md-2"></div>-->
-    <form class="form-horizontal" role="form" name="newsceneform">
+    <!--<form class="form-horizontal" role="form" name="newsceneform">-->
         <!--<div class="col-md-3"></div>-->
         <!--<div class="col-md-6">-->
         <div class="col-md-12">
@@ -24,17 +26,11 @@
             </div>
         </div>
         <div class="col-md-12"><hr></div>
-        <span>{{scene.short_id}}</span>
+
         <div class="col-md-2">
             <div class="form-group">
                 <label for="scene_sceneDomainInput" > Domain: </label>
                 <input type="text" class="form-control" ng-model="scene.sceneDomain" name="scene_sceneDomain" id="scene_sceneDomainInput" placeholder=" Domain" required>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="scene_sceneEnvironmentInput" > Environment: </label>
-                <input type="text" class="form-control" ng-model="scene.sceneEnvironment" name="scene_sceneEnvironment" id="scene_sceneEnvironmentInput" placeholder=" Environment" required>
             </div>
         </div>
 
@@ -64,6 +60,57 @@
                 <input class="change-element-color" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text">
             </div>
         </div>
+    <div class="col-md-12"><hr></div>
+
+    <div class="col-md-12">
+
+    <!--<div class="col-md-2">-->
+            <!--<div class="form-group">-->
+                <!--<label for="scene_sceneEnvironmentInput" > Environment: </label>-->
+                <!--<input type="text" class="form-control" ng-model="scene.sceneEnvironment" name="scene_sceneEnvironment" id="scene_sceneEnvironmentInput" placeholder=" Environment" required>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Select Environment:</label><select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment" ng-options="e.name for e in environments" required>
+                <option value="" selected="selected">Select Environment:</option>
+            </select>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Select Time:</label><select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in time" required>
+                <option value="" selected="selected">Select Time:</option>
+            </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Select Time Scale:</label><select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in speed" required>
+                <option value="" selected="selected">Select Timescale:</option>
+            </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Select Weather:</label><select name="sceneWeather" class="form-control" ng-model="scene.sceneWeather" ng-options="w.name for w in weather" required>
+                <option value="" selected="selected">Select Weather:</option>
+            </select>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Select Season:</label><select name="sceneSeason" class="form-control" ng-model="scene.sceneSeason" ng-options="s.name for s in season" required>
+                <option value="" selected="selected">Select Season:</option>
+            </select>
+            </div>
+        </div>
+    <div class="col-md-12"><hr></div>
+
+    <div class="col-md-12">
+
 
         <div class="col-md-3">
             <div class="form-group">
@@ -82,12 +129,10 @@
             </div>
         </div>
 
-        <div class="col-md-12"><hr></div>
-
-        <div class="col-md-12">
 
 
-            <div class="col-md-6">
+
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Scene Trigger Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >
                     <option value="" selected="selected">Select Audio:</option>
@@ -95,7 +140,7 @@
                     <br>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Scene Spoken Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneSpokenAudioID" ng-options="a._id as a.title for a in audioitems" >
                     <option value="" selected="selected">Select Audio:</option>
@@ -103,7 +148,7 @@
                     <br>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Scene Background Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneBackgroundAudioID" ng-options="a._id as a.title for a in audioitems" >
                     <option value="" selected="selected">Select Audio:</option>
@@ -111,7 +156,7 @@
                     <br>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Scene Environment Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneEnvironmentAudioID" ng-options="a._id as a.title for a in audioitems" >
                     <option value="" selected="selected">Select Audio:</option>

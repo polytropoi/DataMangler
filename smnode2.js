@@ -15,7 +15,7 @@
  , bcrypt = require('bcrypt')
  , shortId = require('short-mongo-id')
  , transloadit = require('node-transloadit')
- , transloadClient = new transloadit('d19741da29ba4adb8961e20f87f547f0','e75f79441df3ff89a0de731949f5c5bf8b46c46d')	
+ , transloadClient = new transloadit('d19741da29ba4adb8961e20f87f547f0','e75f79441df3ff89a0de731949f5c5bf8b46c46d')
  , knox = require('knox')
  , knoxClient = knox.createClient({
 			key: '1G198RB42M1G51PMNA02',
@@ -24,76 +24,76 @@
 
 app = express();
 
-var whitelist = ['strr.us.s3.amazonaws.com', 'strr.us', 'elnoise.com', 'philosphersgarden.com', 'mvmv.us', 'servicemedia.net'];
-var corsOptions = function (origin) {
-    console.log("checking vs whitelist:" + origin);
-    if ( whitelist.indexOf(origin) !== -1 ) {
-        return true;
-    } else {
-        return false;
-    }
+    var whitelist = ['strr.us.s3.amazonaws.com', 'strr.us', 'elnoise.com', 'philosphersgarden.com', 'mvmv.us', 'servicemedia.net'];
+    var corsOptions = function (origin) {
+	console.log("checking vs whitelist:" + origin);
+            if ( whitelist.indexOf(origin) !== -1 ) {
+                return true;
+            } else {
+            return false;
+            }
+        };
+
+  var allowCrossDomain = function(req, res, next) {
+
+  var origin = req.header.origin;
+
+  if (corsOptions(origin)) {
+  res.header('Access-Control-Allow-Origin', origin);
+
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//  res.header('Access-Control-Allow-Headers', 'X-Requested-With, Accept, Origin, Referer, User-Agent, Content-Type, Authorization');
+  res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, Cookie, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  //res.header('Access-Control-Allow-Credentials', true);
+  // intercept OPTIONS method
+  }
+  if (req.method === 'OPTIONS') {
+    res.send(200);
+  }
+  else {
+    next();
+  }
 };
 
-    var allowCrossDomain = function(req, res, next) {
-
-        var origin = req.header.origin;
-
-        if (corsOptions(origin)) {
-            res.header('Access-Control-Allow-Origin', origin);
-
-            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    //  res.header('Access-Control-Allow-Headers', 'X-Requested-With, Accept, Origin, Referer, User-Agent, Content-Type, Authorization');
-            res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, Cookie, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-            //res.header('Access-Control-Allow-Credentials', true);
-            // intercept OPTIONS method
-        }
-        if (req.method === 'OPTIONS') {
-            res.send(200);
-        }
-        else {
-            next();
-        }
-    };
-
-    var oneDay = 86400000;
-    // This is our basic configuration
+  var oneDay = 86400000;
+         // This is our basic configuration
     app.configure(function () {
     app.use(express.static(path.join(__dirname, './'), { maxAge: oneDay }));
-//       app.use(cors());
-    //        cors stuff
-        app.use(allowCrossDomain);   // make sure this is is called before the router
-            app.use(function(req, res, next) {
-                res.header('Access-Control-Allow-Credentials', true);
-                res.header('Access-Control-Allow-Origin', 'kork.us');
-                res.header('Access-Control-Allow-Methods', 'GET,POST');
-                res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-                if ('OPTIONS' == req.method) {
-                    res.send(200);
-                } else {
-                    next();
-                }
-            });
+//   app.use(cors());
+////        cors stuff
+//    app.use(allowCrossDomain);   // make sure this is is called before the router
+//        app.use(function(req, res, next) {
+//            res.header('Access-Control-Allow-Credentials', true);
+//            res.header('Access-Control-Allow-Origin', 'kork.us');
+//            res.header('Access-Control-Allow-Methods', 'GET,POST');
+//            res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+//            if ('OPTIONS' == req.method) {
+//                res.send(200);
+//            } else {
+//                next();
+//            }
+//        });
 
-        app.use(express.cookieParser());
-        app.use(express.bodyParser());
-        app.use(express.methodOverride());
+	app.use(express.cookieParser());
+	app.use(express.bodyParser());
+	app.use(express.methodOverride());
 
-        app.use(express.methodOverride());
-        app.use(express.session({ secret: 'permanententropy',
-            maxAge: 1000,
-            httpOnly: false
-        }));
-        app.use(express.staticCache());
-        app.use(app.router);      // not entirely necessary--will be automatically called with the first .get()
-        //
+    app.use(express.methodOverride());
+    app.use(express.session({ secret: 'permanententropy',
+                                maxAge: 1000,
+                                httpOnly: false
+                                                        }));
+	app.use(express.staticCache());
+    app.use(app.router);      // not entirely necessary--will be automatically called with the first .get()
+    //
     });
 
-       // Create the http server and get it to listen on the specified port 8084                                                                                                                   
+       // Create the http server and get it to listen on the specified port 8084
   var databaseUrl = "asterion:menatar@linus.mongohq.com:10093/servmed";
   var collections = ["auth_req", "users", "audio_items", "audio_item_keys", "image_items", "obj_items", "paths", "keys", "scenes"];
   var db = require("mongojs").connect(databaseUrl, collections);
   var BSON = mongo.BSONPure;
-  
+
 
   var maxItems = 1000;
 
@@ -109,7 +109,7 @@ var corsOptions = function (origin) {
   var appAuth = "noauth";
 
   http.createServer(app).listen(8092, function(){
-    
+
 	console.log("Express server listening on port 8092");
                          });
 
@@ -121,12 +121,12 @@ var corsOptions = function (origin) {
         res.send('noauth');
         }
     }
-    
+
     function getExtension(filename) {
       	var i = filename.lastIndexOf('.');
        	return (i < 0) ? '' : filename.substr(i);
 	}
-	
+
     app.get("/", function (req, res) {
            //send "Hello World" to the client as html
            res.send("Hello World!");
@@ -138,23 +138,23 @@ var corsOptions = function (origin) {
         if (err || !audio_items) {
                 console.log("error getting audio items: " + err);
                 } else {
-			
+
                 	}
         	});
 	});
 
-    app.get( "/crossdomain.xml", onCrossDomainHandler )
-    function onCrossDomainHandler( req, res ) {
-        var xml = '<?xml version="1.0"?>\n<cross-domain-policy>\n';
-        xml += '<allow-access-from domain="strr.us" to-ports="*"/>\n';
-        xml += '<allow-access-from domain="mvmv.us" to-ports="*"/>\n';
-        xml += '<allow-access-from domain="3dcasefiles.com" to-ports="*"/>\n';
-        xml += '</cross-domain-policy>\n';
+	app.get( "/crossdomain.xml", onCrossDomainHandler )
+		function onCrossDomainHandler( req, res ) {
+  			var xml = '<?xml version="1.0"?>\n<cross-domain-policy>\n';
+      			xml += '<allow-access-from domain="*.strr.us" to-ports="*"/>\n';
+			xml += '<allow-access-from domain="*.mvmv.us" to-ports="*"/>\n';
+            xml += '<allow-access-from domain="*.3dcasefiles.com" to-ports="*"/>\n';
+            xml += '</cross-domain-policy>\n';
 
-        req.setEncoding('ascii');
-        res.writeHead( 200, {'Content-Type': 'text/xml'} );
-        res.end( xml );
-    };
+  			req.setEncoding('ascii');
+ 			res.writeHead( 200, {'Content-Type': 'text/xml'} );
+  			res.end( xml );
+		};
 
   app.get("/amirite/:_id", function (req, res) {
     if (req.session.user) {
@@ -168,7 +168,7 @@ var corsOptions = function (origin) {
         }
       } else {
              res.send("0");
-      }       
+      }
     });
 
 	app.get("/connectionCheck", function (req, res) {
@@ -185,15 +185,15 @@ var corsOptions = function (origin) {
   app.post("/authreq", function (req, res) {
         console.log('authRequest from: ' + req.body.uname + " " + req.body.umail  + " " + req.body.upass);
         var currentDate = Math.floor(new Date().getTime()/1000);
-        
+
         //if (1 == 1) {
         //no facebook login
-        if (req.body.fbID != null || req.body.fbID != "noFacebookID" || req.body.fbID.length < 8  ) {
+        if (req.body.fbID != null || req.body.fbID != "noFacebookID" || req.body.fbID.length < 8) {
 
                 db.users.find(
                 { $or: [{userName: req.body.uname}, {email: req.body.uname}] }, //mongo-lian "OR" syntax...
                 //password: req.body.upass},
-                //{password:0}, 
+                //{password:0},
                 function(err, authUser) {
                 if( err || !authUser) {
                         console.log("user not found");
@@ -206,7 +206,7 @@ var corsOptions = function (origin) {
                         var hash = authUser[0].password;
                         console.log("hash = " + authUser[0].password);
                         bcrypt.compare(pass, hash, function(err, match) {  //check password vs hash
-                                if (match) { 
+                                if (match) {
                                 req.session.user = authUser[0];
                                 res.json(req.session.user._id);
                                 // req.session.auth = authUser[0]._id;
@@ -225,21 +225,21 @@ var corsOptions = function (origin) {
                             }
                       }
                 });
-            
+
             } else { //login with facebook
         console.log("tryna login with facebook ID: " + req.body.fbID);
         db.users.find(
         {facebookID: req.body.fbID},{deviceID:0, email:0, password:0}, function(err, authUser) {
 
-            if (err || ! authUser) {    
+            if (err || ! authUser) {
                 console.log("facebook user not found");
                 res.json("error: " + err);
                 db.users.save(
                     {type : "facebookUser",
-                    userName : req.body.uName,          
+                    userName : req.body.uName,
                     facebookID : req.body.fbID}, function (err, saved){
                                 if ( err || !saved ){
-                                console.log("db error, message not saved"); 
+                                console.log("db error, message not saved");
                                 } else  {
                                 console.log("message saved to db");
                         var fbUser_id = saved._id.toString();
@@ -253,19 +253,19 @@ var corsOptions = function (origin) {
                             res.json(authUser[0]._id);
                             req.session.auth = authUser[0]._id;
                             appAuth = authUser[0]._id;
-                            console.log("auth = " + req.session.auth);  
+                            console.log("auth = " + req.session.auth);
                 }
             });
-            
+
             }
-            
+
         });
-        
+
 
 
     app.get('/validate/:auth_id', function (req, res) {
                 console.log("tryna validate...");
-                //var u_id = new BSON.ObjectID(req.params.auth_id); 
+                //var u_id = new BSON.ObjectID(req.params.auth_id);
                  var timestamp = Math.round(Date.now() / 1000);
                 db.users.findOne({ validationHash : req.params.auth_id}, function (err, user) {
                   if (err || !user) {
@@ -281,7 +281,7 @@ var corsOptions = function (origin) {
 
    app.get('/profile/:auth_id', requiredAuthentication, function (req, res) {
                 console.log("tryna profile...");
-                var u_id = new BSON.ObjectID(req.params.auth_id); 
+                var u_id = new BSON.ObjectID(req.params.auth_id);
                 db.users.findOne({"_id": u_id}, function (err, user) {
                   if (err || !user) {
                           console.log("error getting user: " + err);
@@ -305,7 +305,7 @@ var corsOptions = function (origin) {
                         } else {
                         console.log("expired link");
                         res.send("invalidlink");
-                        }    
+                        }
                     }
             });
    });
@@ -328,8 +328,8 @@ var corsOptions = function (origin) {
                         } else {
                         console.log("expired link");
                         res.send("expiredlink")
-                        }    
-                        
+                        }
+
                     }
             });
    });
@@ -338,13 +338,13 @@ var corsOptions = function (origin) {
 
                 console.log('reset request from: ' + req.body.email);
                 // ws.send("authorized");
-                var subject = "ServiceMedia Password Reset"
+                var subject = "Philosophers' Garden Password Reset"
                 var from = "polytropoi@gmail.com"
-                var to = [req.body.email, "polytropoi@gmail.com"];
+                var to = [req.body.email];
                 var bcc = [];
                 //var reset = "";
                 var timestamp = Math.round(Date.now() / 1000);
-                
+
                 if (validator.isEmail(req.body.email) == true) {
 
                     db.users.findOne({"email": req.body.email}, function (err, user) {
@@ -358,12 +358,12 @@ var corsOptions = function (origin) {
                                 // reset = hash;
                                 var cleanhash = validator.blacklist(hash, ['/','.','$']); //make it URL safe
                                 db.users.update( { _id: user._id }, { $set: { resetHash: cleanhash, resetTimestamp: timestamp}});
-                                var htmlbody = "<h3>ServiceMedia Password Reset</h3><hr><br>" +
+                                var htmlbody = "<h3>Philosophers' Garden Password Reset</h3><hr><br>" +
                             "Click here to reset your password (link expires in 1 hour): </br>" +
                             "http://servicemedia.net/#/resetter/" + cleanhash;
 
-                            ses.sendEmail( { 
-                               Source: from, 
+                            ses.sendEmail( {
+                               Source: from,
                                Destination: { ToAddresses: to, BccAddresses: bcc},
                                Message: {
                                    Subject: {
@@ -394,7 +394,7 @@ var corsOptions = function (origin) {
 /*
    app.get('/salt/:auth_id', function (req, res) {
                 console.log("tryna salt...")
-                var u_id = new BSON.ObjectID(req.params.auth_id); 
+                var u_id = new BSON.ObjectID(req.params.auth_id);
                 db.users.findOne({"_id": u_id}, function (err, user) {
                   if (err || !user) {
                           console.log("error getting user: " + err);
@@ -412,11 +412,11 @@ var corsOptions = function (origin) {
                         //  res.json(user);
                           }
                         });
-              });    
+              });
 
    app.get('/hash/:pw', function (req, res) {
                 console.log("tryna salt...")
-                var u_id = new BSON.ObjectID(req.params.auth_id); 
+                var u_id = new BSON.ObjectID(req.params.auth_id);
                 db.users.findOne({"_id": u_id}, function (err, user) {
                   if (err || !user) {
                           console.log("error getting user: " + err);
@@ -433,7 +433,7 @@ var corsOptions = function (origin) {
                         //  res.json(user);
                           }
                         });
-              }); 
+              });
 */
     app.post('/newuser', function (req, res) {
 
@@ -451,32 +451,32 @@ var corsOptions = function (origin) {
                 } else {
 
                 db.users.findOne({userName: req.body.userName}, function(err, existingUserName) { //check if the username already exists
-                    
+
                     if (err || !existingUserName) {  //should combine these queries into an "$or"
-                        
+
                         db.users.findOne({email: req.body.userEmail}, function(err, existingUserEmail) { //check if the email already exists
 
                         if (err || !existingUserEmail || req.body.userEmail == "polytropoi@gmail.com") {
-                        
+
                         console.log('dinna find tha name');
 
                         var from = "polytropoi@gmail.com";
 
                         var timestamp = Math.round(Date.now() / 1000);
-                        var ip = req.headers['x-forwarded-for'] || 
-                                 req.connection.remoteAddress || 
+                        var ip = req.headers['x-forwarded-for'] ||
+                                 req.connection.remoteAddress ||
                                  req.socket.remoteAddress ||
                                  req.connection.socket.remoteAddress;
 
                         bcrypt.genSalt(10, function(err, salt) {
                         bcrypt.hash(req.body.userPass, salt, function(err, hash) {
                         var cleanhash = validator.blacklist(hash, ['/','.','$']); //make it URL safe
-                        
+
 
                         db.users.save(
                             {type : 'webuser',
                             status : 'unvalidated',
-                            userName : req.body.userName,          
+                            userName : req.body.userName,
                             email : req.body.userEmail,
                             createDate : timestamp,
                             validationHash : cleanhash,
@@ -494,14 +494,14 @@ var corsOptions = function (origin) {
                                 res.cookie('_id', user_id, { maxAge: 900000, httpOnly: false});
                                 res.send(user_id);
                                     //send validation email
-                                    
-                                    htmlbody = "Welcome, " + req.body.userName + ".<a href=\"http://servicemedia.net/validate/" + cleanhash + "\"> click here to validate account</a>"
+
+                                    htmlbody = "<a href=\"http://servicemedia.net/validate/" + cleanhash + "\">click here to validate account</a>"
                                     ses.sendEmail({
-                                     Source: from, 
+                                     Source: from,
                                      Destination: { ToAddresses: [req.body.userEmail, "polytropoi@gmail.com"] },
                                      Message: {
                                          Subject: {
-                                            Data: 'ServiceMedia New User'
+                                            Data: 'Philosophers Garden New User'
                                          },
                                          Body: {
                                              Html: {
@@ -515,10 +515,9 @@ var corsOptions = function (origin) {
                                                 console.log('Email sent:');
                                                 console.log(data);
 
-                                               
                                                 //res.redirect("http://elnoise.com/#/login");
-                                            });  
-                                      }  
+                                            });
+                                      }
                                   });
                                 });
                             });
@@ -542,7 +541,7 @@ var corsOptions = function (origin) {
 	});
 /*
         app.get('/addtypecodesall', function(req, req) {
-                
+
           db.audio_items.find({}, function (err, audio_items) {
 
                 if (err || !audio_items) {
@@ -555,8 +554,8 @@ var corsOptions = function (origin) {
                         for (var i = 0; i < audio_items.length; i++) {
                         tempID = "";
                         tempID = audio_items[i]._id;
-                        console.log(tempID); 
-                        db.audio_items.update( { _id: tempID }, { $set: { item_type: "audio" }});     
+                        console.log(tempID);
+                        db.audio_items.update( { _id: tempID }, { $set: { item_type: "audio" }});
                         }
                         callback(null);
                         },
@@ -569,16 +568,16 @@ var corsOptions = function (origin) {
                         function(err, result) {
                         console.log("done");
                                 }
-                        
-                        );              
+
+                        );
                         }
                         });
                 });
 
              */
-    /*            
+    /*
 	app.get('/addstatuscodesall', function(req, req) {
-		
+
 	  db.audio_items.find({}, function (err, audio_items) {
 
                 if (err || !audio_items) {
@@ -591,8 +590,8 @@ var corsOptions = function (origin) {
                         for (var i = 0; i < audio_items.length; i++) {
                         tempID = "";
                         tempID = audio_items[i]._id;
-                        console.log(tempID); 
-                        db.audio_items.update( { _id: tempID }, { $set: { userID: "5150540ab038969c24000008", username: "polytropoi" }});     
+                        console.log(tempID);
+                        db.audio_items.update( { _id: tempID }, { $set: { userID: "5150540ab038969c24000008", username: "polytropoi" }});
                         }
                         callback(null);
                         },
@@ -605,8 +604,8 @@ var corsOptions = function (origin) {
                         function(err, result) {
                         console.log("done");
                                 }
-                        
-                        );              
+
+                        );
                         }
                         });
                 });
@@ -614,7 +613,7 @@ var corsOptions = function (origin) {
 /*
 	DISABLED FOR SECURITY
 	app.get('/addshortcodesall', function (req, res) {
-	
+
 		db.audio_items.find({}, function (err, audio_items) {
 
 		if (err || !audio_items) {
@@ -629,8 +628,8 @@ var corsOptions = function (origin) {
                         newShortID = "";
 			tempID = audio_items[i]._id;
 			newShortID = shortId(tempID);
-			console.log(tempID + " = " + newShortID); 
-			db.audio_items.update( { _id: tempID }, { $set: { short_id: newShortID }});	
+			console.log(tempID + " = " + newShortID);
+			db.audio_items.update( { _id: tempID }, { $set: { short_id: newShortID }});
 			}
                         callback(null);
                         },
@@ -643,8 +642,8 @@ var corsOptions = function (origin) {
 			function(err, result) {
 			console.log("done");
 				}
-			
-			);		
+
+			);
 			}
 			});
 		});
@@ -658,7 +657,7 @@ var corsOptions = function (origin) {
 	}
 
 app.get('/addtagarraysall', function (req, res) {
-    
+
         db.audio_items.find({}, function (err, audio_items) {
 
         if (err || !audio_items) {
@@ -670,11 +669,11 @@ app.get('/addtagarraysall', function (req, res) {
                         console.log("get all mongoIDs...");
                 for (var i = 0; i < audio_items.length; i++) {
                 var tempID = "";
-                           
+
                 tempID = audio_items[i]._id;
                // newShortID = shortId(tempID);
-                console.log("updating " + tempID); 
-                db.audio_items.update( { _id: tempID }, { $set: { tags: ['music', 'korkus'] }}); 
+                console.log("updating " + tempID);
+                db.audio_items.update( { _id: tempID }, { $set: { tags: ['music', 'korkus'] }});
                 }
                 callback(null);
                             },
@@ -687,8 +686,8 @@ app.get('/addtagarraysall', function (req, res) {
                 function(err, result) {
                 console.log("done");
                     }
-                
-                );      
+
+                );
                 }
             });
         });
@@ -700,7 +699,7 @@ app.get('backupdata', function (req, res) {
 
 
 //db.audio_items.find({userID: req.params.u_id}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, audio_items) {
-      
+
 
 app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 	console.log('tryna return newaudiodata.json');
@@ -712,14 +711,14 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                         async.waterfall([
 
 			function(callback){ //randomize the returned array, takes a shake so async it...
-                        
+
 			audio_items.splice(0,audio_items.length - maxItems); //truncate randomized array, take only last 20
                         audio_items.reverse();
 			callback(null);
                         },
                         function(callback) { //add the signed URLs to the obj array
                         for (var i = 0; i < audio_items.length; i++) {
-                        
+
                         var item_string_filename = JSON.stringify(audio_items[i].filename);
                         item_string_filename = item_string_filename.replace(/\"/g, "");
                         var item_string_filename_ext = getExtension(item_string_filename);
@@ -743,7 +742,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                         //audio_items[i].URLmp3 = urlMp3; //jack in teh signed urls into the object array
                         //audio_items[i].URLogg = urlOgg;
                         //audio_items[i].URLpng = urlPng;
-                            
+
                         }
                         console.log('tryna send ' + audio_items.length + 'audio_items ');
                         callback(null);
@@ -765,7 +764,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
         if (err || !audio_items) {
                 console.log("error getting audio items: " + err);
                         } else {
-			
+
 			async.waterfall([
 
 			function(callback){ //randomize the returned array, takes a shake so async it...
@@ -776,7 +775,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 
 			function(callback) { //add the signed URLs to the obj array
              for (var i = 0; i < audio_items.length; i++) {
-			
+
 			         var item_string_filename = JSON.stringify(audio_items[i].filename);
                         item_string_filename = item_string_filename.replace(/\"/g, "");
                         var item_string_filename_ext = getExtension(item_string_filename);
@@ -796,7 +795,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                         audio_items[i].URLmp3 = urlMp3; //jack in teh signed urls into the object array
                         audio_items[i].URLogg = urlOgg;
                         audio_items[i].URLpng = urlPng;
-                        
+
 			}
                 	console.log('tryna send ' + audio_items.length + 'audio_items ');
 			callback(null);
@@ -806,8 +805,8 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
         		res.json(audio_items);
 			console.log("waterfall done: " + result);
         				}
-				);	
-			}		
+				);
+			}
                 });
 
 	});
@@ -817,9 +816,9 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
     db.audio_items.find({tags: req.params.tag, item_status: "public"}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, audio_items) {
         if (err || !audio_items) {
                 console.log("error getting audio items: " + err);
-                        
+
                 } else {
-            
+
             async.waterfall([
 
             function(callback){ //randomize the returned array, takes a shake so async it...
@@ -830,7 +829,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 
             function(callback) { //add the signed URLs to the obj array
              for (var i = 0; i < audio_items.length; i++) {
-            
+
                      var item_string_filename = JSON.stringify(audio_items[i].filename);
                         item_string_filename = item_string_filename.replace(/\"/g, "");
                         var item_string_filename_ext = getExtension(item_string_filename);
@@ -850,7 +849,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                         audio_items[i].URLmp3 = urlMp3; //jack in teh signed urls into the object array
                         audio_items[i].URLogg = urlOgg;
                         audio_items[i].URLpng = urlPng;
-                        
+
             }
                     console.log('tryna send ' + audio_items.length + 'audio_items ');
             callback(null);
@@ -860,8 +859,8 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 res.json(audio_items);
             console.log("waterfall done: " + result);
                         }
-                );  
-            }       
+                );
+            }
                 });
 
     });
@@ -916,15 +915,15 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
         });
 
     });
-	
+
     app.get('/audiolist/:tag', function(req, res) {
         console.log('tryna return playlist: ' + req.params.tag);
     db.audio_items.find({tags: req.params.tag, item_status: "public"}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, audio_items) {
         if (err || !audio_items) {
                 console.log("error getting audio items: " + err);
-                        
+
                 } else {
-            
+
                 res.json(audio_items);
                 console.log("returning audio_items tagged " + req.params.tag);
                         }
@@ -1057,7 +1056,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
     db.image_items.find({userID: req.params.u_id}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, picture_items) {
         if (err || !picture_items) {
                 console.log("error getting picture items: " + err);
-                        
+
                 } else {
 
                    for (var i = 0; i < picture_items.length; i++) {
@@ -1072,15 +1071,15 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 var thumbName = 'thumb.' + baseName + item_string_filename_ext;
                 var halfName = 'half.' + baseName + item_string_filename_ext;
                 var standardName = 'standard.' + baseName + item_string_filename_ext;
-                
+
                 //var pngName = baseName + '.png';
-                                
+
                 var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
                                 //var urlPng = knoxClient.signedUrl(audio_item[0]._id + "." + pngName, expiration);
                 picture_items[i].URLthumb = urlThumb; //jack in teh signed urls into the object array
-                
+
                 }
-            
+
                 res.json(picture_items);
                 console.log("returning picture_items for " + req.userID);
                         }
@@ -1091,11 +1090,11 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 
         console.log('tryna return userpic : ' + req.params.p_id);
         var pID = req.params.p_id;
-        var o_id = new BSON.ObjectID(pID);  
+        var o_id = new BSON.ObjectID(pID);
         db.image_items.findOne({"_id": o_id}, function(err, picture_item) {
         if (err || !picture_item) {
                 console.log("error getting picture items: " + err);
-                        
+
                 } else {
 
                 //   for (var i = 0; i < picture_items.length; i++) {
@@ -1110,9 +1109,9 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 var thumbName = 'thumb.' + baseName + item_string_filename_ext;
                 var halfName = 'half.' + baseName + item_string_filename_ext;
                 var standardName = 'standard.' + baseName + item_string_filename_ext;
-                
+
                 //var pngName = baseName + '.png';
-                                
+
                 var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID, Key: picture_item._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
                 var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID, Key: picture_item._id + "." + halfName, Expires: 6000}); //just send back thumbnail urls for list
                 var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID, Key: picture_item._id + "." + standardName, Expires: 6000}); //just send back thumbnail urls for list
@@ -1120,7 +1119,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 picture_item.URLthumb = urlThumb; //jack in teh signed urls into the object array
                 picture_item.URLhalf = urlHalf;
                 picture_item.URLstandard = urlStandard;
-            
+
                 res.json(picture_item);
                 console.log("returning picture_item for " + picture_item);
                         }
@@ -1175,16 +1174,17 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
     db.audio_items.find({username: req.params.username}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, audio_items) {
         if (err || !audio_items) {
                 console.log("error getting audio items: " + err);
-                        
+
                 } else {
-            
+
                 res.json(audio_items);
                 console.log("returning audio_items for " + req.params.userName);
                         }
                 });
+
     });
 
-	app.get('/audiodata.json', requiredAuthentication, function (req, res) {	
+	app.get('/audiodata.json', requiredAuthentication, function (req, res) {
 //	app.get("/audiodata.json", auth, function (req, res) {
     	db.audio_items.find({}, function(err,audio_items) {
       	if (err || !audio_items) {
@@ -1192,12 +1192,12 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
       		//es.end(err);
 	} else { //don't add urls for this one...
 		//var audioJson = {};
-		
+
 	       // var audioJsonString = JSON.stringify(audio_items);
 		//for (var i = 0; i < audio_items.length; i++) {
 			//	var item_string_filename = JSON.stringify(audio_items[i].filenadf
 			//	item_string_filename = item_string_filename.replace(/\"/g, "");
-			//	var item_string_filename_ext = getExtension(item_string_filename); 	
+			//	var item_string_filename_ext = getExtension(item_string_filename);
 			//	var item_string_title = JSON.stringify(audio_items[i].title);
 			//	var item_string_artist = JSON.stringify(audio_items[i].artist);
 			//	var item_string_album = JSON.stringify(audio_items[i].album);
@@ -1207,7 +1207,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 				//var extension = path.extname(item_string_filename);
 			//	var baseName = path.basename(item_string_filename, (item_string_filename_ext));
 			//	console.log(baseName);
-			//	var mp3Name = baseName + '.mp3'; 
+			//	var mp3Name = baseName + '.mp3';
 			//	var oggName = baseName + '.ogg';
                         //      	var pngName = baseName + '.png';
 			//	var urlMp3 = knoxClient.signedUrl(audio_items[i]._id + "." + mp3Name, expiration);
@@ -1217,16 +1217,16 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 			//	audio_items[i].URLogg = urlOgg;
 			//	audio_items[i].URLpng = urlPng;
 		//	}
-		
+
 		console.log('tryna send audio_items...');
 		res.json(audio_items);
-	
+
 			}
 		});
 	});
 
 	app.get('/item_sc/:sid', function (req, res) {
-		
+
 		var shortID = req.params.sid;
 		db.audio_items.find({ "short_id" : shortID}, function(err, audio_item) {
 		        if (err || !audio_item) {
@@ -1261,7 +1261,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 	app.get('/audio/:id', function (req, res){
 		var audioID = req.params.id;
 		var o_id = new BSON.ObjectID(audioID);  //convert to BSON for searchie
-		console.log('audioID requested : ' + audioID); 		
+		console.log('audioID requested : ' + audioID);
 		db.audio_items.find({ "_id" : o_id}, function(err, audio_item) {
         		if (err || !audio_item) {
                 		console.log("error getting audio items: " + err);
@@ -1300,14 +1300,14 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                                 console.log("error getting audio items: " + err);
                         } else {
             console.log("tryna update " + req.params.id + " to status " + req.params.item_status);
-            db.audio_items.update( { _id: o_id }, { $set: { item_status: req.params.item_status }});    
+            db.audio_items.update( { _id: o_id }, { $set: { item_status: req.params.item_status }});
             }
         });
     });
 
 	app.post('/update/:_id', requiredAuthentication, function (req, res) {
 		console.log(req.params._id);
-		
+
             var o_id = new BSON.ObjectID(req.params._id);  //convert to BSON for searchie
             console.log('audioID requested : ' + req.body._id);
             db.audio_items.find({ "_id" : o_id}, function(err, audio_item) {
@@ -1319,8 +1319,8 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                                                             tags: req.body.tags,
                                                             alt_title: req.body.alt_title,
                                                             alt_artist: req.body.alt_artist,
-                                                            alt_album: req.body.alt_album        
-                                                                                             }});   	
+                                                            alt_album: req.body.alt_album
+                                                                                             }});
 			}
 		});
 	});
@@ -1328,10 +1328,10 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
     app.get('/itemkeys/:_id', function (req, res) { //return keys for specific item id
 
             console.log(req.params._id);
-            var o_id = new BSON.ObjectID(req.params._id); 
+            var o_id = new BSON.ObjectID(req.params._id);
             db.audio_item_keys.find({ "keyAudioItemID" : req.params._id}, function(err, itemKeys) {
             if (err || !itemKeys) {
-                console.log("cain't get no itemKeys... " + err);    
+                console.log("cain't get no itemKeys... " + err);
             } else {
 
                 for (var i = 0; i < itemKeys.length; i++) {
@@ -1347,21 +1347,21 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 var thumbName = 'thumb.' + baseName + item_string_filename_ext;
                 var halfName = 'half.' + baseName + item_string_filename_ext;
                 var standardName = 'standard.' + baseName + item_string_filename_ext;
-                
+
                 //var pngName = baseName + '.png';
-                                
+
                // var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'elnoise1.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
                                 //var urlPng = knoxClient.signedUrl(audio_item[0]._id + "." + pngName, expiration);
-               // itemKeys[i].URLthumb = urlThumb; 
+               // itemKeys[i].URLthumb = urlThumb;
                //jack in teh signed urls into the object array
-                                
+
                 var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + itemKeys[i].userID, Key: itemKeys[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
                 var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + itemKeys[i].userID, Key: itemKeys[i]._id + "." + halfName, Expires: 6000}); //just send back thumbnail urls for list
                 var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + itemKeys[i].userID, Key: itemKeys[i]._id + "." + standardName, Expires: 6000}); //just send back thumbnail urls for list
-                               
+
                 itemKeys[i].URLthumb = urlThumb; //jack in teh signed urls into the object array
                 itemKeys[i].URLhalf = urlHalf;
-                itemKeys[i].URLstandard = urlStandard;  
+                itemKeys[i].URLstandard = urlStandard;
 
                     }
                 }
@@ -1371,15 +1371,15 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
             });
     });
 
-  
+
 
 	app.post('/useritemkeys', function (req, res) {  //return the keys saved by this user, req. happens after login
 		var uID = req.body.userID;
 		console.log("tryna get itemkeys for userID: " + uID);
-		//var u_id = new BSON.ObjectID(uID); 
+		//var u_id = new BSON.ObjectID(uID);
 		db.audio_item_keys.find({ "keyUserID" : uID}, function(err, itemKeys) {
 			if (err || !itemKeys) {
-				console.log("cain't get no itemKeys... " + err);	
+				console.log("cain't get no itemKeys... " + err);
 			} else {
 				console.log(JSON.stringify(itemKeys));
 				res.json(itemKeys);
@@ -1393,7 +1393,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
     //var u_id = new BSON.ObjectID(uID); 
     db.audio_item_keys.find({ "keyAudioItemID" : uID}, function(err, itemKeys) {
       if (err || !itemKeys) {
-        console.log("cain't get no itemKeys... " + err);  
+        console.log("cain't get no itemKeys... " + err);
       } else {
         console.log(JSON.stringify(itemKeys));
         res.json(itemKeys);
@@ -1407,7 +1407,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
     //var u_id = new BSON.ObjectID(uID); 
     db.audio_item_keys.find({ "keyUserID" : uID}, function(err, itemKeys) {
       if (err || !itemKeys) {
-        console.log("cain't get no itemKeys... " + err);  
+        console.log("cain't get no itemKeys... " + err);
       } else {
         console.log(JSON.stringify(itemKeys));
         res.json(itemKeys);
@@ -1427,7 +1427,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 			audioIDs.push(a_id); //populate array that can be fed to mongo find below
 			});
 		console.log("first audioID: " + audioIDs[0]);
-		
+
 		//db.audio_items.find({_id: { $in: audioIDs[0] } }, function(err,audio_items) {
 		db.audio_items.find({_id: { $in: audioIDs } }, function(err,audio_items) {
         	if (err || !audio_items) {
@@ -1471,7 +1471,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                         console.log("waterfall done: " + result);
                                         }
                                 );
-  
+
 			}
 		});
 		}
@@ -1479,7 +1479,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 
 
 	app.post('/savekeysall', requiredAuthentication, function (req, res) { //save item keys set oon client
-	
+
 	console.log("tryna savekeys");
 	if (req.session.auth != "noauth") {
 		//console.log(req.session.auth);
@@ -1487,17 +1487,17 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 		//var jObj = JSON.parse(req.body.json);
 		//var itemKeys =  JSON.parse(keysJson.itemKeys);
 		console.log("itemKeys: " + JSON.stringify(jObj.itemKeys));
-		//var saveKeysFunction = 
+		//var saveKeysFunction =
 		//res.json(JSON.stringify(jObj));
 	// for (var i = 0; i < itemKeys.length; i++) {
    //  	jObj.itemKeys.forEach(function(item, index) {
-			console.log(JSON.stringify(item.keyString));	
+			console.log(JSON.stringify(item.keyString));
 //		});
 //	/*
 //		var saveKeyFunction = function (itemKey, callback) {
 
 		db.audio_item_keys.save(
-                	req.body.json,	
+                	req.body.json,
                 	function (err, saved) {
                 	if (err || !saved) {
                	 	} else {
@@ -1507,17 +1507,17 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                   res.send(key_id)
 	           			}
                	});
-	
+
 			}
 		/*
 		async.forEach(Object.keys(jObj),saveKeyFunction,function(err){
 			console.log("async #");
 		}, function(err) {console.log("DONE SAVING KEYS");});
-		*/	
+		*/
 	});
-	
+
 app.post('/savekeys', requiredAuthentication, function (req, res) { //save item keys set oon client
-  
+
   console.log("tryna savekeys");
   if (req.session.auth != "noauth") {
     //console.log(req.session.auth);
@@ -1526,7 +1526,7 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
     console.log("itemKeys: " + JSON.stringify(jObj.itemKeys));
 
       jObj.itemKeys.forEach(function(item, index) {
-      console.log(JSON.stringify(item.keyString));  
+      console.log(JSON.stringify(item.keyString));
 
     db.audio_item_keys.save(
                   {keyType : item.keyType,
@@ -1535,7 +1535,7 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
       keyContentID : item.keyContentID,
                   keyTime : item.keyTime,
       keySample : item.keySample,
-      keyString : item.keyString},  
+      keyString : item.keyString},
                   function (err, saved) {
                   if (err || !saved) {
                   } else {
@@ -1547,12 +1547,12 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
                   });
       });
       }
- 
+
   });
 
 	app.post('/savekey', requiredAuthentication, function (req, res) {
 
-	//if (req.session.auth != "noauth") { //maybe check if uid is valid? 
+	//if (req.session.auth != "noauth") { //maybe check if uid is valid?
     var jObj = JSON.parse(req.body.json);
 
         db.audio_item_keys.save(
@@ -1562,7 +1562,7 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
                   keyContentID : jObj.keyContentID,
                   keyTime : jObj.keyTime,
                   keySample : jObj.keySample,
-                  keyString : jObj.keyString},  
+                  keyString : jObj.keyString},
               function (err, saved) {
                   if (err || !saved) {
                   } else {
@@ -1584,7 +1584,7 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
 		} else {
 		var key_id = saved._id.toString();
 		console.log('new key id: ' + key_id);
-		}		
+		}
 		});
 	*/
 
@@ -1593,7 +1593,7 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
       var o_id = new BSON.ObjectID(req.body.keyID);
       db.audio_item_keys.remove( { "_id" : o_id }, 1 );
                                       res.send("deleted");
-  
+
   });
 
     app.post('/update_key', requiredAuthentication, function (req, res) {
@@ -1614,8 +1614,8 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
                                                 console.log("item key updated: " + req.body.keyID);
                                                 res.send("item key updated");
                                                   }
-                                                });                                     
-  
+                                                });
+
   });
 ///////////////
 app.get('/pathinfo',  requiredAuthentication, function (req, res) { //get default path info
@@ -2133,13 +2133,13 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
                 var bcc = [];
                 //var reset = "";
                 var timestamp = Math.round(Date.now() / 1000);
-                
+
                 if (validator.isEmail(req.body.email) == true) {
-                    var htmlbody = "<h3>ServiceMedia " + audio_item[0].short_id + "</h3><hr><br>" +
+                    var htmlbody = "<h3>Philosophers' Garden Node " + audio_item[0].short_id + "</h3><hr><br>" +
                     "Click here to access this node: </br>" + "http://servicemedia.net/#/play/" + audio_item[0].short_id;
 
-                    ses.sendEmail( { 
-                       Source: from, 
+                    ses.sendEmail( {
+                       Source: from,
                        Destination: { ToAddresses: to, BccAddresses: bcc},
                        Message: {
                            Subject: {
@@ -2159,12 +2159,12 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
                             res.send("Email sent");
                            // res.redirect("http://elnoise.com/#/play/" + audio_item[0].short_id);
                      });
-                  
+
                       } else {
                       res.send("invalid email address");
                     }
                   }
-                });                    
+                });
   });
 
 /*
@@ -2185,7 +2185,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
 */
     app.post('/update_pic/:_id', requiredAuthentication, function (req, res) {
         console.log(req.params._id);
-        
+
             var o_id = new BSON.ObjectID(req.params._id);  //convert to BSON for searchie
             console.log('pic requested : ' + req.body._id);
             db.image_items.find({ "_id" : o_id}, function(err, pic_item) {
@@ -2196,7 +2196,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
             db.image_items.update( { _id: o_id }, { $set: { item_status: req.body.item_status,
                                                             tags: req.body.tags,
                                                             title: req.body.title
-                                                                                             }});       
+                                                                                             }});
              } if (err) {res.send(error)} else {res.send("updated " + new Date())}
         });
     });
@@ -2222,7 +2222,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
 
     app.post('/update_audio/:_id', requiredAuthentication, function (req, res) {
         console.log(req.params._id);
-        
+
             var o_id = new BSON.ObjectID(req.params._id);  //convert to BSON for searchie
             console.log('audioID requested : ' + req.body._id);
             db.audio_items.find({ "_id" : o_id}, function(err, audio_item) {
@@ -2235,8 +2235,8 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
                                                             user_groups: req.body.user_groups,
                                                             alt_title: req.body.alt_title,
                                                             alt_artist: req.body.alt_artist,
-                                                            alt_source: req.body.alt_album        
-                                                                                             }});       
+                                                            alt_source: req.body.alt_album
+                                                                                             }});
              } if (err) {res.send(error)} else {res.send("updated " + new Date())}
         });
     });
@@ -2246,7 +2246,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
     db.audio.find({tags: req.params.tag, item_status: "public"}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, audio_items) {
         if (err || !audio_items) {
                 console.log("error getting audio items: " + err);
-                        
+
                 } else {
 
             async.waterfall([
@@ -2295,10 +2295,10 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
 
 app.post('/delete_audio/', requiredAuthentication, function (req, res){
 
-        console.log('tryna delete audioID : ' + req.body._id);      
+        console.log('tryna delete audioID : ' + req.body._id);
         var audio_id = req.body._id;
         var o_id = new BSON.ObjectID(audio_id);  //convert to BSON for searchie
-        
+
         db.audio_items.find({ "_id" : o_id}, function(err, audio_item) {
                 if (err || !audio_item) {
                         console.log("error getting picture item: " + err);
@@ -2334,21 +2334,21 @@ app.post('/delete_audio/', requiredAuthentication, function (req, res){
                               }
                               //MFA: 'STRING_VALUE',
                             };
-                            
+
                             s3.deleteObjects(params, function(err, data) {
                               if (err) {
                                 console.log(err, err.stack);
                                 res.send(err);
                                  // an error occurred
-                              } 
-                              else {    
+                              }
+                              else {
                                       console.log(data);
                                       db.audio_items.remove( { "_id" : o_id }, 1 );
                                       res.send("deleted");
                                         // successful response
                                     }
                             });
-                            
+
                             //knoxClient.deleteMultiple([item_string_filename, audio_item[0]._id + "." + pngName, audio_item[0]._id + "." + mp3Name, audio_item[0]._id + "." + oggName], function(err, delres){
                              //   if (err) {
                                //     console.log(err);
@@ -2441,13 +2441,13 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
     */
 
     console.log("tryna upload...");
-        
+
         var returnString = "";
             var uName = req.body.username;
             var uPass = req.body.userpass;
                 var expires = new Date();
                 expires.setMinutes(expires.getMinutes() + 30);
-            var ts = Math.round(Date.now() / 1000); 
+            var ts = Math.round(Date.now() / 1000);
             var fname = req.files.audio_upload.name;
             var fsize = req.files.audio_upload.size;
         console.log("filename: " + fname);
@@ -2456,9 +2456,9 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
         //var item_id = "";
 
     async.waterfall([ //flow control for functions below, do one at a time, and pass vars to next as needed
-    
+
     function(callback) { //check for proper extensions
-    var fname_ext = getExtension(fname); 
+    var fname_ext = getExtension(fname);
     console.log("extension of " + fname + "is " + fname_ext);
     if (fname_ext === ".ogg" || fname_ext === ".mp3" || fname_ext === ".aiff" || fname_ext === ".aif" || fname_ext === ".wav" ) {
         callback(null);
@@ -2474,15 +2474,15 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
         parser.on('metadata', function (result) {
         parsedTags = result;
     console.log(result);
-    callback(null, parsedTags); 
-        }); 
+    callback(null, parsedTags);
+        });
     },
-    
+
     function(pTags, callback){ //#2 assign fields and parsed tags
-    if (pTags != null && pTags != undefined) {  
+    if (pTags != null && pTags != undefined) {
         //res.json(JSON.stringify(pTags.title.toString()));
         callback();
-        } else if (fname != null && fname.length > 2) { 
+        } else if (fname != null && fname.length > 2) {
         res.json(JSON.stringify(fname));
         } else {
         res.json(JSON.stringify("no name"));
@@ -2491,7 +2491,7 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
 
 
     function(callback) { //check that we gotsa bucket with this user's id
-        
+
        // var bucketFolder = 'elnoise1/' + req.session.user._id + '/';
 
         var bucketFolder = 'servicemedia.' + req.session.user._id;
@@ -2499,7 +2499,7 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
         s3.headBucket({Bucket:bucketFolder},function(err,data){
           if(err){
               s3.createBucket({Bucket:bucketFolder},function(err2,data){
-                if (err2){ 
+                if (err2){
                   console.log(err2);
                   callback(err2);
                 } else {
@@ -2530,15 +2530,15 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
             console.log("Successfully uploaded data to " + theBucketFolder);
             callback(null, 'uploaded orig file');
           }
-        
-        //});        
-        //console.log(knoxClient.putFile.progress);                    
+
+        //});
+        //console.log(knoxClient.putFile.progress);
        // if (200 === rez.statusCode) {
          //           console.log(rez);
-        //    callback(null, 'uploaded orig file');   
+        //    callback(null, 'uploaded orig file');
           //   console.log("Successfully uploaded data to theBucketFolder/myKey");
            // } else {
-            
+
              //   }
             });
         },
@@ -2569,7 +2569,7 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
          tags: [],
         item_status: "private",
         otimestamp : ts,
-        ofilesize : fsize}, 
+        ofilesize : fsize},
         function (err, saved) {
             if ( err || !saved ) {
             console.log('audio item not saved..');
@@ -2582,12 +2582,12 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
             }
         );
     },
-    
-    function(itemID, callback) {//get a URL of the original file now in s3, to send down the line       
+
+    function(itemID, callback) {//get a URL of the original file now in s3, to send down the line
          var bucketFolder = 'servicemedia.' + req.session.user._id;
         //var tempURL = knoxClient.signedUrl(fname, expires);
         var params = {Bucket: bucketFolder, Key: fname };
-        
+
         s3.getSignedUrl('getObject', params, function (err, url) {
         if (err) {
           console.log(err);
@@ -2598,9 +2598,9 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
           }
         });
 
-      //if (tempURL != null || tempURL.length > 10) {  
+      //if (tempURL != null || tempURL.length > 10) {
         //    console.log("gotsa url: " + tempURL);
-        //callback(null, tempURL, itemID); 
+        //callback(null, tempURL, itemID);
         //} else {
         //callback("can't get signed URL...");
         //}
@@ -2617,7 +2617,7 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
             },
             'template_id': '84da9df057e311e4bdecf5e543756029',
             'fields' : { audio_item_id : iID,
-                         user_id : req.session.user._id 
+                         user_id : req.session.user._id
                        }
         };
 
@@ -2630,7 +2630,7 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
         callback(null, iID);
 
         },
-        
+
     function(itemID2, callback) {  //gen a short code and insert
 
             tempID = "";
@@ -2638,11 +2638,11 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
             tempID = itemID2;
             newShortID = shortId(tempID);
             var o_id = new BSON.ObjectID(tempID);
-            console.log(tempID + " = " + newShortID); 
+            console.log(tempID + " = " + newShortID);
             db.audio_items.update( { _id: o_id }, { $set: { short_id: newShortID }});
                     callback(null,tempID);
                 }
-          
+
 
     ], //end async flow
 
@@ -2651,20 +2651,20 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
     //  res.redirect('/upload.html');
         res.send(result);
         }
-      );  
+      );
     }); //end app.post /upload
 
 app.post('/uploadpicture', requiredAuthentication, function (req, res) {
 
 
     console.log("tryna upload...");
-        
+
         var returnString = "";
             var uName = req.body.username;
             var uPass = req.body.userpass;
                 var expires = new Date();
                 expires.setMinutes(expires.getMinutes() + 30);
-            var ts = Math.round(Date.now() / 1000); 
+            var ts = Math.round(Date.now() / 1000);
             var fname = req.files.picture_upload.name;
             fname =  fname.replace(/ /g, "_");
             var fsize = req.files.picture_upload.size;
@@ -2674,9 +2674,9 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
         //var item_id = "";
 
     async.waterfall([ //flow control for functions below, do one at a time, and pass vars to next as needed
-    
+
     function(callback) { //check for proper extensions
-    var fname_ext = getExtension(fname); 
+    var fname_ext = getExtension(fname);
     console.log("extension of " + fname + "is " + fname_ext);
     if (fname_ext === ".jpeg" || fname_ext === ".jpg" || fname_ext === ".png" || fname_ext === ".gif") {
         callback(null);
@@ -2692,15 +2692,15 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
         parser.on('metadata', function (result) {
         parsedTags = result;
     console.log(result);
-    callback(null, parsedTags); 
-        }); 
+    callback(null, parsedTags);
+        });
     },
-    
+
     function(pTags, callback){ //#2 assign fields and parsed tags
-    if (pTags != null && pTags != undefined) {  
+    if (pTags != null && pTags != undefined) {
         //res.json(JSON.stringify(pTags.title.toString()));
         callback();
-        } else if (fname != null && fname.length > 2) { 
+        } else if (fname != null && fname.length > 2) {
         res.json(JSON.stringify(fname));
         } else {
         res.json(JSON.stringify("no name"));
@@ -2709,14 +2709,14 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
 */
 
     function(callback) { //check that we gotsa bucket with this user's
-      
+
 
         var bucketFolder = 'servicemedia.' + req.session.user._id;
         console.log(bucketFolder);
         s3.headBucket({Bucket:bucketFolder},function(err,data){
           if(err){
               s3.createBucket({Bucket:bucketFolder},function(err2,data){
-                if (err2){ 
+                if (err2){
                   console.log(err2);
                   callback(err2);
                 } else {
@@ -2746,7 +2746,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
             console.log("Successfully uploaded data to " + theBucketFolder);
             callback(null, 'uploaded orig file');
           }
-  
+
             });
         },
 
@@ -2767,7 +2767,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
          tags: [],
         item_status: "private",
         otimestamp : ts,
-        ofilesize : fsize}, 
+        ofilesize : fsize},
         function (err, saved) {
             if ( err || !saved ) {
             console.log('picture not saved..');
@@ -2780,12 +2780,12 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
             }
         );
     },
-    
-    function(itemID, callback) {//get a URL of the original file now in s3, to send down the line       
+
+    function(itemID, callback) {//get a URL of the original file now in s3, to send down the line
          var bucketFolder = 'servicemedia.' + req.session.user._id;
         //var tempURL = knoxClient.signedUrl(fname, expires);
         var params = {Bucket: bucketFolder, Key: fname };
-        
+
         s3.getSignedUrl('getObject', params, function (err, url) {
         if (err) {
           console.log(err);
@@ -2796,9 +2796,9 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
           }
         });
 
-      //if (tempURL != null || tempURL.length > 10) {  
+      //if (tempURL != null || tempURL.length > 10) {
         //    console.log("gotsa url: " + tempURL);
-        //callback(null, tempURL, itemID); 
+        //callback(null, tempURL, itemID);
         //} else {
         //callback("can't get signed URL...");
         //}
@@ -2815,7 +2815,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
             },
             'template_id': '4a12663057e311e4afbe07e1c982c8ee',
             'fields' : { image_item_id : iID,
-                         user_id : req.session.user._id 
+                         user_id : req.session.user._id
                        }
         };
         transloadClient.send(encodePictureUrlParams, function(ok) {
@@ -2825,9 +2825,9 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
                     callback(err);
             });
         callback(null, iID);
-    
+
         },
-        
+
     function(itemID2, callback) {  //gen a short code and insert //not for picss
         /*
             tempID = "";
@@ -2835,12 +2835,12 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
             tempID = itemID2;
             newShortID = shortId(tempID);
             var o_id = new BSON.ObjectID(tempID);
-            console.log(tempID + " = " + newShortID); 
+            console.log(tempID + " = " + newShortID);
             db.audio_items.update( { _id: o_id }, { $set: { short_id: newShortID }});
           */
                     callback(null,itemID2);
                 }
-          
+
 
     ], //end async flow
 
@@ -2849,7 +2849,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
     //  res.redirect('/upload.html');
         res.send(result);
         }
-      );  
+      );
     }); //end app.post /upload
 
 

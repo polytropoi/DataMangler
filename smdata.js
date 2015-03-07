@@ -900,17 +900,62 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         $('#unityPlayer').toggleClass('hidden', true);
         $.backstretch("http://servicemedia.s3.amazonaws.com/servmed_c1.jpg");
         $scope.scene = {};
+//        $scope.enviroments = [{name="genericFlat", "genericTerrain", "weatherTerrain", "oceanScene", "desertScene", "spaceScene1", "winterScene1"]
 
         $scope.scenePictures = [];
         $scope.scenePictureThumbs = [];
         $scope.pictureitems = [];
         $scope.audioitems = [];
+        $scope.objectitems = [];
+        $scope.environments = [];
 
         $http.get('/uscene/:' + $routeParams.user_id + '/:' + $routeParams.scene_id).success(function (data) {
 
             $scope.scene = data;
+
+            $scope.environments = [
+                {name:'genericFlat', sky:'solid'},
+                {name:'genericTerrain', sky:'solid'},
+                {name:'oceanScene', sky:'dynamic'},
+                {name:'spaceScene1', sky:'skybox'},
+                {name:'weatherTerrain', sky:'dynamic'},
+                {name:'winterScene1', sky:'dynamic'},
+                {name:'desertScene', sky:'dynamic'}
+            ];
+//            $scope.enviroments = [
+//               "genericFlat",
+//                "weatherTerrain"
+//            ];
+
+            $scope.time = [
+                {name:'morning'},
+                {name:'midday'},
+                {name:'evening'},
+                {name:'midnight'}
+            ];
+            $scope.speed = [
+                {name:'normal'},
+                {name:'half'},
+                {name:'double'},
+                {name:'fixed'}
+            ];
+            $scope.season = [
+                {name:'spring'},
+                {name:'summer'},
+                {name:'fall'},
+                {name:'winter'}
+            ];
+            $scope.weather = [
+                {name:'fog'},
+                {name:'clear'},
+                {name:'pcloudy'},
+                {name:'rain'},
+                {name:'storm'}
+            ];
+
     //		                    $scope.predicate = '-otimestamp';
             console.log("XXXX scene:", $scope.scene);
+            console.log("XXX environments: " + $scope.environments[0]);
 
             $http.get('/userpics/' + $routeParams.user_id).success(function (data) {
                 $scope.pictureitems = data;
@@ -932,11 +977,14 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                     }
                 }
                 //   $scope.setPagingData(page,pageSize);
+
             }).error(function	(data) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 location.$path("/login");
             });
+
+
 
             $http.get('/useraudio/' + $routeParams.user_id).success(function (data) {
                 $scope.audioitems = data;

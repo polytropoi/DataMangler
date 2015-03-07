@@ -28,10 +28,11 @@
 				  <tbody>
 		<!--		    <tr ng-repeat="item in audioitems (filteredAudioitems = (taga= | filter: query))| orderBy:predicate:reverse"> -->
 				      <tr ng-repeat="item in scenes | filter: query: strict | orderBy:predicate:reverse">
-				      <th>{{ item.title }}</th>
-				      <th>{{ item.tags }}</th>
+				      <th>{{ item.sceneTitle }}</th>
+				      <th>{{ item.sceneEnvironment }}</th>
 				   	  <th><div ng-click="rowClick(item)">view</div></th>
-				   	  <th><button class="btn btn-primary btn-md" ng-click="ShowUnity(scenes[$index]._id)"><img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></button></th>
+				   	  <!--<th><button class="btn btn-primary btn-md" ng-click="ShowUnity(scenes[$index]._id)"><img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></button></th>-->
+                          <th><a class="btn btn-primary btn-md" target="_blank" href="http://strr.us/?scene={{ item.sceneTitle }}" ><img src="http://servicemedia.s3.amazonaws.com/unityicon.png">{{item.short_id}}</a></th>
 				    </tr>
 				  </tbody>
 				</table>
