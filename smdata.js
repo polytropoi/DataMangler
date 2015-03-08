@@ -1071,7 +1071,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
         $scope.onSaveScene = function() {
             console.log("tryna update " + $scope.scene);
-
+            
             $http.post('/update_scene/' + $routeParams.scene_id,  $scope.scene).success(function(response){
                 console.log("submit response:  " + response);
                 if (response == "noauth") {
