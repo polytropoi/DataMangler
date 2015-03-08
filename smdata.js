@@ -45,7 +45,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 	      when('/play/:item_id', {controller:ItemPlayCtrl, templateUrl:'p_wp.html'}).
 	      when('/unity/:item_id', {controller:UnityPlayCtrl, templateUrl:'p_wpu.html'}).
 	      //when('/uploadaudio', {controller:UploadAudioCtrl, templateUrl:'p_uploadaudio.html'}).
-            when('/newscene/:u_id', {controller:NewSceneCtrl, templateUrl:'p_newscene.html'}).
+            when('/newscene/:u_id', {controller:NewSceneCtrl, templateUrl:'p_nscene.html'}).
             when('/newpath/:u_id', {controller:NewPathCtrl, templateUrl:'p_newpath.html'}).
 	      when('/uploadaudio', {controller:NewAudioCtrl, templateUrl:'p_add_audio.html'}).
 	      when('/uploadtext', {controller:NewAudioCtrl, templateUrl:'p_uploadtext.html'}).
@@ -907,55 +907,66 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         $scope.pictureitems = [];
         $scope.audioitems = [];
         $scope.objectitems = [];
-        $scope.environments = [];
+//        $scope.environments = [];
 
-        $http.get('/uscene/:' + $routeParams.user_id + '/:' + $routeParams.scene_id).success(function (data) {
+        $scope.sceneEnvironment = {};
 
-            $scope.scene = data;
-
-            $scope.environments = [
-                {name:'genericFlat', sky:'solid'},
-                {name:'genericTerrain', sky:'solid'},
-                {name:'oceanScene', sky:'dynamic'},
-                {name:'spaceScene1', sky:'skybox'},
-                {name:'weatherTerrain', sky:'dynamic'},
-                {name:'winterScene1', sky:'dynamic'},
-                {name:'desertScene', sky:'dynamic'}
-            ];
+        $scope.environments = [
+            {name:'genericFlat', sky:'solid'},
+            {name:'genericTerrain', sky:'solid'},
+            {name:'oceanScene', sky:'dynamic'},
+            {name:'spaceScene1', sky:'skybox'},
+            {name:'weatherTerrain', sky:'dynamic'},
+            {name:'winterScene1', sky:'dynamic'},
+            {name:'desertScene', sky:'dynamic'}
+        ];
 //            $scope.enviroments = [
 //               "genericFlat",
 //                "weatherTerrain"
 //            ];
 
-            $scope.time = [
-                {name:'morning'},
-                {name:'midday'},
-                {name:'evening'},
-                {name:'midnight'}
-            ];
-            $scope.speed = [
-                {name:'normal'},
-                {name:'half'},
-                {name:'double'},
-                {name:'fixed'}
-            ];
-            $scope.season = [
-                {name:'spring'},
-                {name:'summer'},
-                {name:'fall'},
-                {name:'winter'}
-            ];
-            $scope.weather = [
-                {name:'fog'},
-                {name:'clear'},
-                {name:'pcloudy'},
-                {name:'rain'},
-                {name:'storm'}
-            ];
+        $scope.time = [
+            {name:'morning'},
+            {name:'midday'},
+            {name:'evening'},
+            {name:'midnight'}
+        ];
+        $scope.speed = [
+            {name:'normal'},
+            {name:'half'},
+            {name:'double'},
+            {name:'fixed'}
+        ];
+        $scope.season = [
+            {name:'spring'},
+            {name:'summer'},
+            {name:'fall'},
+            {name:'winter'}
+        ];
+        $scope.weather = [
+            {name:'fog'},
+            {name:'clear'},
+            {name:'pcloudy'},
+            {name:'rain'},
+            {name:'storm'}
+        ];
+
+        $scope.$watch('sceneEnvironment', function(scene){
+
+            $scope.scene.sceneEnvironment = scene;
+        });
+
+        $http.get('/uscene/:' + $routeParams.user_id + '/:' + $routeParams.scene_id).success(function (data) {
+
+            $scope.scene = data;
+
+
 
     //		                    $scope.predicate = '-otimestamp';
             console.log("XXXX scene:", $scope.scene);
             console.log("XXX environments: " + $scope.environments[0]);
+
+
 
             $http.get('/userpics/' + $routeParams.user_id).success(function (data) {
                 $scope.pictureitems = data;
@@ -1079,6 +1090,17 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 } else {
                     $scope.headermessage = response;
                    // $location.path( "#/uscenes/" + $cookies._id.replace (/"/g,''));
+                }
+            });
+        }
+        $scope.onDeleteScene = function() {
+            $http.post('/delete_scene/' + $routeParams.scene_id,  $scope.scene).success(function(response){
+                console.log("submit response:  " + response);
+                if (response == "noauth") {
+                    $scope.headermessage = "You must be logged in to do that!"
+                } else {
+                    $scope.headermessage = response;
+                    // $location.path( "#/uscenes/" + $cookies._id.replace (/"/g,''));
                 }
             });
         }

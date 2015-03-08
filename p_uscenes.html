@@ -19,20 +19,22 @@
 				<table class="table table-rounded table-hover table-cursor well" style="margin-top: 20px;">
 				  <thead>
 
+				    <th>Code</th>
 				    <th>Title</th>
-				    <th>Tags</th>
-				    <th>Edit</th>
+                    <th>Environment</th>
+                    <th>Edit</th>
 				    <th>View</th>
 				    				   
 				  </thead>
 				  <tbody>
 		<!--		    <tr ng-repeat="item in audioitems (filteredAudioitems = (taga= | filter: query))| orderBy:predicate:reverse"> -->
 				      <tr ng-repeat="item in scenes | filter: query: strict | orderBy:predicate:reverse">
+                      <th>{{item.short_id}}</th>
 				      <th>{{ item.sceneTitle }}</th>
-				      <th>{{ item.sceneEnvironment }}</th>
-				   	  <th><div ng-click="rowClick(item)">view</div></th>
+				      <th>{{ item.sceneEnvironment.name }}</th>
+				   	  <th><div class="btn btn-primary btn-md" ng-click="rowClick(item)">Edit</div></th>
 				   	  <!--<th><button class="btn btn-primary btn-md" ng-click="ShowUnity(scenes[$index]._id)"><img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></button></th>-->
-                          <th><a class="btn btn-primary btn-md" target="_blank" href="http://strr.us/?scene={{ item.sceneTitle }}" ><img src="http://servicemedia.s3.amazonaws.com/unityicon.png">{{item.short_id}}</a></th>
+                          <th><a class="btn btn-primary btn-md" target="_blank" href="http://strr.us/?scene={{item.short_id}}" ><img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a></th>
 				    </tr>
 				  </tbody>
 				</table>

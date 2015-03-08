@@ -4,15 +4,15 @@
 <div class="well" style="margin-top: 20px;">
     <div class="row">
     <span><p>{{headermessage}}</p>
-        <h3>Scene: <a target="_blank" href="http://strr.us/?scene={{scene.short_id}}">{{scene.short_id}}</a></h3></span>
+        <h3>Preview Scene: <a target="_blank" href="http://strr.us/?scene={{scene.short_id}}">{{scene.short_id}}</a></h3></span>
 
         <pre>{{scene}}</pre>
 
 
+        <button class="btn btn-primary pull-right" ng-click="onSaveScene()" ng-show="form.$dirty">Save</button>
 <form name="form">
 
 
-    <button class="btn btn-primary pull-right" ng-click="onSaveScene()" ng-show="form.$dirty">Save</button>
     <!--<div class="col-md-2"></div>-->
     <!--<form class="form-horizontal" role="form" name="newsceneform">-->
         <!--<div class="col-md-3"></div>-->
@@ -72,8 +72,8 @@
         <!--</div>-->
         <div class="col-md-3">
             <div class="form-group">
-                <label>Select Environment:</label><select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment" ng-options="e.name for e in environments" required>
-                <option value="" selected="selected">Select Environment:</option>
+                <label>Select Environment:</label><select name="sceneEnviro" class="form-control" ng-model="sceneEnvironment" ng-options="e.name for e in environments" required>
+                <option value="" selected="{{sceneEnvironment}}">Select Environment:</option>
             </select>
             </div>
         </div>
@@ -87,7 +87,7 @@
         </div>
         <div class="col-md-2">
             <div class="form-group">
-                <label>Select Time Scale:</label><select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in speed" required>
+                <label>Select Time Scale:</label><select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTimescale" ng-options="t.name for t in speed" required>
                 <option value="" selected="selected">Select Timescale:</option>
             </select>
             </div>
@@ -186,10 +186,10 @@
                     <label for="scene_sceneTextInput" >Scene Text: </label>
                     <textarea class="form-control" name="scene_sceneText" id="scene_sceneTextInput" ng-model="scene.sceneText" placeholder="Text" rows="5"></textarea></div>
                 <!--<button class="btn btn-primary btn-large pull-right" ng-click="Login()" ng-show="userstatus == 0" ng-disabled="!form.$valid">Login</button>-->
-                <!--<button class="btn btn-primary btn-large pull-left" ng-click="Logout()" ng-hide="userstatus == 0 " >Logout</button>-->
+
             </div>
     </form>
-
+        <button class="btn btn-primary btn-large pull-right" ng-click="onDeleteScene()" ng-hide="userstatus == 0 " >Delete Scene</button>
     </br></br>
 
 

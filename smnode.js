@@ -1593,7 +1593,7 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
       var o_id = new BSON.ObjectID(req.body.keyID);
       db.audio_item_keys.remove( { "_id" : o_id }, 1 );
                                       res.send("deleted");
-  
+
   });
 
     app.post('/update_key', requiredAuthentication, function (req, res) {
@@ -1783,6 +1783,14 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 
 }),
 
+    app.post('/delete_scene/:_id', requiredAuthentication, function (req, res) {
+        console.log("tryna delete key: " + req.body._id);
+        var o_id = new BSON.ObjectID(req.body._id);
+        db.scenes.remove( { "_id" : o_id }, 1 );
+        res.send("deleted");
+
+    });
+
     app.post('/update_scene/:_id', requiredAuthentication, function (req, res) {
         console.log(req.params._id);
 
@@ -1798,6 +1806,10 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                 db.scenes.update( { "_id": o_id }, { $set: {
                     sceneDomain : req.body.sceneDomain,
                     sceneEnvironment : req.body.sceneEnvironment,
+                    sceneTime: req.body.sceneTime,
+                    sceneTimescale: req.body.sceneTimescale,
+                    sceneWeather: req.body.sceneWeather,
+                    sceneSeason: req.body.sceneSeason,
                     scenePictures : req.body.scenePictures,
                     sceneNumber : req.body.sceneNumber,
                     sceneTitle : req.body.sceneTitle,
