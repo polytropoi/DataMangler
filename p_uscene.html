@@ -52,7 +52,7 @@
 
     <div class="col-md-12"><hr></div>
 
-    <div class="col-md-12"> <div class="row">
+    <div class="col-md-12"> <label >Color Options: </label><div class="row">
         <div class="col-md-2">
             <div class="form-group">
                 <label >Scene Color1: </label>
@@ -65,19 +65,34 @@
                 <input class="change-element-color" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text">
             </div>
         </div>
-        <div class="col-md-6"><label >Color Options: </label>
-
-        <div class="btn-group" data-toggle="buttons">
-        <label class="btn btn-primary active">
-            <input type="checkbox" autocomplete="off" checked> Color Sky/Fog
-        </label>
-        <label class="btn btn-primary">
-            <input type="checkbox" autocomplete="off"> Random Colors
-        </label>
-        <label class="btn btn-primary">
-            <input type="checkbox" autocomplete="off"> Tweak Colors
-        </label>
-        </div>
+        </div><div class=row">
+        <div class="col-md-12">
+            <div class="col-md-3">
+            <span>Random Colors?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneRandomizeColors]" ng-click="scene.sceneRandomizeColors = !scene.sceneRandomizeColors">{{!scene.sceneRandomizeColors && 'No' || 'Yes'}}
+            </a></span>
+            </div>
+            <div class="col-md-3">
+            <span>Tweak Colors?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneTweakColors]" ng-click="scene.sceneTweakColors = !scene.sceneTweakColors">{{!scene.sceneTweakColors && 'No' || 'Yes'}}
+            </a></span>
+            </div>
+            <div class="col-md-3">
+            <span>Colorize Sky?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneColorizeSky]" ng-click="scene.sceneColorizeSky = !scene.sceneColorizeSky">{{!scene.sceneColorizeSky && 'No' || 'Yes'}}
+            </a></span>
+            </div>
+        <!--<div class="btn-group" data-toggle="buttons">-->
+        <!--<label class="btn btn-primary active">-->
+            <!--<input type="checkbox" autocomplete="off" checked> Color Sky/Fog-->
+        <!--</label>-->
+        <!--<label class="btn btn-primary">-->
+            <!--<input type="checkbox" autocomplete="off"> Random Colors-->
+        <!--</label>-->
+        <!--<label class="btn btn-primary">-->
+            <!--<input type="checkbox" autocomplete="off"> Tweak Colors-->
+        <!--</label>-->
+        <!--</div>-->
         </div>
         </div>
     </div>
@@ -106,12 +121,12 @@
             <!--</div>-->
         <div class="col-md-3">
             <span>Scatter Meshes?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.scatterMeshes]" ng-click="scene.scatterMeshes = !scene.scatterMeshes">{{!scene.scatterMeshes && 'No' || 'Yes'}}
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && 'No' || 'Yes'}}
             </a></span>
         </div>
             <div class="col-md-3">
             <span>Scatter Objects?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.scatterObjects]" ng-click="scene.scatterObjects = !scene.scatterObjects">{{!scene.scatterObjects && 'No' || 'Yes'}}
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && 'No' || 'Yes'}}
             </a></span>
             </div>
 

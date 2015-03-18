@@ -1806,8 +1806,10 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                 db.scenes.update( { "_id": o_id }, { $set: {
                     sceneDomain : req.body.sceneDomain,
                     sceneEnvironment : req.body.sceneEnvironment,
+                    sceneRandomizeColors : req.body.sceneRandomizeColors,
+                    sceneTweakColors : req.body.sceneTweakColors,
+                    sceneColorizeSky : req.body.sceneColorizeSky,
                     sceneScatterMeshes : req.body.sceneScatterMeshes,
-
                     sceneScatterObjects : req.body.sceneScatterObjects,
                     sceneTime: req.body.sceneTime,
                     sceneTimescale: req.body.sceneTimescale,
