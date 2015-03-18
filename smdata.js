@@ -1,4 +1,4 @@
-var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'colorpicker.module', 'mediaPlayer', 'angularFileUpload']);
+var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'toggle-switch', 'colorpicker.module', 'mediaPlayer', 'angularFileUpload']);
 
 	smApp.config(['$routeProvider',
 		function ($routeProvider) {
@@ -910,20 +910,26 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //        $scope.environments = [];
 
         $scope.sceneEnvironment = {};
+        $scope.sceneEnvironment.options = {};
 
-        $scope.environments = [
-            {name:'genericFlat', sky:'solid'},
-            {name:'genericTerrain', sky:'solid'},
-            {name:'oceanScene', sky:'dynamic'},
-            {name:'spaceScene1', sky:'skybox'},
-            {name:'weatherTerrain', sky:'dynamic'},
-            {name:'winterScene1', sky:'dynamic'},
-            {name:'desertScene', sky:'dynamic'}
-        ];
-//            $scope.enviroments = [
-//               "genericFlat",
-//                "weatherTerrain"
-//            ];
+//
+//        $scope.environments = [
+//            {name:'genericFlat'},
+//            {name:'genericTerrain'},
+//            {name:'oceanScene'},
+//            {name:'spaceScene1'},
+//            {name:'weatherTerrain'},
+//            {name:'winterScene1'},
+//            {name:'desertScene'}
+//        ];
+            $scope.environments = [
+                "genericFlat",
+                "weatherTerrain",
+                "oceanScene",
+                "spaceScene1",
+                "islandScene1",
+                "winterScene1"
+            ];
 
         $scope.time = [
             {name:'morning'},
@@ -951,8 +957,23 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             {name:'storm'}
         ];
 
-        $scope.$watch('sceneEnvironment', function(scene){
+        $scope.enviroOptions = {
+            dynamicSky: false,
+            simpleWater: true,
+            oceanWater: false,
+            scatterMeshes:true,
+            scatterObjects:true
+        }
+//        $scope.scene.scatterMeshes = true;
 
+//        $scope.$watch('enviroOptions', function (options){
+//            console.log("XXXX options: " + options);
+////            if ($scope.scene.sceneEnvironment.options != undefined)
+//            $scope.scene.sceneEnvironment.options = options;
+//        });
+
+        $scope.$watch('sceneEnvironment', function(scene){
+            console.log("XXXX sceneEnvironment: " + scene);
             $scope.scene.sceneEnvironment = scene;
         });
 
@@ -1052,6 +1073,9 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 //$scope.scene.scenePictures = $scope.scenePictures;
             }
         };
+
+
+
         $scope.DeleteScenePicture = function(id) {
 
 //                if (id != null && id != undefined && id.length > 0) {
@@ -1184,8 +1208,65 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             }
 
 
+            $scope.AddScenePicture = function(pictureID) {
+//                if (id != null && id != undefined && id.length > 0) {
+                console.log("XXX gotsa new pictureID: " + pictureID);
+                if (pictureID) {
+//                    pictures.forEach(function (picture) {
+//                console.log(pictureID);
+//                      $scope.scenePictureThumbs = [];
+                    if ($scope.scene.scenePictures) {
+                        if ($scope.scene.scenePictures.indexOf(pictureID) == -1)
+                            $scope.scene.scenePictures.push(pictureID);
+                        //TODO get the value directly from the pictureitems object?
+                        for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
+//                        if ($scope.scenePictureItems)
+                            //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
+                            if (pictureID === $scope.pictureitems[i]._id) {
+                                var stump = {};
+                                stump._id = $scope.pictureitems[i]._id;
+                                stump.thumbUrl = $scope.pictureitems[i].URLthumb;
+                                stump.title = $scope.pictureitems[i].title;
+                                stump.filename = $scope.pictureitems[i].filename;
 
-            $scope.$watch('newScenePicture', function(pictureID){
+//                            $scope.scenePictureThumbs.push($scope.pictureitems[i].URLthumb);
+                                $scope.scenePictureThumbs.push(stump);
+                                console.log("XXXX scene pic thumbs: " + $scope.scenePictureThumbs);
+                            }
+                        }
+                    }
+                    //$scope.scene.scenePictures = $scope.scenePictures;
+                }
+            };
+            $scope.DeleteScenePicture = function(id) {
+
+//                if (id != null && id != undefined && id.length > 0) {
+
+
+                console.log("XXX gotsa new pictureID: " + id + " " + JSON.stringify($scope.scenePictureThumbs[0]));
+                if (id != undefined) {
+//                    pictures.forEach(function (picture) {
+//                console.log(pictureID);
+//                      $scope.scenePictureThumbs = [];
+                    if ($scope.scene.scenePictures) {
+                        var scenePicIndex = $scope.scene.scenePictures.indexOf(id);
+                        if (scenePicIndex != -1) {
+                            $scope.scene.scenePictures.splice(scenePicIndex, 1);
+                        }
+                        //TODO get the value directly from the pictureitems object?
+
+                        for (var i = 0, ii = $scope.scenePictureThumbs.length - 1; i < ii; i++) {
+                            if (($scope.scenePictureThumbs != undefined) && (id === $scope.scenePictureThumbs[i]._id)) {
+                                $scope.scenePictureThumbs.splice(i, 1);
+
+                            }
+                        }
+                        $scope.form.$dirty = true;
+                    }
+                }
+            };
+
+            $scope.$watch('nawScenePicture', function(pictureID){
 //                if (id != null && id != undefined && id.length > 0) {
                 console.log("XXX gotsa new pictureID: " + pictureID);
                 if (pictureID) {
@@ -1197,7 +1278,9 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                         for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
                             //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
                             if (pictureID === $scope.pictureitems[i]._id) {
-                                $scope.scenePictureThumbs[i] = $scope.pictureitems[i].URLthumb;
+
+                                $scope.scenePictureThumbs.push($scope.pictureitems[i].URLthumb);
+//                                $scope.scenePictureThumbs[i] = $scope.pictureitems[i].URLthumb;
                                 console.log($scope.scenePictureThumbs[i]);
                             }
                         }

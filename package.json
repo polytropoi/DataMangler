@@ -1,7 +1,7 @@
 {
-  "name": "elnoise",
+  "name": "servicemedia",
   "version": "0.0.0",
-  "description": "",
+  "description": "plsatform",
   "main": "elnoise.js",
   "dependencies": {
     "bcrypt": "^0.7.7",

@@ -1806,6 +1806,9 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                 db.scenes.update( { "_id": o_id }, { $set: {
                     sceneDomain : req.body.sceneDomain,
                     sceneEnvironment : req.body.sceneEnvironment,
+                    sceneScatterMeshes : req.body.sceneScatterMeshes,
+
+                    sceneScatterObjects : req.body.sceneScatterObjects,
                     sceneTime: req.body.sceneTime,
                     sceneTimescale: req.body.sceneTimescale,
                     sceneWeather: req.body.sceneWeather,

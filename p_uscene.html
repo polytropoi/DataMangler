@@ -3,13 +3,14 @@
 
 <div class="well" style="margin-top: 20px;">
     <div class="row">
+
+    <button class="btn btn-primary pull-right" ng-click="onSaveScene()" >Save</button>
     <span><p>{{headermessage}}</p>
         <h3>Preview Scene: <a target="_blank" href="http://strr.us/?scene={{scene.short_id}}">{{scene.short_id}}</a></h3></span>
 
         <pre>{{scene}}</pre>
 
 
-        <button class="btn btn-primary pull-right" ng-click="onSaveScene()" ng-show="form.$dirty">Save</button>
 <form name="form">
 
 
@@ -48,6 +49,10 @@
         </div>
 
 
+
+    <div class="col-md-12"><hr></div>
+
+    <div class="col-md-12"> <div class="row">
         <div class="col-md-2">
             <div class="form-group">
                 <label >Scene Color1: </label>
@@ -60,20 +65,85 @@
                 <input class="change-element-color" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text">
             </div>
         </div>
+        <div class="col-md-6"><label >Color Options: </label>
+
+        <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary active">
+            <input type="checkbox" autocomplete="off" checked> Color Sky/Fog
+        </label>
+        <label class="btn btn-primary">
+            <input type="checkbox" autocomplete="off"> Random Colors
+        </label>
+        <label class="btn btn-primary">
+            <input type="checkbox" autocomplete="off"> Tweak Colors
+        </label>
+        </div>
+        </div>
+        </div>
+    </div>
     <div class="col-md-12"><hr></div>
 
-    <div class="col-md-12">
+    <div class="col-md-12"><label>Environment Options: </label>
+        <div class="row">
 
+        <!--<pre>{{enviroOptions}}</pre>-->
+            <!--<div class="btn-group">-->
+                <!--<label class="btn btn-primary"  ng-model="enviroOptions.dynamicSky" btn-checkbox>-->
+                     <!--Dynamic Sky/Weather-->
+                <!--</label>-->
+                <!--<label class="btn btn-primary"  ng-model="enviroOptions.simpleWater" btn-checkbox>-->
+                    <!--Simple Water-->
+                <!--</label>-->
+                <!--<label class="btn btn-primary"  ng-model="enviroOptions.oceanWater" btn-checkbox>-->
+                    <!--Ocean Water-->
+                <!--</label>-->
+                <!--<label class="btn btn-primary"  ng-model="enviroOptions.scatterMeshes" btn-checkbox>-->
+                     <!--Scatter Meshes-->
+                <!--</label>-->
+                <!--<label class="btn btn-primary"  ng-model="enviroOptions.scatterObjects" btn-checkbox>-->
+                    <!--Scatter Objects-->
+                <!--</label>-->
+            <!--</div>-->
+        <div class="col-md-3">
+            <span>Scatter Meshes?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.scatterMeshes]" ng-click="scene.scatterMeshes = !scene.scatterMeshes">{{!scene.scatterMeshes && 'No' || 'Yes'}}
+            </a></span>
+        </div>
+            <div class="col-md-3">
+            <span>Scatter Objects?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.scatterObjects]" ng-click="scene.scatterObjects = !scene.scatterObjects">{{!scene.scatterObjects && 'No' || 'Yes'}}
+            </a></span>
+            </div>
+
+        <div>
+
+            <!--<toggle-switch-->
+            <!--ng-model="scatterMeshes"-->
+            <!--on-label="On"-->
+            <!--off-label="Off">-->
+        <!--</toggle-switch>-->
+
+
+            </div>
+        </div>
+   </br></br>
     <!--<div class="col-md-2">-->
             <!--<div class="form-group">-->
                 <!--<label for="scene_sceneEnvironmentInput" > Environment: </label>-->
                 <!--<input type="text" class="form-control" ng-model="scene.sceneEnvironment" name="scene_sceneEnvironment" id="scene_sceneEnvironmentInput" placeholder=" Environment" required>-->
             <!--</div>-->
-        <!--</div>-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;		public string sky;-->
+        <!--public bool useColorsForEnviro;-->
+        <!--public bool useRandomColors;-->
+        <!--public bool tweakColors;-->
+        <!--public bool easyWaterPlane;-->
+        <!--public bool oceanPlane;-->
+        <!--public bool scatterMeshes;-->
+        <!--public bool scatterObjects;-->
         <div class="col-md-3">
             <div class="form-group">
-                <label>Select Environment:</label><select name="sceneEnviro" class="form-control" ng-model="sceneEnvironment" ng-options="e.name for e in environments" required>
-                <option value="" selected="{{sceneEnvironment}}">Select Environment:</option>
+                <label>Select Environment:</label><select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
+                <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
             </select>
             </div>
         </div>
@@ -106,7 +176,7 @@
                 <option value="" selected="selected">Select Season:</option>
             </select>
             </div>
-        </div>
+        </div></div>
     <div class="col-md-12"><hr></div>
 
     <div class="col-md-12">
