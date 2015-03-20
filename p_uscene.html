@@ -124,12 +124,21 @@
             <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && 'No' || 'Yes'}}
             </a></span>
         </div>
-            <div class="col-md-3">
+        <div class="col-md-3">
             <span>Scatter Objects?
             <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && 'No' || 'Yes'}}
             </a></span>
-            </div>
-
+        </div>
+        <div class="col-md-3">
+            <span>Simple Water?
+                <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseSimpleWater]" ng-click="scene.sceneUseSimpleWater = !scene.sceneUseSimpleWater">{{!scene.sceneUseSimpleWater && 'No' || 'Yes'}}
+            </a></span>
+        </div>
+        <div class="col-md-3">
+            <span>Ocean?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseOcean]" ng-click="scene.sceneUseOcean = !scene.sceneUseOcean">{{!scene.sceneUseOcean && 'No' || 'Yes'}}
+            </a></span>
+        </div>
         <div>
 
             <!--<toggle-switch-->
@@ -157,7 +166,7 @@
         <!--public bool scatterObjects;-->
         <div class="col-md-3">
             <div class="form-group">
-                <label>Select Environment:</label><select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
+                <label> Environment:</label><select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
                 <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
             </select>
             </div>
@@ -165,21 +174,21 @@
 
         <div class="col-md-2">
             <div class="form-group">
-                <label>Select Time:</label><select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in time" required>
+                <label> Time:</label><select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in time" required>
                 <option value="" selected="selected">Select Time:</option>
             </select>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-group">
-                <label>Select Time Scale:</label><select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTimescale" ng-options="t.name for t in speed" required>
+                <label> Time Scale:</label><select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTimescale" ng-options="t.name for t in speed" required>
                 <option value="" selected="selected">Select Timescale:</option>
             </select>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-group">
-                <label>Select Weather:</label><select name="sceneWeather" class="form-control" ng-model="scene.sceneWeather" ng-options="w.name for w in weather" required>
+                <label> Weather:</label><select name="sceneWeather" class="form-control" ng-model="scene.sceneWeather" ng-options="w.name for w in weather" required>
                 <option value="" selected="selected">Select Weather:</option>
             </select>
             </div>
@@ -187,7 +196,7 @@
 
         <div class="col-md-2">
             <div class="form-group">
-                <label>Select Season:</label><select name="sceneSeason" class="form-control" ng-model="scene.sceneSeason" ng-options="s.name for s in season" required>
+                <label> Season:</label><select name="sceneSeason" class="form-control" ng-model="scene.sceneSeason" ng-options="s.name for s in season" required>
                 <option value="" selected="selected">Select Season:</option>
             </select>
             </div>
