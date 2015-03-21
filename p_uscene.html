@@ -18,16 +18,9 @@
     <!--<form class="form-horizontal" role="form" name="newsceneform">-->
         <!--<div class="col-md-3"></div>-->
         <!--<div class="col-md-6">-->
-        <div class="col-md-12">
-            <!--{{scenePictureThumbs}}-->
-            <div ng-repeat="picture in scenePictureThumbs">
 
-                <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
-                <button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button>ID: {{picture._id}} Filename:  {{picture.filename}} Title:  {{picture.title}}
-            </div>
-        </div>
         <div class="col-md-12"><hr></div>
-
+        <div class="row"><label>Scene Options: </label></div>
         <div class="col-md-2">
             <div class="form-group">
                 <label for="scene_sceneDomainInput" > Domain: </label>
@@ -52,7 +45,8 @@
 
     <div class="col-md-12"><hr></div>
 
-    <div class="col-md-12"> <label >Color Options: </label><div class="row">
+    <div class="col-md-12">
+        <div class="row"><label>Color Options: </label></div>
         <div class="col-md-2">
             <div class="form-group">
                 <label >Scene Color1: </label>
@@ -95,78 +89,38 @@
         <!--</div>-->
         </div>
         </div>
-    </div>
+
     <div class="col-md-12"><hr></div>
 
-    <div class="col-md-12"><label>Environment Options: </label>
-        <div class="row">
+    <div class="col-md-12">
+        <div class="row"><label>Environment Options: </label></div>
+            <div class="col-md-3">
+            <span>Use Dynamic Sky?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseDynamicSky]" ng-click="scene.sceneUseDynamicSky = !scene.sceneUseDynamicSky">{{!scene.sceneUseDynamicSky && 'No' || 'Yes'}}
+            </a></span>
+            </div>
+            <div class="col-md-3">
+            <span>Use Skybox?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseSkybox]" ng-click="scene.sceneUseSkybox = !scene.sceneUseSkybox">{{!scene.sceneUseSkybox && 'No' || 'Yes'}}
+            </a></span>
+        </div>
 
-        <!--<pre>{{enviroOptions}}</pre>-->
-            <!--<div class="btn-group">-->
-                <!--<label class="btn btn-primary"  ng-model="enviroOptions.dynamicSky" btn-checkbox>-->
-                     <!--Dynamic Sky/Weather-->
-                <!--</label>-->
-                <!--<label class="btn btn-primary"  ng-model="enviroOptions.simpleWater" btn-checkbox>-->
-                    <!--Simple Water-->
-                <!--</label>-->
-                <!--<label class="btn btn-primary"  ng-model="enviroOptions.oceanWater" btn-checkbox>-->
-                    <!--Ocean Water-->
-                <!--</label>-->
-                <!--<label class="btn btn-primary"  ng-model="enviroOptions.scatterMeshes" btn-checkbox>-->
-                     <!--Scatter Meshes-->
-                <!--</label>-->
-                <!--<label class="btn btn-primary"  ng-model="enviroOptions.scatterObjects" btn-checkbox>-->
-                    <!--Scatter Objects-->
-                <!--</label>-->
-            <!--</div>-->
         <div class="col-md-3">
-            <span>Scatter Meshes?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && 'No' || 'Yes'}}
-            </a></span>
-        </div>
-        <div class="col-md-3">
-            <span>Scatter Objects?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && 'No' || 'Yes'}}
-            </a></span>
-        </div>
-        <div class="col-md-3">
-            <span>Simple Water?
+            <span>Use Simple Water?
                 <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseSimpleWater]" ng-click="scene.sceneUseSimpleWater = !scene.sceneUseSimpleWater">{{!scene.sceneUseSimpleWater && 'No' || 'Yes'}}
             </a></span>
         </div>
         <div class="col-md-3">
-            <span>Ocean?
+            <span>Use Ocean?
             <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseOcean]" ng-click="scene.sceneUseOcean = !scene.sceneUseOcean">{{!scene.sceneUseOcean && 'No' || 'Yes'}}
             </a></span>
-        </div>
-        <div>
-
-            <!--<toggle-switch-->
-            <!--ng-model="scatterMeshes"-->
-            <!--on-label="On"-->
-            <!--off-label="Off">-->
-        <!--</toggle-switch>-->
-
-
-            </div>
-        </div>
-   </br></br>
-    <!--<div class="col-md-2">-->
-            <!--<div class="form-group">-->
-                <!--<label for="scene_sceneEnvironmentInput" > Environment: </label>-->
-                <!--<input type="text" class="form-control" ng-model="scene.sceneEnvironment" name="scene_sceneEnvironment" id="scene_sceneEnvironmentInput" placeholder=" Environment" required>-->
-            <!--</div>-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;		public string sky;-->
-        <!--public bool useColorsForEnviro;-->
-        <!--public bool useRandomColors;-->
-        <!--public bool tweakColors;-->
-        <!--public bool easyWaterPlane;-->
-        <!--public bool oceanPlane;-->
-        <!--public bool scatterMeshes;-->
-        <!--public bool scatterObjects;-->
+        </div><br><br>
         <div class="col-md-3">
             <div class="form-group">
-                <label> Environment:</label><select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
+                <label> Environment:</label>
+
+
+                <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
                 <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
             </select>
             </div>
@@ -203,17 +157,38 @@
         </div></div>
     <div class="col-md-12"><hr></div>
 
+
     <div class="col-md-12">
-
-
-        <div class="col-md-3">
-            <div class="form-group">
-                <label>Add Scene Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as (p.title ? p.title : p.filename) for p in pictureitems " required>
-                <option value="" selected="selected">Select Image:</option>
-            </select>
-                <button class="btn-default btn-default-sm" ng-click="AddScenePicture(newScenePicture)">Add</button>
+        <div class="row"><label>Scene Content: </label></div>
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Add Scene Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as (p.title ? p.title : p.filename) for p in pictureitems " required>
+                    <option value="" selected="selected">Select Image:</option>
+                </select>
+                    <button class="btn-default btn-default-sm" ng-click="AddScenePicture(newScenePicture)">Add</button>
+                </div>
             </div>
+            <!--{{scenePictureThumbs}}-->
+            <div ng-repeat="picture in scenePictureThumbs">
+                <div class="col-md-2">
+                <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+                <button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>
+            </div></div>
         </div>
+        <div class="row">
+        <div class="col-md-3">
+            <span>Scatter Meshes?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && 'No' || 'Yes'}}
+            </a></span>
+        </div>
+        <div class="col-md-3">
+            <span>Scatter Objects?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && 'No' || 'Yes'}}
+            </a></span>
+        </div>
+
+
         <div class="col-md-3">
             <div class="form-group">
                 <label>Add Scene Obj:</label><select name="newSceneObj" class="form-control" ng-model="newSceneObj" ng-options="p._id as (p.title ? p.title : p.filename) for p in objitems " required>
@@ -222,7 +197,8 @@
                 <button class="btn-default btn-default-sm" ng-click="AddSceneObj(newSceneObj)">Add</button>
             </div>
         </div>
-
+        </div>
+        <div class="row">
 
 
 
@@ -258,6 +234,7 @@
                     <br>
                 </div>
             </div>
+        </div>
             <br>
             <!--<div class="col-md-10">-->
             <!--<img ng-src="{{audioWaveformPng}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">-->

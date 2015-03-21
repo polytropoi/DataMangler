@@ -1,4 +1,4 @@
-var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'toggle-switch', 'colorpicker.module', 'mediaPlayer', 'angularFileUpload']);
+var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'colorpicker.module', 'mediaPlayer', 'angularFileUpload']);
 
 	smApp.config(['$routeProvider',
 		function ($routeProvider) {
