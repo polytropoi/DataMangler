@@ -2491,12 +2491,19 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
 
 
     function(callback) { //#1 - parse ID3 tags if available
+        var fname_ext = getExtension(fname);
+        if (fname_ext === ".mp3") {
         var parser = new mm(fs.createReadStream(fpath));
         parser.on('metadata', function (result) {
-        parsedTags = result;
-    console.log(result);
-    callback(null, parsedTags); 
-        }); 
+            parsedTags = result;
+            console.log("parsed file result: " + parsedTags);
+            callback(null, parsedTags);
+            });
+        } else {
+            parsedTags = "";
+            callback(null, parsedTags);
+            }
+
     },
     
     function(pTags, callback){ //#2 assign fields and parsed tags
@@ -2568,8 +2575,8 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
 
         var itemTitle = "";
 
-        if (parsedTags.title.length < 3 || parsedTags.title === null || parsedTags.title === undefined ) {
-            itemTitle = fname.substr(0, x.lastIndexOf('.'));
+        if (parsedTags == ""  || parsedTags.title.length < 3 || parsedTags.title === null || parsedTags.title === undefined ) {
+            itemTitle = fname;
         } else {
             itemTitle = parsedTags.title.toString();
         }
@@ -2579,9 +2586,9 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
                 userID : req.session.user._id,
                 username : req.session.user.userName,
                 title : itemTitle,
-                artist : parsedTags.artist.toString(),
-                album : parsedTags.album.toString(),
-                year : parsedTags.year.toString(),
+                artist : (parsedTags != "") ? parsedTags.artist.toString() : "",
+                album : (parsedTags != "") ? parsedTags.album.toString() : "",
+                year : (parsedTags != "") ? parsedTags.year.toString() : "",
          filename : fname,
         item_type : 'audio',
         //alt_title : req.files.audio_upload.title,
