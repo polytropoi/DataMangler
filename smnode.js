@@ -1813,6 +1813,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     sceneScatterObjects : req.body.sceneScatterObjects,
                     sceneUseDynamicSky : req.body.sceneUseDynamicSky,
                     sceneUseSkybox : req.body.sceneUseSkybox,
+                    sceneUseGlobalFog : req.body.sceneUseGlobalFog,
                     sceneRenderFloorPlane : req.body.sceneRenderFloorPlane,
                     sceneUseSimpleWater : req.body.sceneUseSimpleWater,
                     sceneUseOcean : req.body.sceneUseOcean,
