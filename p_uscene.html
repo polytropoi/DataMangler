@@ -104,7 +104,21 @@
             <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseSkybox]" ng-click="scene.sceneUseSkybox = !scene.sceneUseSkybox">{{!scene.sceneUseSkybox && 'No' || 'Yes'}}
             </a></span>
         </div>
-
+        <div class="col-md-3">
+            <span>Use Sun Shafts?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseSunShafts]" ng-click="scene.sceneUseSunShafts = !scene.sceneUseSunShafts">{{!scene.sceneUseSunShafts && 'No' || 'Yes'}}
+            </a></span>
+        </div>
+        <div class="col-md-3">
+            <span>Use Global Fog?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseGlobaFog]" ng-click="scene.sceneUseGlobaFog = !scene.sceneUseGlobaFog">{{!scene.sceneUseGlobaFog && 'No' || 'Yes'}}
+            </a></span>
+        </div>
+        <div class="col-md-3">
+            <span>Render Floor Plane?
+            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneRenderFloorPlane]" ng-click="scene.sceneRenderFloorPlane = !scene.sceneRenderFloorPlane">{{!scene.sceneRenderFloorPlane && 'No' || 'Yes'}}
+            </a></span>
+        </div>
         <div class="col-md-3">
             <span>Use Simple Water?
                 <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseSimpleWater]" ng-click="scene.sceneUseSimpleWater = !scene.sceneUseSimpleWater">{{!scene.sceneUseSimpleWater && 'No' || 'Yes'}}
@@ -212,7 +226,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label>Scene Spoken Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneSpokenAudioID" ng-options="a._id as a.title for a in audioitems" >
+                    <label>Scene Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneAudioID" ng-options="a._id as a.title for a in audioitems" >
                     <option value="" selected="selected">Select Audio:</option>
                 </select>
                     <br>
@@ -220,7 +234,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label>Scene Background Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneBackgroundAudioID" ng-options="a._id as a.title for a in audioitems" >
+                    <label>Scene Ambient Audio1:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbient1AudioID" ng-options="a._id as a.title for a in audioitems" >
                     <option value="" selected="selected">Select Audio:</option>
                 </select>
                     <br>
@@ -228,7 +242,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label>Scene Environment Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneEnvironmentAudioID" ng-options="a._id as a.title for a in audioitems" >
+                    <label>Scene Ambient Audio2:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbient2AudioID" ng-options="a._id as a.title for a in audioitems" >
                     <option value="" selected="selected">Select Audio:</option>
                 </select>
                     <br>
