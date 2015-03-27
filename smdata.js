@@ -910,6 +910,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //        $scope.environments = [];
 
         $scope.sceneEnvironment = {};
+        $scope.sceneSkybox = {};
+        $scope.sceneParticles = {};
         $scope.sceneEnvironment.options = {};
 
 //
@@ -922,12 +924,13 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //            {name:'winterScene1'},
 //            {name:'desertScene'}
 //        ];
-            $scope.environments = [
+
+        $scope.environments = [
                 "genericFlat",
                 "weatherTerrain",
                 "oceanScene",
                 "spaceScene1",
-                "islandScene1",
+                "islandScene2",
                 "winterScene1"
             ];
 
