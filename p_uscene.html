@@ -226,7 +226,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label>Scene Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneAudioID" ng-options="a._id as a.title for a in audioitems" >
+                    <label>Scene Primary Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.scenePrimaryAudioID" ng-options="a._id as a.title for a in audioitems" >
                     <option value="" selected="selected">Select Audio:</option>
                 </select>
                     <br>
@@ -234,20 +234,20 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label>Scene Ambient Audio1:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbient1AudioID" ng-options="a._id as a.title for a in audioitems" >
+                    <label>Scene Ambient Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbientAudioID" ng-options="a._id as a.title for a in audioitems" >
                     <option value="" selected="selected">Select Audio:</option>
                 </select>
                     <br>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label>Scene Ambient Audio2:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbient2AudioID" ng-options="a._id as a.title for a in audioitems" >
-                    <option value="" selected="selected">Select Audio:</option>
-                </select>
-                    <br>
-                </div>
-            </div>
+            <!--<div class="col-md-3">-->
+                <!--<div class="form-group">-->
+                    <!--<label>Scene Ambient Audio2:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbient2AudioID" ng-options="a._id as a.title for a in audioitems" >-->
+                    <!--<option value="" selected="selected">Select Audio:</option>-->
+                <!--</select>-->
+                    <!--<br>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
             <br>
             <!--<div class="col-md-10">-->

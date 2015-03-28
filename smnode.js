@@ -1828,8 +1828,8 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     sceneColor2 : req.body.sceneColor2,
                     sceneTriggerAudioID : req.body.sceneTriggerAudioID,
                     sceneAudioID : req.body.sceneAudioID,
-                    sceneAmbientAudio1ID : req.body.sceneAmbientAudio2ID,
-                    sceneAmbientAudio2ID : req.body.sceneAmbientAudio2ID,
+                    sceneAmbientAudioID : req.body.sceneAmbientAudioID,
+//                    sceneAmbientAudio2ID : req.body.sceneAmbientAudio2ID,
                     sceneKeynote : req.body.sceneKeynote,
                     sceneDescription : req.body.sceneDescription,
                     sceneText : req.body.sceneText }
