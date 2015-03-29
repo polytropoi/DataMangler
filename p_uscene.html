@@ -60,22 +60,27 @@
             </div>
         </div>
         </div><div class=row">
-        <div class="col-md-12">
-            <div class="col-md-3">
-            <span>Random Colors?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneRandomizeColors]" ng-click="scene.sceneRandomizeColors = !scene.sceneRandomizeColors">{{!scene.sceneRandomizeColors && 'No' || 'Yes'}}
-            </a></span>
-            </div>
-            <div class="col-md-3">
-            <span>Tweak Colors?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneTweakColors]" ng-click="scene.sceneTweakColors = !scene.sceneTweakColors">{{!scene.sceneTweakColors && 'No' || 'Yes'}}
-            </a></span>
-            </div>
-            <div class="col-md-3">
-            <span>Colorize Sky?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneColorizeSky]" ng-click="scene.sceneColorizeSky = !scene.sceneColorizeSky">{{!scene.sceneColorizeSky && 'No' || 'Yes'}}
-            </a></span>
-            </div>
+        <div class="col-md-6">
+            <table class="table">
+                <tr>
+                    <td>Random Colors?</td>
+                    <td> <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRandomizeColors]" ng-click="scene.sceneRandomizeColors = !scene.sceneRandomizeColors">{{!scene.sceneRandomizeColors && '' || ''}}
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>Tweak Colors?</td>
+                    <td>  <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneTweakColors]" ng-click="scene.sceneTweakColors = !scene.sceneTweakColors">{{!scene.sceneTweakColors && '' || ''}}
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>Colorize Sky?</td>
+                    <td> <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneColorizeSky]" ng-click="scene.sceneColorizeSky = !scene.sceneColorizeSky">{{!scene.sceneColorizeSky && '' || ''}}
+                    </a></td>
+                </tr>
+
+
+            </table>
+
         <!--<div class="btn-group" data-toggle="buttons">-->
         <!--<label class="btn btn-primary active">-->
             <!--<input type="checkbox" autocomplete="off" checked> Color Sky/Fog-->
@@ -92,44 +97,110 @@
 
     <div class="col-md-12"><hr></div>
 
-    <div class="col-md-12">
+    <div class="col-md-6">
+        <label>Environment Options: </label>
+        <table class="table">
+            <tr>
+                <td>
+                    Use Dynamic Sky?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseDynamicSky]" ng-click="scene.sceneUseDynamicSky = !scene.sceneUseDynamicSky">{{!scene.sceneUseDynamicSky && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Use Skybox?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSkybox]" ng-click="scene.sceneUseSkybox = !scene.sceneUseSkybox">{{!scene.sceneUseSkybox && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Use Sun Shafts?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSunShafts]" ng-click="scene.sceneUseSunShafts = !scene.sceneUseSunShafts">{{!scene.sceneUseSunShafts && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Use Global Fog?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseGlobalFog]" ng-click="scene.sceneUseGlobalFog = !scene.sceneUseGlobalFog">{{!scene.sceneUseGlobalFog && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Render Floor Plane?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRenderFloorPlane]" ng-click="scene.sceneRenderFloorPlane = !scene.sceneRenderFloorPlane">{{!scene.sceneRenderFloorPlane && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Use Simple Water?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSimpleWater]" ng-click="scene.sceneUseSimpleWater = !scene.sceneUseSimpleWater">{{!scene.sceneUseSimpleWater && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Use Ocean?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseOcean]" ng-click="scene.sceneUseOcean = !scene.sceneUseOcean">{{!scene.sceneUseOcean && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+        </table>
+        </div>
         <div class="row"><label>Environment Options: </label></div>
-            <div class="col-md-3">
-            <span>Use Dynamic Sky?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseDynamicSky]" ng-click="scene.sceneUseDynamicSky = !scene.sceneUseDynamicSky">{{!scene.sceneUseDynamicSky && 'No' || 'Yes'}}
-            </a></span>
+        <div class="col-md-2">
+            <span>
+          </span>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
             <span>Use Skybox?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseSkybox]" ng-click="scene.sceneUseSkybox = !scene.sceneUseSkybox">{{!scene.sceneUseSkybox && 'No' || 'Yes'}}
+            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSkybox]" ng-click="scene.sceneUseSkybox = !scene.sceneUseSkybox">{{!scene.sceneUseSkybox && '' || ''}}
             </a></span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <span>Use Sun Shafts?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseSunShafts]" ng-click="scene.sceneUseSunShafts = !scene.sceneUseSunShafts">{{!scene.sceneUseSunShafts && 'No' || 'Yes'}}
+            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSunShafts]" ng-click="scene.sceneUseSunShafts = !scene.sceneUseSunShafts">{{!scene.sceneUseSunShafts && '' || ''}}
             </a></span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <span>Use Global Fog?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseGlobalFog]" ng-click="scene.sceneUseGlobalFog = !scene.sceneUseGlobalFog">{{!scene.sceneUseGlobalFog && 'No' || 'Yes'}}
+            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseGlobalFog]" ng-click="scene.sceneUseGlobalFog = !scene.sceneUseGlobalFog">{{!scene.sceneUseGlobalFog && '' || ''}}
             </a></span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <span>Render Floor Plane?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneRenderFloorPlane]" ng-click="scene.sceneRenderFloorPlane = !scene.sceneRenderFloorPlane">{{!scene.sceneRenderFloorPlane && 'No' || 'Yes'}}
+            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRenderFloorPlane]" ng-click="scene.sceneRenderFloorPlane = !scene.sceneRenderFloorPlane">{{!scene.sceneRenderFloorPlane && '' || ''}}
             </a></span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <span>Use Simple Water?
-                <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseSimpleWater]" ng-click="scene.sceneUseSimpleWater = !scene.sceneUseSimpleWater">{{!scene.sceneUseSimpleWater && 'No' || 'Yes'}}
+                <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSimpleWater]" ng-click="scene.sceneUseSimpleWater = !scene.sceneUseSimpleWater">{{!scene.sceneUseSimpleWater && '' || ''}}
             </a></span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <span>Use Ocean?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneUseOcean]" ng-click="scene.sceneUseOcean = !scene.sceneUseOcean">{{!scene.sceneUseOcean && 'No' || 'Yes'}}
+            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseOcean]" ng-click="scene.sceneUseOcean = !scene.sceneUseOcean">{{!scene.sceneUseOcean && '' || ''}}
             </a></span>
         </div><br><br>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-group">
                 <label> Environment:</label>
 
@@ -174,8 +245,21 @@
 
     <div class="col-md-12">
         <div class="row"><label>Scene Content: </label></div>
+
+
         <div class="col-md-12">
-            <div class="col-md-3">
+            <div class="col-md-2">
+            <span>Scatter Meshes?
+            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && '' || ''}}
+            </a></span>
+            </div>
+            <div class="col-md-2">
+            <span>Scatter Objects?
+            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && '' || ''}}
+            </a></span>
+            </div>
+            <div class="row">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label>Add Scene Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as (p.title ? p.title : p.filename) for p in pictureitems " required>
                     <option value="" selected="selected">Select Image:</option>
@@ -183,24 +267,17 @@
                     <button class="btn-default btn-default-sm" ng-click="AddScenePicture(newScenePicture)">Add</button>
                 </div>
             </div>
+            </div>
             <!--{{scenePictureThumbs}}-->
+                <div class="row">
             <div ng-repeat="picture in scenePictureThumbs">
                 <div class="col-md-2">
                 <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
                 <button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>
             </div></div>
         </div>
-        <div class="row">
-        <div class="col-md-3">
-            <span>Scatter Meshes?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && 'No' || 'Yes'}}
-            </a></span>
-        </div>
-        <div class="col-md-3">
-            <span>Scatter Objects?
-            <a class="btn" ng-class="{true: 'btn-danger', false: 'btn-success'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && 'No' || 'Yes'}}
-            </a></span>
-        </div>
+
+
 
 
         <div class="col-md-3">
