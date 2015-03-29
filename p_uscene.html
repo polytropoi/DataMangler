@@ -8,7 +8,7 @@
     <span><p>{{headermessage}}</p>
         <h3>Preview Scene: <a target="_blank" href="http://strr.us/?scene={{scene.short_id}}">{{scene.short_id}}</a></h3></span>
 
-        <pre>{{scene}}</pre>
+
 
 
 <form name="form">
@@ -20,47 +20,86 @@
         <!--<div class="col-md-6">-->
 
         <div class="col-md-12"><hr></div>
-        <div class="row"><label>Scene Options: </label></div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="scene_sceneDomainInput" > Domain: </label>
-                <input type="text" class="form-control" ng-model="scene.sceneDomain" name="scene_sceneDomain" id="scene_sceneDomainInput" placeholder=" Domain" required>
-            </div>
-        </div>
+        <div class="col-md-6">
+    <label>Scene Options: </label>
+        <table class="table">
+            <tr>
+                <td>
+                    Domain:
+                </td>
+                <td>
+                    <input type="text" class="form-control" ng-model="scene.sceneDomain" name="scene_sceneDomain" id="scene_sceneDomain" placeholder=" Domain" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Previous Scene
+                </td>
+                <td>
+                    <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNumberInput" placeholder=" Number" required>
 
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="scene_sceneNumberInput" > Number: </label>
-                <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNumberInput" placeholder=" Number" required>
-            </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Next Scene
+                </td>
+                <td>
+                    <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNumberInput" placeholder=" Number" required>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Scene Title
+                </td>
+                <td>
+                    <input type="text" class="form-control" ng-model="scene.sceneTitle" name="scene_sceneTitle" id="scene_sceneTitleInput" placeholder=" Title" required>
+
+                </td>
+            </tr>
+        </table>
         </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="scene_sceneTitleInput" >Scene Title: </label>
-                <input type="text" class="form-control" ng-model="scene.sceneTitle" name="scene_sceneTitle" id="scene_sceneTitleInput" placeholder=" Title" required>
-            </div>
-        </div>
+        <!--<div class="col-md-2">-->
+            <!--<div class="form-group">-->
+                <!--<label for="scene_sceneDomainInput" > Domain: </label>-->
+                <!--<input type="text" class="form-control" ng-model="scene.sceneDomain" name="scene_sceneDomain" id="scene_sceneDomainInput" placeholder=" Domain" required>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-2">-->
+            <!--<div class="form-group">-->
+                <!--<label for="scene_sceneNumberInput" > Number: </label>-->
+                <!--<input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNumberInput" placeholder=" Number" required>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-3">-->
+            <!--<div class="form-group">-->
+                <!--<label for="scene_sceneTitleInput" >Scene Title: </label>-->
+                <!--<input type="text" class="form-control" ng-model="scene.sceneTitle" name="scene_sceneTitle" id="scene_sceneTitleInput" placeholder=" Title" required>-->
+            <!--</div>-->
+        <!--</div>-->
 
 
 
     <div class="col-md-12"><hr></div>
 
-    <div class="col-md-12">
-        <div class="row"><label>Color Options: </label></div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label >Scene Color1: </label>
-                <input class="change-element-color" my-bgcolor="scene.sceneColor1" colorpicker ng-model="scene.sceneColor1" type="text" required>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label >Scene Color2: </label>
-                <input class="change-element-color" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text">
-            </div>
-        </div>
-        </div><div class=row">
-        <div class="col-md-6">
+    <!--<div class="col-md-12">-->
+        <!--<div class="row"><label> </label></div>-->
+        <!--<div class="col-md-2">-->
+            <!--<div class="form-group">-->
+                <!--<label >Scene Color1: </label>-->
+                <!--<input class="change-element-color" my-bgcolor="scene.sceneColor1" colorpicker ng-model="scene.sceneColor1" type="text" required>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-2">-->
+            <!--<div class="form-group">-->
+                <!--<label >Scene Color2: </label>-->
+                <!--<input class="change-element-color" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--</div><div class=row">-->
+        <div class="col-md-5"><label>Color Options:</label>
             <table class="table">
                 <tr>
                     <td>Random Colors?</td>
@@ -77,10 +116,24 @@
                     <td> <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneColorizeSky]" ng-click="scene.sceneColorizeSky = !scene.sceneColorizeSky">{{!scene.sceneColorizeSky && '' || ''}}
                     </a></td>
                 </tr>
-
-
             </table>
-
+        </div>
+        <div class="col-md-7"><label>Color Pickers:</label>
+            <table class="table">
+                <tr>
+                    <td>Color 1</td>
+                    <td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor1" colorpicker ng-model="scene.sceneColor1" type="text" ></td>
+                </tr>
+                <tr>
+                    <td>Color 2</td>
+                    <td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text"></td>
+                </tr>
+                <tr>
+                    <td>Highlight Color</td>
+                    <td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneHighlightColor" type="text"></td>
+                </tr>
+            </table>
+        </div>
         <!--<div class="btn-group" data-toggle="buttons">-->
         <!--<label class="btn btn-primary active">-->
             <!--<input type="checkbox" autocomplete="off" checked> Color Sky/Fog-->
@@ -92,12 +145,12 @@
             <!--<input type="checkbox" autocomplete="off"> Tweak Colors-->
         <!--</label>-->
         <!--</div>-->
-        </div>
-        </div>
+
+        <!--</div>-->
 
     <div class="col-md-12"><hr></div>
 
-    <div class="col-md-6">
+    <div class="col-md-5">
         <label>Environment Options: </label>
         <table class="table">
             <tr>
@@ -164,82 +217,65 @@
                 </td>
             </tr>
         </table>
-        </div>
-        <div class="row"><label>Environment Options: </label></div>
-        <div class="col-md-2">
-            <span>
-          </span>
-            </div>
-            <div class="col-md-2">
-            <span>Use Skybox?
-            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSkybox]" ng-click="scene.sceneUseSkybox = !scene.sceneUseSkybox">{{!scene.sceneUseSkybox && '' || ''}}
-            </a></span>
-        </div>
-        <div class="col-md-2">
-            <span>Use Sun Shafts?
-            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSunShafts]" ng-click="scene.sceneUseSunShafts = !scene.sceneUseSunShafts">{{!scene.sceneUseSunShafts && '' || ''}}
-            </a></span>
-        </div>
-        <div class="col-md-2">
-            <span>Use Global Fog?
-            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseGlobalFog]" ng-click="scene.sceneUseGlobalFog = !scene.sceneUseGlobalFog">{{!scene.sceneUseGlobalFog && '' || ''}}
-            </a></span>
-        </div>
-        <div class="col-md-2">
-            <span>Render Floor Plane?
-            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRenderFloorPlane]" ng-click="scene.sceneRenderFloorPlane = !scene.sceneRenderFloorPlane">{{!scene.sceneRenderFloorPlane && '' || ''}}
-            </a></span>
-        </div>
-        <div class="col-md-2">
-            <span>Use Simple Water?
-                <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSimpleWater]" ng-click="scene.sceneUseSimpleWater = !scene.sceneUseSimpleWater">{{!scene.sceneUseSimpleWater && '' || ''}}
-            </a></span>
-        </div>
-        <div class="col-md-2">
-            <span>Use Ocean?
-            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseOcean]" ng-click="scene.sceneUseOcean = !scene.sceneUseOcean">{{!scene.sceneUseOcean && '' || ''}}
-            </a></span>
-        </div><br><br>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label> Environment:</label>
+</div>
+        <div class="col-md-7">
+            <label>Environment Options: </label>
+            <table class="table">
+                <tr>
+                    <td>
+                        Environment:
+                    </td>
+                    <td>
 
+                        <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
+                            <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                      Time of Day:
+                    </td>
+                    <td>
+                        <select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in time" required>
+                            <option value="" selected="selected">Select Time:</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Time Speed:
+                    </td>
+                    <td>
+                        <select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTimescale" ng-options="t.name for t in speed" required>
+                            <option value="" selected="selected">Select Timescale:</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Weather:
+                    </td>
+                    <td>
+                        <select name="sceneWeather" class="form-control" ng-model="scene.sceneWeather" ng-options="w.name for w in weather" required>
+                            <option value="" selected="selected">Select Weather:</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Season:
+                    </td>
+                    <td>
+                        <select name="sceneSeason" class="form-control" ng-model="scene.sceneSeason" ng-options="s.name for s in season" required>
+                            <option value="" selected="selected">Select Season:</option>
+                        </select>
+                    </td>
+                </tr>
 
-                <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
-                <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
-            </select>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="form-group">
-                <label> Time:</label><select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in time" required>
-                <option value="" selected="selected">Select Time:</option>
-            </select>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label> Time Scale:</label><select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTimescale" ng-options="t.name for t in speed" required>
-                <option value="" selected="selected">Select Timescale:</option>
-            </select>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label> Weather:</label><select name="sceneWeather" class="form-control" ng-model="scene.sceneWeather" ng-options="w.name for w in weather" required>
-                <option value="" selected="selected">Select Weather:</option>
-            </select>
-            </div>
+            </table>
         </div>
 
-        <div class="col-md-2">
-            <div class="form-group">
-                <label> Season:</label><select name="sceneSeason" class="form-control" ng-model="scene.sceneSeason" ng-options="s.name for s in season" required>
-                <option value="" selected="selected">Select Season:</option>
-            </select>
-            </div>
-        </div></div>
     <div class="col-md-12"><hr></div>
 
 
