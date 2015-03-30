@@ -1815,6 +1815,8 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     sceneUseSkybox : req.body.sceneUseSkybox,
                     sceneUseGlobalFog : req.body.sceneUseGlobalFog,
                     sceneRenderFloorPlane : req.body.sceneRenderFloorPlane,
+                    sceneUseFloorPlane : req.body.sceneUseFloorPlane,
+                    sceneUseTerrain : req.body.sceneUseTerrain,
                     sceneUseSimpleWater : req.body.sceneUseSimpleWater,
                     sceneUseOcean : req.body.sceneUseOcean,
                     sceneTime: req.body.sceneTime,

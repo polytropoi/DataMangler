@@ -927,7 +927,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 "weatherTerrain",
                 "oceanScene",
                 "spaceScene1",
-                "islandScene1",
+                "islandScene2",
+                "desertScene",
                 "winterScene1"
             ];
 

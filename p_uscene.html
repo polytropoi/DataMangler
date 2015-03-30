@@ -191,6 +191,24 @@
             </tr>
             <tr>
                 <td>
+                    Use Terrain?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseTerrain]" ng-click="scene.sceneUseTerrain = !scene.sceneUseTerrain">{{!scene.sceneUseTerrain && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Use Floor Plane?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseFloorPlane]" ng-click="scene.sceneUseFloorPlane = !scene.sceneUseFloorPlane">{{!scene.sceneUseFloorPlane && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     Render Floor Plane?
                 </td>
                 <td>
