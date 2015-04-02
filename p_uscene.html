@@ -3,10 +3,10 @@
 
 <div class="well" style="margin-top: 20px;">
     <div class="row">
-
-    <button class="btn btn-primary pull-right" ng-click="onSaveScene()" >Save</button>
+    <a class="btn btn-primary btn-lg"target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
+    <button class="btn btn-primary btn-lg pull-right" ng-click="onSaveScene()" >Save</button>
     <span><p>{{headermessage}}</p>
-        <h3>Preview Scene: <a target="_blank" href="http://strr.us/?scene={{scene.short_id}}">{{scene.short_id}}</a></h3></span>
+        <h4>Scene: <a target="_blank" href="http://servicemedia.net/scene/{{scene.short_id}}">{{scene.short_id}}</a></h4></span> <span ><h4> Title: {{scene.sceneTitle}}</h4></span>
 
 
 
@@ -36,7 +36,7 @@
                     Previous Scene
                 </td>
                 <td>
-                    <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNumberInput" placeholder=" Number" required>
+                    <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_scenePreviousScene" placeholder=" short code" >
 
                 </td>
             </tr>
@@ -45,7 +45,7 @@
                     Next Scene
                 </td>
                 <td>
-                    <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNumberInput" placeholder=" Number" required>
+                    <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNextScene" placeholder=" short code" >
 
                 </td>
             </tr>
@@ -54,12 +54,32 @@
                     Scene Title
                 </td>
                 <td>
-                    <input type="text" class="form-control" ng-model="scene.sceneTitle" name="scene_sceneTitle" id="scene_sceneTitleInput" placeholder=" Title" required>
+                    <input type="text" class="form-control" ng-model="scene.sceneTitle" name="scene_sceneTitle" id="scene_sceneTitleInput" placeholder=" Title" >
 
                 </td>
             </tr>
         </table>
         </div>
+    <div class="col-md-6">
+        <label>Sharing Options: </label>
+        <table class="table">
+            <tr>
+                <td>Share With Public?</td>
+                <td> <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneShareWithPublic]" ng-click="scene.sceneShareWithPublic = !scene.sceneShareWithPublic">{{!scene.sceneShareWithPublic && '' || ''}}
+                </a></td>
+            </tr>
+            <tr>
+                <td>
+                    Share With Users:
+                </td>
+                <td>
+                    <textarea type="text" class="form-control" ng-model="scene.sceneShareWithUsers" name="scene_sceneNumber" placeholder="delimit usernames or emails with a comma" ></textarea>
+
+                </td>
+            </tr>
+
+        </table>
+    </div>
         <!--<div class="col-md-2">-->
             <!--<div class="form-group">-->
                 <!--<label for="scene_sceneDomainInput" > Domain: </label>-->
