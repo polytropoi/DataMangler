@@ -211,6 +211,15 @@
             </tr>
             <tr>
                 <td>
+                    Use Prefab Environment?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseEnvironment]" ng-click="scene.sceneUseEnvironment = !scene.sceneUseEnvironment">{{!scene.sceneUseEnvironment && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     Use Terrain?
                 </td>
                 <td>
@@ -322,6 +331,20 @@
 
 
         <div class="col-md-12">
+            <div class="col-md-5">
+                <label>Scatter Options: </label>
+                <table class="table">
+                    <tr>
+                        <td>
+                            Scatter Meshes?
+                        </td>
+                        <td>
+                            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseDynamicSky]" ng-click="scene.sceneUseDynamicSky = !scene.sceneUseDynamicSky">{{!scene.sceneUseDynamicSky && '' || ''}}
+                            </a>
+                        </td>
+                    </tr>
+                    </table>
+
             <div class="col-md-2">
             <span>Scatter Meshes?
             <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && '' || ''}}
