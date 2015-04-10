@@ -70,14 +70,22 @@
             </tr>
             <tr>
                 <td>
-                    Share With Users:
+                    Share With User(s):
                 </td>
                 <td>
                     <textarea type="text" class="form-control" ng-model="scene.sceneShareWithUsers" name="scene_sceneNumber" placeholder="delimit usernames or emails with a comma" ></textarea>
 
                 </td>
             </tr>
+            <tr>
+                <td>
+                    User(s) Allowed to Post in this Scene:
+                </td>
+                <td>
+                    <textarea type="text" class="form-control" ng-model="scene.sceneShareWithUsers" name="scene_sceneNumber" placeholder="delimit usernames or emails with a comma" ></textarea>
 
+                </td>
+            </tr>
         </table>
     </div>
         <!--<div class="col-md-2">-->
@@ -119,14 +127,12 @@
             <!--</div>-->
         <!--</div>-->
         <!--</div><div class=row">-->
-        <div class="col-md-5"><label>Color Options:</label>
+        <div class="col-md-6"><label>Color Options:</label>
             <table class="table">
                 <tr>
                     <td>Random Colors?</td>
                     <td> <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRandomizeColors]" ng-click="scene.sceneRandomizeColors = !scene.sceneRandomizeColors">{{!scene.sceneRandomizeColors && '' || ''}}
                     </a></td>
-                </tr>
-                <tr>
                     <td>Tweak Colors?</td>
                     <td>  <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneTweakColors]" ng-click="scene.sceneTweakColors = !scene.sceneTweakColors">{{!scene.sceneTweakColors && '' || ''}}
                     </a></td>
@@ -135,25 +141,35 @@
                     <td>Colorize Sky?</td>
                     <td> <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneColorizeSky]" ng-click="scene.sceneColorizeSky = !scene.sceneColorizeSky">{{!scene.sceneColorizeSky && '' || ''}}
                     </a></td>
+                    <td>Highlight Color</td>
+                    <td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneHighlightColor" colorpicker ng-model="scene.sceneHighlightColor" type="text"></td>
                 </tr>
-            </table>
-        </div>
-        <div class="col-md-7"><label>Color Pickers:</label>
-            <table class="table">
                 <tr>
                     <td>Color 1</td>
                     <td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor1" colorpicker ng-model="scene.sceneColor1" type="text" ></td>
-                </tr>
-                <tr>
+
                     <td>Color 2</td>
                     <td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text"></td>
                 </tr>
-                <tr>
-                    <td>Highlight Color</td>
-                    <td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneHighlightColor" type="text"></td>
-                </tr>
+
             </table>
         </div>
+        <!--<div class="col-md-7"><label>Color Pickers:</label>-->
+            <!--<table class="table">-->
+                <!--<tr>-->
+                    <!--<td>Color 1</td>-->
+                    <!--<td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor1" colorpicker ng-model="scene.sceneColor1" type="text" ></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>Color 2</td>-->
+                    <!--<td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text"></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>Highlight Color</td>-->
+                    <!--<td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneHighlightColor" type="text"></td>-->
+                <!--</tr>-->
+            <!--</table>-->
+        <!--</div>-->
         <!--<div class="btn-group" data-toggle="buttons">-->
         <!--<label class="btn btn-primary active">-->
             <!--<input type="checkbox" autocomplete="off" checked> Color Sky/Fog-->
@@ -168,10 +184,9 @@
 
         <!--</div>-->
 
-    <div class="col-md-12"><hr></div>
 
-    <div class="col-md-5">
-        <label>Environment Options: </label>
+    <div class="col-md-6">
+        <label>Sky Options: </label>
         <table class="table">
             <tr>
                 <td>
@@ -181,8 +196,6 @@
                     <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseDynamicSky]" ng-click="scene.sceneUseDynamicSky = !scene.sceneUseDynamicSky">{{!scene.sceneUseDynamicSky && '' || ''}}
                     </a>
                 </td>
-            </tr>
-            <tr>
                 <td>
                     Use Skybox?
                 </td>
@@ -191,6 +204,7 @@
                     </a>
                 </td>
             </tr>
+
             <tr>
                 <td>
                     Use Sun Shafts?
@@ -199,8 +213,6 @@
                     <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSunShafts]" ng-click="scene.sceneUseSunShafts = !scene.sceneUseSunShafts">{{!scene.sceneUseSunShafts && '' || ''}}
                     </a>
                 </td>
-            </tr>
-            <tr>
                 <td>
                     Use Global Fog?
                 </td>
@@ -209,6 +221,52 @@
                     </a>
                 </td>
             </tr>
+
+            <tr>
+                <td>
+                    Time of Day:
+                </td>
+                <td>
+                    <select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in time" required>
+                        <option value="" selected="selected">Select Time:</option>
+                    </select>
+                </td>
+                <td>
+                    Time Speed:
+                </td>
+                <td>
+                    <select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTimescale" ng-options="t.name for t in speed" required>
+                        <option value="" selected="selected">Select Timescale:</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+
+            </tr>
+            <tr>
+                <td>
+                    Weather:
+                </td>
+                <td>
+                    <select name="sceneWeather" class="form-control" ng-model="scene.sceneWeather" ng-options="w.name for w in weather" required>
+                        <option value="" selected="selected">Select Weather:</option>
+                    </select>
+                </td>
+                <td>
+                    Season:
+                </td>
+                <td>
+                    <select name="sceneSeason" class="form-control" ng-model="scene.sceneSeason" ng-options="s.name for s in season" required>
+                        <option value="" selected="selected">Select Season:</option>
+                    </select>
+                </td>
+            </tr>
+
+            </table>
+        </div>
+    <div class="col-md-6">
+        <label>Ground Options: </label>
+        <table class="table">
             <tr>
                 <td>
                     Use Prefab Environment?
@@ -217,14 +275,29 @@
                     <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseEnvironment]" ng-click="scene.sceneUseEnvironment = !scene.sceneUseEnvironment">{{!scene.sceneUseEnvironment && '' || ''}}
                     </a>
                 </td>
+                <td>
+                    Environment:
+                </td>
+                <td>
+
+                    <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
+                        <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>
-                    Use Terrain?
+                    Use Procedural Terrain?
                 </td>
                 <td>
                     <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseTerrain]" ng-click="scene.sceneUseTerrain = !scene.sceneUseTerrain">{{!scene.sceneUseTerrain && '' || ''}}
                     </a>
+                </td>
+                <td>
+                    Heightmap Url:
+                </td>
+                <td>
+                    <input type="text" class="form-control"  ng-model="scene.sceneHeightmapUrl" name="scene_sceneHeightmapUrl" id="scene_sceneHeightmapUrl" placeholder={{scene.scene_sceneHeightmapUrl}}/>
                 </td>
             </tr>
             <tr>
@@ -235,8 +308,6 @@
                     <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseFloorPlane]" ng-click="scene.sceneUseFloorPlane = !scene.sceneUseFloorPlane">{{!scene.sceneUseFloorPlane && '' || ''}}
                     </a>
                 </td>
-            </tr>
-            <tr>
                 <td>
                     Render Floor Plane?
                 </td>
@@ -245,6 +316,14 @@
                     </a>
                 </td>
             </tr>
+
+
+
+        </table>
+</div>
+    <div class="col-md-6">
+        <label>Water Options: </label>
+        <table class="table">
             <tr>
                 <td>
                     Use Simple Water?
@@ -253,8 +332,6 @@
                     <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSimpleWater]" ng-click="scene.sceneUseSimpleWater = !scene.sceneUseSimpleWater">{{!scene.sceneUseSimpleWater && '' || ''}}
                     </a>
                 </td>
-            </tr>
-            <tr>
                 <td>
                     Use Ocean?
                 </td>
@@ -263,75 +340,36 @@
                     </a>
                 </td>
             </tr>
-        </table>
-</div>
-        <div class="col-md-7">
-            <label>Environment Options: </label>
-            <table class="table">
-                <tr>
-                    <td>
-                        Environment:
-                    </td>
-                    <td>
-
-                        <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
-                            <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                      Time of Day:
-                    </td>
-                    <td>
-                        <select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in time" required>
-                            <option value="" selected="selected">Select Time:</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Time Speed:
-                    </td>
-                    <td>
-                        <select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTimescale" ng-options="t.name for t in speed" required>
-                            <option value="" selected="selected">Select Timescale:</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Weather:
-                    </td>
-                    <td>
-                        <select name="sceneWeather" class="form-control" ng-model="scene.sceneWeather" ng-options="w.name for w in weather" required>
-                            <option value="" selected="selected">Select Weather:</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Season:
-                    </td>
-                    <td>
-                        <select name="sceneSeason" class="form-control" ng-model="scene.sceneSeason" ng-options="s.name for s in season" required>
-                            <option value="" selected="selected">Select Season:</option>
-                        </select>
-                    </td>
-                </tr>
-
             </table>
         </div>
+        <!--<div class="col-md-6">-->
+            <!--<label>Environment Options: </label>-->
+            <!--<table class="table">-->
+                <!--<tr>-->
+                    <!--<td>-->
+                        <!--Environment:-->
+                    <!--</td>-->
+                    <!--<td>-->
+
+                        <!--<select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>-->
+                            <!--<option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>-->
+                        <!--</select>-->
+                    <!--</td>-->
+                <!--</tr>-->
+
+
+            <!--</table>-->
+        <!--</div>-->
 
     <div class="col-md-12"><hr></div>
 
 
-    <div class="col-md-12">
-        <div class="row"><label>Scene Content: </label></div>
+    <!--<div class="col-md-12">-->
+        <!--<div class="row"><label>Scene Content: </label></div>-->
 
 
-        <div class="col-md-12">
-            <div class="col-md-5">
+        <!--<div class="col-md-12">-->
+            <div class="col-md-6">
                 <label>Scatter Options: </label>
                 <table class="table">
                     <tr>
@@ -339,81 +377,164 @@
                             Scatter Meshes?
                         </td>
                         <td>
-                            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseDynamicSky]" ng-click="scene.sceneUseDynamicSky = !scene.sceneUseDynamicSky">{{!scene.sceneUseDynamicSky && '' || ''}}
+                            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && '' || ''}}
+                            </a>
+                        </td>
+                        <td>
+                            Scatter Interactive Objects?
+                        </td>
+                        <td>
+                            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && '' || ''}}
                             </a>
                         </td>
                     </tr>
                     </table>
+            </div>
+            <div class="col-md-6">
+                <label>User Picture Options: </label>
+                <table class="table">
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label>Add Scene Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as (p.title ? p.title : p.filename) for p in pictureitems " >
+                                <option value="" selected="selected">Select Image:</option>
+                            </select>
+                                <button class="btn-default btn-default-sm" ng-click="AddScenePicture(newScenePicture)">Add</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-repeat="picture in scenePictureThumbs">
+                                <!--<div class="col-md-2">-->
+                                <p>    <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+                                    <button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>
+                                </p>
+                            </div>
+                        </td>
 
-            <div class="col-md-2">
-            <span>Scatter Meshes?
-            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && '' || ''}}
-            </a></span>
-            </div>
-            <div class="col-md-2">
-            <span>Scatter Objects?
-            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && '' || ''}}
-            </a></span>
-            </div>
-            <div class="row">
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label>Add Scene Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as (p.title ? p.title : p.filename) for p in pictureitems " required>
-                    <option value="" selected="selected">Select Image:</option>
-                </select>
-                    <button class="btn-default btn-default-sm" ng-click="AddScenePicture(newScenePicture)">Add</button>
+                    </tr>
+                </table>
                 </div>
-            </div>
-            </div>
-            <!--{{scenePictureThumbs}}-->
-                <div class="row">
-            <div ng-repeat="picture in scenePictureThumbs">
-                <div class="col-md-2">
-                <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
-                <button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>
-            </div></div>
-        </div>
+                <div class="col-md-6">
+                <label>User Mesh Options: </label>
+                <table class="table">
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label>Add Scene Obj:</label><select name="newSceneObj" class="form-control" ng-model="newSceneObj" ng-options="p._id as (p.title ? p.title : p.filename) for p in objitems " >
+                                <option value="" selected="selected">Select Obj:</option>
+                            </select>
+                                <button class="btn-default btn-default-sm" ng-click="AddSceneObj(newSceneObj)">Add</button>
+                            </div><br>
+                        </td>
+                        <td>
+                            <!--<div ng-repeat="picture in scenePictureThumbs">-->
+                                <!--<div class="col-md-2">-->
+                                    <!--<img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">-->
+                                    <!--<button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>-->
+                                <!--</div></div>-->
+                        </td>
+
+                    </tr>
+                </table>
+                    </div>
+    <div class="col-md-6">
+        <label>User Audio Options: </label>
+        <table class="table">
+            <tr>
+                <td>
+                Scene Primary Audio
+                </td>
+                <td>
+                    <select name="sceneAudio" class="form-control" ng-model="scene.sceneTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >
+                        <option value="" selected="selected">Select Audio:</option>
+                    </select>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    Scene Ambient Audio
+                </td>
+                <td>
+                    <select name="sceneAudio" class="form-control" ng-model="scene.scenePrimaryAudioID" ng-options="a._id as a.title for a in audioitems" >
+                        <option value="" selected="selected">Select Audio:</option>
+                    </select>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    Scene Trigger Audio
+                </td>
+                <td>
+                    <select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbientAudioID" ng-options="a._id as a.title for a in audioitems" >
+                        <option value="" selected="selected">Select Audio:</option>
+                    </select>
+                </td>
+
+            </tr>
+
+        </table>
+    </div>
+            <!--<div class="row">-->
+            <!--<div class="col-md-2">-->
+                <!--<div class="form-group">-->
+                    <!--<label>Add Scene Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as (p.title ? p.title : p.filename) for p in pictureitems " required>-->
+                    <!--<option value="" selected="selected">Select Image:</option>-->
+                <!--</select>-->
+                    <!--<button class="btn-default btn-default-sm" ng-click="AddScenePicture(newScenePicture)">Add</button>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;{{scenePictureThumbs}}&ndash;&gt;-->
+                <!--<div class="row">-->
+            <!--<div ng-repeat="picture in scenePictureThumbs">-->
+                <!--<div class="col-md-2">-->
+                <!--<img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">-->
+                <!--<button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>-->
+            <!--</div></div>-->
+        <!--</div>-->
 
 
 
 
-        <div class="col-md-3">
-            <div class="form-group">
-                <label>Add Scene Obj:</label><select name="newSceneObj" class="form-control" ng-model="newSceneObj" ng-options="p._id as (p.title ? p.title : p.filename) for p in objitems " required>
-                <option value="" selected="selected">Select Obj:</option>
-            </select>
-                <button class="btn-default btn-default-sm" ng-click="AddSceneObj(newSceneObj)">Add</button>
-            </div>
-        </div>
-        </div>
+        <!--<div class="col-md-3">-->
+            <!--<div class="form-group">-->
+                <!--<label>Add Scene Obj:</label><select name="newSceneObj" class="form-control" ng-model="newSceneObj" ng-options="p._id as (p.title ? p.title : p.filename) for p in objitems " required>-->
+                <!--<option value="" selected="selected">Select Obj:</option>-->
+            <!--</select>-->
+                <!--<button class="btn-default btn-default-sm" ng-click="AddSceneObj(newSceneObj)">Add</button>-->
+            <!--</div>-->
+        <!--</div>-->
+
         <div class="row">
 
 
 
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label>Scene Trigger Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >
-                    <option value="" selected="selected">Select Audio:</option>
-                </select>
-                    <br>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label>Scene Primary Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.scenePrimaryAudioID" ng-options="a._id as a.title for a in audioitems" >
-                    <option value="" selected="selected">Select Audio:</option>
-                </select>
-                    <br>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label>Scene Ambient Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbientAudioID" ng-options="a._id as a.title for a in audioitems" >
-                    <option value="" selected="selected">Select Audio:</option>
-                </select>
-                    <br>
-                </div>
-            </div>
+            <!--<div class="col-md-3">-->
+                <!--<div class="form-group">-->
+                    <!--<label>Scene Trigger Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >-->
+                    <!--<option value="" selected="selected">Select Audio:</option>-->
+                <!--</select>-->
+                    <!--<br>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-3">-->
+                <!--<div class="form-group">-->
+                    <!--<label>Scene Primary Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.scenePrimaryAudioID" ng-options="a._id as a.title for a in audioitems" >-->
+                    <!--<option value="" selected="selected">Select Audio:</option>-->
+                <!--</select>-->
+                    <!--<br>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-3">-->
+                <!--<div class="form-group">-->
+                    <!--<label>Scene Ambient Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbientAudioID" ng-options="a._id as a.title for a in audioitems" >-->
+                    <!--<option value="" selected="selected">Select Audio:</option>-->
+                <!--</select>-->
+                    <!--<br>-->
+                <!--</div>-->
+            <!--</div>-->
             <!--<div class="col-md-3">-->
                 <!--<div class="form-group">-->
                     <!--<label>Scene Ambient Audio2:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbient2AudioID" ng-options="a._id as a.title for a in audioitems" >-->
