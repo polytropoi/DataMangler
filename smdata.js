@@ -1,6 +1,13 @@
 var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'colorpicker.module', 'mediaPlayer', 'angularFileUpload']);
 
+    smApp.config(['$compileProvider',
+    function ($compileProvider) {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|http|ftp|mailto|strr|chrome-extension):/);
+        }
+    ]);
+
 	smApp.config(['$routeProvider',
+
 		function ($routeProvider) {
 		$routeProvider.
 		when('/', {controller:HomeCtrl, templateUrl:'p_home.html'}).
@@ -929,7 +936,9 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 "spaceScene1",
                 "islandScene2",
                 "desertScene",
-                "winterScene1"
+                "winterScene1",
+
+                "alamo"
             ];
 
         $scope.time = [

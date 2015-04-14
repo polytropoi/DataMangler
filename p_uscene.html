@@ -3,7 +3,8 @@
 
 <div class="well" style="margin-top: 20px;">
     <div class="row">
-    <a class="btn btn-primary btn-lg pull-right"target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
+    <a class="btn btn-primary btn-lg pull-right"target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Web Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
+    <a class="btn btn-primary btn-lg pull-right"target="_blank" href="strr://play/?scene={{scene.short_id}}">Mobile Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
     <button class="btn btn-primary btn-lg " ng-click="onSaveScene()" >Save</button>
     <span><p>{{headermessage}}</p>
         <h4>Scene: <a target="_blank" href="http://servicemedia.net/scene/{{scene.short_id}}">{{scene.short_id}}</a></h4></span> <span ><h4> Title: {{scene.sceneTitle}}</h4></span>
@@ -127,7 +128,7 @@
             <!--</div>-->
         <!--</div>-->
         <!--</div><div class=row">-->
-        <div class="col-md-6"><label>Color Options:</label>
+        <div class="col-md-5"><label>Color Options:</label>
             <table class="table">
                 <tr>
                     <td>Random Colors?</td>
@@ -185,7 +186,7 @@
         <!--</div>-->
 
 
-    <div class="col-md-6">
+    <div class="col-md-6" style="margin-left: 50px;">
         <label>Sky Options: </label>
         <table class="table">
             <tr>
@@ -264,7 +265,7 @@
 
             </table>
         </div>
-    <div class="col-md-6">
+    <div class="col-md-6" style="margin-left: 0px;">
         <label>Ground Options: </label>
         <table class="table">
             <tr>
@@ -321,7 +322,7 @@
 
         </table>
 </div>
-    <div class="col-md-6">
+    <div class="col-md-5" style="margin-left: 30px;">
         <label>Water Options: </label>
         <table class="table">
             <tr>
@@ -369,7 +370,7 @@
 
 
         <!--<div class="col-md-12">-->
-            <div class="col-md-6">
+    <div class="col-md-6" style="margin-left: 0px;">
                 <label>Scatter Options: </label>
                 <table class="table">
                     <tr>
@@ -390,7 +391,7 @@
                     </tr>
                     </table>
             </div>
-            <div class="col-md-6">
+    <div class="col-md-4" style="margin-left: 50px;">
                 <label>User Picture Options: </label>
                 <table class="table">
                     <tr>
@@ -414,7 +415,7 @@
                     </tr>
                 </table>
                 </div>
-                <div class="col-md-6">
+    <div class="col-md-6" style="margin-left: 10px;">
                 <label>User Mesh Options: </label>
                 <table class="table">
                     <tr>
@@ -437,23 +438,12 @@
                     </tr>
                 </table>
                     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" style="margin-left: 10px;">
         <label>User Audio Options: </label>
         <table class="table">
             <tr>
                 <td>
                 Scene Primary Audio
-                </td>
-                <td>
-                    <select name="sceneAudio" class="form-control" ng-model="scene.sceneTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >
-                        <option value="" selected="selected">Select Audio:</option>
-                    </select>
-                </td>
-
-            </tr>
-            <tr>
-                <td>
-                    Scene Ambient Audio
                 </td>
                 <td>
                     <select name="sceneAudio" class="form-control" ng-model="scene.scenePrimaryAudioID" ng-options="a._id as a.title for a in audioitems" >
@@ -464,10 +454,21 @@
             </tr>
             <tr>
                 <td>
-                    Scene Trigger Audio
+                    Scene Ambient Audio
                 </td>
                 <td>
                     <select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbientAudioID" ng-options="a._id as a.title for a in audioitems" >
+                        <option value="" selected="selected">Select Audio:</option>
+                    </select>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    Scene Trigger Audio
+                </td>
+                <td>
+                    <select name="sceneAudio" class="form-control" ng-model="scene.sceneTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >
                         <option value="" selected="selected">Select Audio:</option>
                     </select>
                 </td>

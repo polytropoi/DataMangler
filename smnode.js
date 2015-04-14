@@ -1830,8 +1830,9 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     sceneColor1 : req.body.sceneColor1,
                     sceneColor2 : req.body.sceneColor2,
                     sceneTriggerAudioID : req.body.sceneTriggerAudioID,
-                    sceneAudioID : req.body.sceneAudioID,
+//                    sceneAudioID : req.body.sceneAudioID,
                     sceneAmbientAudioID : req.body.sceneAmbientAudioID,
+                    scenePrimaryAudioID : req.body.scenePrimaryAudioID,
 //                    sceneAmbientAudio2ID : req.body.sceneAmbientAudio2ID,
                     sceneKeynote : req.body.sceneKeynote,
                     sceneDescription : req.body.sceneDescription,
@@ -1910,7 +1911,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                                     requestedPictureItems.push(p_id); //populate array
                                 });
 
-                                requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneSpokenAudioID), BSON.ObjectID(sceneData[0].sceneBackgroundAudioID), BSON.ObjectID(sceneData[0].sceneEnvironmentAudioID) ];
+                                requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneAmbientAudioID), BSON.ObjectID(sceneData[0].scenePrimaryAudioID)];
 
                                 sceneResponse = sceneData[0];
                                 callback(null, sceneData);
@@ -1934,7 +1935,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                                     requestedPictureItems.push(p_id); //populate array
                                 });
 
-                                requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneSpokenAudioID), BSON.ObjectID(sceneData[0].sceneBackgroundAudioID), BSON.ObjectID(sceneData[0].sceneEnvironmentAudioID) ];
+                                requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneAmbientAudioID), BSON.ObjectID(sceneData[0].scenePrimaryAudioID)];
 
                                 sceneResponse = sceneData[0];
                                 callback(null, sceneData);
@@ -1968,7 +1969,8 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                                             requestedPictureItems.push(p_id); //populate array
                                         });
 
-                                        requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneSpokenAudioID), BSON.ObjectID(sceneData[0].sceneBackgroundAudioID), BSON.ObjectID(sceneData[0].sceneEnvironmentAudioID) ];
+                                        requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneAmbientAudioID), BSON.ObjectID(sceneData[0].scenePrimaryAudioID)];
+
 
                                         sceneResponse = sceneData[0];
                                         callback(null);
