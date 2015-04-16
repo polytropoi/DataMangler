@@ -930,16 +930,25 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //            {name:'desertScene'}
 //        ];
             $scope.environments = [
-                "genericFlat",
-                "weatherTerrain",
+//                "genericFlat",
+//                "weatherTerrain",
                 "oceanScene",
                 "spaceScene1",
                 "islandScene2",
                 "desertScene",
+                "hellScene",
                 "winterScene1",
-
+                "caveScene",
                 "alamo"
             ];
+
+        $scope.heightmaps = [
+
+            "http://strr.us/hm1.jpg",
+            "http://strr.us/hm2.jpg",
+            "http://strr.us/hm3.jpg",
+            "http://strr.us/hm4.jpg"
+        ];
 
         $scope.time = [
             {name:'morning'},
