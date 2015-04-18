@@ -1143,7 +1143,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                     $scope.headermessage = "You must be logged in to do that!"
                 } else {
                     $scope.headermessage = response;
-                    // $location.path( "#/uscenes/" + $cookies._id.replace (/"/g,''));
+                    $location.path( "#/uscenes/" + $routeParams.user_id);
                 }
             });
         }
@@ -1369,7 +1369,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                         $scope.headermessage = "You must be logged in to do that!"
                     } else {
                         $scope.headermessage = response;
-                        $location.path( "#/uscenes/" + $cookies._id.replace (/"/g,''));
+                        $location.path( "#/uscene/" + $routeParams.u_id + "/" + response);
                     }
                 });
             }

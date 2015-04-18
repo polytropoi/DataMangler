@@ -1776,7 +1776,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
             console.log(tempID + " = " + newShortID);
             db.scenes.update( { _id: o_id }, { $set: { short_id: newShortID }});
 
-            res.send(newShortID);
+            res.send(item_id);
 
         }
     });
@@ -1818,6 +1818,12 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     sceneUseFloorPlane : req.body.sceneUseFloorPlane,
                     sceneUseEnvironment : req.body.sceneUseEnvironment,
                     sceneUseTerrain : req.body.sceneUseTerrain,
+                    sceneUseHeightmap : req.body.sceneUseHeightmap,
+                    sceneHeightmap : req.body.sceneHeightmap,
+                    sceneRestrictToLocation : req.body.sceneRestrictToLocation,
+                    sceneLocationRange : req.body.sceneLocationRange,
+                    sceneLatitude : req.body.sceneLatitude,
+                    sceneLongitude : req.body.sceneLongitude,
                     sceneUseSimpleWater : req.body.sceneUseSimpleWater,
                     sceneUseOcean : req.body.sceneUseOcean,
                     sceneTime: req.body.sceneTime,

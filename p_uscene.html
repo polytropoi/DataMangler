@@ -3,11 +3,11 @@
 
 <div class="well" style="margin-top: 20px;">
     <div class="row">
-    <a class="btn btn-primary btn-lg pull-right"target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Web Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
-    <a class="btn btn-primary btn-lg pull-right"target="_blank" href="strr://play/?scene={{scene.short_id}}">Mobile Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
+    <a class="btn btn-primary btn-lg pull-right"target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
+    <!--<a class="btn btn-primary btn-lg pull-right"target="_blank" href="strr://play/?scene={{scene.short_id}}">Mobile Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>-->
     <button class="btn btn-primary btn-lg " ng-click="onSaveScene()" >Save</button>
     <span><p>{{headermessage}}</p>
-        <h4>Scene: <a target="_blank" href="http://servicemedia.net/scene/{{scene.short_id}}">{{scene.short_id}}</a></h4></span> <span ><h4> Title: {{scene.sceneTitle}}</h4></span>
+        <h4>Scene Key: <a target="_blank" href="http://servicemedia.net/scene/{{scene.short_id}}">{{scene.short_id}}</a></h4></span> <span ><h4>Scene Title: {{scene.sceneTitle}}</h4></span>
 
 
 
@@ -20,8 +20,8 @@
         <!--<div class="col-md-3"></div>-->
         <!--<div class="col-md-5">-->
 
-        <div class="col-md-12"><hr></div>
-        <div class="col-md-5">
+    <div class="col-md-12"><hr></div>
+        <div class="col-md-6">
     <label>Scene Options: </label>
         <table class="table">
             <tr>
@@ -61,7 +61,7 @@
             </tr>
         </table>
         </div>
-    <div class="col-md-5">
+    <div class="col-md-6">
         <label>Sharing Options: </label>
         <table class="table">
             <tr>
@@ -87,6 +87,49 @@
 
                 </td>
             </tr>
+        </table>
+    </div>
+    <div class="col-md-12"><hr></div>
+    <div class="col-md-6">
+       <label>Location Key Options: </label>
+        <table class="table">
+            <tr>
+                <td>Restrict to Location?    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRestrictToLocation]" ng-click="scene.sceneRestrictToLocation = !scene.sceneRestrictToLocation">{{!scene.sceneRestrictToLocation && '' || ''}}
+                </a></td>
+                <td>Range in meters: <input type="text" ng-model="scene.sceneLocationRange" type="number"></td>
+
+            </tr>
+            <tr>
+                <td>
+                   Latitude:  <input type="text" ng-model="scene.sceneLatitude">
+                </td>
+                <td>
+                    Longitude:  <input type="text" ng-model="scene.sceneLongitude">
+                </td>
+
+            </tr>
+
+        </table>
+    </div>
+    <div class="col-md-6">
+        <label>Time Key Options: </label>
+        <table class="table">
+            <tr>
+
+                <td>Restrict to Time?    <a class="btn pull-right " ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRestrictToTime]" ng-click="scene.sceneRestrictToTime = !scene.sceneRestrictToTime">{{!scene.sceneRestrictToTime && '' || ''}}
+                </a></td>
+                <td>Time Range: <input type="text" ng-model="scene.sceneRestrictRange"></td>
+            </tr>
+            <tr>
+
+                <td>
+                    Start Time:  <input type="text" ng-model="scene.sceneLatitude">
+                </td>
+                <td>
+                    End Time:  <input type="text" ng-model="scene.sceneLongitude">
+                </td>
+            </tr>
+
         </table>
     </div>
         <!--<div class="col-md-2">-->
@@ -128,7 +171,7 @@
             <!--</div>-->
         <!--</div>-->
         <!--</div><div class=row">-->
-        <div class="col-md-5"><label>Color Options:</label>
+        <div class="col-md-6"><label>Color Options:</label>
             <table class="table">
                 <tr>
                     <td>Random Colors?</td>
@@ -155,6 +198,66 @@
 
             </table>
         </div>
+    <div class="col-md-6" >
+        <label>Ground Options: </label>
+        <table class="table">
+            <tr>
+                <td>
+                    Use Prefab Environment?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseEnvironment]" ng-click="scene.sceneUseEnvironment = !scene.sceneUseEnvironment">{{!scene.sceneUseEnvironment && '' || ''}}
+                    </a>
+                </td>
+                <td>
+                    Environment:
+                </td>
+                <td>
+
+                    <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
+                        <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Use Heightmap?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseHeightmap]" ng-click="scene.sceneUseHeightmap = !scene.sceneUseHeightmap">{{!scene.sceneUseHeightmap && '' || ''}}
+                    </a>
+                </td>
+                <td>
+                    Heightmap:
+                </td>
+                <td>
+
+                    <select name="sceneHeightmap" class="form-control" ng-model="scene.sceneHeightmap.name" ng-options="e as e for e in heightmaps" required>
+                        <option value="" selected="{{sceneHeightmap.name}}">Select Heightmap:</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Use Floor Plane?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseFloorPlane]" ng-click="scene.sceneUseFloorPlane = !scene.sceneUseFloorPlane">{{!scene.sceneUseFloorPlane && '' || ''}}
+                    </a>
+                </td>
+                <td>
+                    Render Floor Plane?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRenderFloorPlane]" ng-click="scene.sceneRenderFloorPlane = !scene.sceneRenderFloorPlane">{{!scene.sceneRenderFloorPlane && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+
+
+
+        </table>
+    </div>
         <!--<div class="col-md-7"><label>Color Pickers:</label>-->
             <!--<table class="table">-->
                 <!--<tr>-->
@@ -186,7 +289,7 @@
         <!--</div>-->
 
 
-    <div class="col-md-5" style="margin-left: 50px;">
+    <div class="col-md-6"  >
         <label>Sky Options: </label>
         <table class="table">
             <tr>
@@ -265,63 +368,7 @@
 
             </table>
         </div>
-    <div class="col-md-5" style="margin-left: 0px;">
-        <label>Ground Options: </label>
-        <table class="table">
-            <tr>
-                <td>
-                    Use Prefab Environment?
-                </td>
-                <td>
-                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseEnvironment]" ng-click="scene.sceneUseEnvironment = !scene.sceneUseEnvironment">{{!scene.sceneUseEnvironment && '' || ''}}
-                    </a>
-                </td>
-                <td>
-                    Environment:
-                </td>
-                <td>
 
-                    <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
-                        <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Use Procedural Terrain?
-                </td>
-                <td>
-                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseTerrain]" ng-click="scene.sceneUseTerrain = !scene.sceneUseTerrain">{{!scene.sceneUseTerrain && '' || ''}}
-                    </a>
-                </td>
-                <td>
-                    Heightmap Url:
-                </td>
-                <td>
-                    <input type="text" class="form-control"  ng-model="scene.sceneHeightmapUrl" name="scene_sceneHeightmapUrl" id="scene_sceneHeightmapUrl" placeholder={{scene.scene_sceneHeightmapUrl}}/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Use Floor Plane?
-                </td>
-                <td>
-                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseFloorPlane]" ng-click="scene.sceneUseFloorPlane = !scene.sceneUseFloorPlane">{{!scene.sceneUseFloorPlane && '' || ''}}
-                    </a>
-                </td>
-                <td>
-                    Render Floor Plane?
-                </td>
-                <td>
-                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRenderFloorPlane]" ng-click="scene.sceneRenderFloorPlane = !scene.sceneRenderFloorPlane">{{!scene.sceneRenderFloorPlane && '' || ''}}
-                    </a>
-                </td>
-            </tr>
-
-
-
-        </table>
-</div>
     <div class="col-md-5" style="margin-left: 30px;">
         <label>Water Options: </label>
         <table class="table">

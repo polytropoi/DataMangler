@@ -3,7 +3,7 @@
 
 <div class="well" style="margin-top: 20px;">
     <div class="row">
-    <span><p>{{headermessage}}</p> Scene<span>
+    <span><p>{{headermessage}}</p>New Scene<span>
 
         <pre>{{scene}}</pre>
 
@@ -15,12 +15,12 @@
     <form class="form-horizontal" role="form" name="newsceneform">
         <!--<div class="col-md-3"></div>-->
         <!--<div class="col-md-6">-->
-        <div class="col-md-12">
-            {{scene.scenePictures}}
-            <div ng-repeat="picture in scenePictureThumbs">
-            <img ng-src="{{picture}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
-            </div>
-        </div>
+        <!--<div class="col-md-12">-->
+            <!--{{scene.scenePictures}}-->
+            <!--<div ng-repeat="picture in scenePictureThumbs">-->
+            <!--<img ng-src="{{picture}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="col-md-12"><hr></div>
         <div class="col-md-2">
             <div class="form-group">
@@ -28,18 +28,18 @@
                 <input type="text" class="form-control" ng-model="scene.sceneDomain" name="scene_sceneDomain" id="scene_sceneDomainInput" placeholder=" Domain" required>
             </div>
         </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="scene_sceneEnvironmentInput" > Environment: </label>
-                <input type="text" class="form-control" ng-model="scene.sceneEnvironment" name="scene_sceneEnvironment" id="scene_sceneEnvironmentInput" placeholder=" Environment" required>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="scene_sceneNumberInput" > Number: </label>
-                <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNumberInput" placeholder=" Number" required>
-            </div>
-        </div>
+        <!--<div class="col-md-2">-->
+            <!--<div class="form-group">-->
+                <!--<label for="scene_sceneEnvironmentInput" > Environment: </label>-->
+                <!--<input type="text" class="form-control" ng-model="scene.sceneEnvironment" name="scene_sceneEnvironment" id="scene_sceneEnvironmentInput" placeholder=" Environment" required>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-2">-->
+            <!--<div class="form-group">-->
+                <!--<label for="scene_sceneNumberInput" > Number: </label>-->
+                <!--<input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNumberInput" placeholder=" Number" required>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="col-md-3">
             <div class="form-group">
                 <label for="scene_sceneTitleInput" > Title: </label>
@@ -48,98 +48,98 @@
         </div>
 
 
-        <div class="col-md-2">
-            <div class="form-group">
-                <label > Color1: </label>
-                <input class="change-element-color" my-bgcolor="scene.sceneColor1" colorpicker ng-model="scene.sceneColor1" type="text" required>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label > Color2: </label>
-                <input class="change-element-color" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text">
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="form-group">
-                <label>Add Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as p.title for p in pictureitems" required>
-                <option value="" selected="selected">Select Image:</option>
-            </select>
-            </div>
-        </div>
-
-
-        <!--<div class="col-md-12">-->
-
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label>Add Object:</label><select name="newSceneObj" class="form-control" ng-model="newSceneObject" ng-options="p._id as p.filename for p in objitems" required>
-                    <option value="" selected="selected">Select Image:</option>
-                </select>
-                </div>
-            </div>
+        <!--<div class="col-md-2">-->
+            <!--<div class="form-group">-->
+                <!--<label > Color1: </label>-->
+                <!--<input class="change-element-color" my-bgcolor="scene.sceneColor1" colorpicker ng-model="scene.sceneColor1" type="text" required>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-2">-->
+            <!--<div class="form-group">-->
+                <!--<label > Color2: </label>-->
+                <!--<input class="change-element-color" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text">-->
+            <!--</div>-->
         <!--</div>-->
 
-        <!--<div class="col-md-12">-->
-
-
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label> Trigger Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >
-                    <option value="" selected="selected">Select Audio:</option>
-                </select>
-                    <br>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label> Spoken Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneSpokenAudioID" ng-options="a._id as a.title for a in audioitems" >
-                    <option value="" selected="selected">Select Audio:</option>
-                </select>
-                    <br>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label> Background Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneBackgroundAudioID" ng-options="a._id as a.title for a in audioitems" >
-                    <option value="" selected="selected">Select Audio:</option>
-                </select>
-                    <br>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label> Environment Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneEnvironmentAudioID" ng-options="a._id as a.title for a in audioitems" >
-                    <option value="" selected="selected">Select Audio:</option>
-                </select>
-                    <br>
-                </div>
-            </div>
-            <br>
-            <!--<div class="col-md-10">-->
-            <!--<img ng-src="{{audioWaveformPng}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">-->
-            <!--<br>-->
+        <!--<div class="col-md-3">-->
+            <!--<div class="form-group">-->
+                <!--<label>Add Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as p.title for p in pictureitems" required>-->
+                <!--<option value="" selected="selected">Select Image:</option>-->
+            <!--</select>-->
             <!--</div>-->
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="scene_sceneKeynote" > Keynote: </label>
-                    <input type="text" class="form-control"  ng-model="scene.sceneKeynote" name="scene_sceneKeynote" id="scene_sceneKeynote" placeholder="Keynote"/>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="scene_sceneDescription" > Description: </label>
-                    <textarea type="text" class="form-control"  ng-model="scene.sceneDescription" name="scene_sceneDescription" id="scene_sceneDescription" rows="3" placeholder="Description"/></textarea>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="scene_sceneTextInput" >Scene Text: </label>
-                    <textarea class="form-control" name="scene_sceneText" id="scene_sceneTextInput" ng-model="scene.sceneText" placeholder="Text" rows="5"></textarea></div>
-                <!--<button class="btn btn-primary btn-large pull-right" ng-click="Login()" ng-show="userstatus == 0" ng-disabled="!form.$valid">Login</button>-->
-                <!--<button class="btn btn-primary btn-large pull-left" ng-click="Logout()" ng-hide="userstatus == 0 " >Logout</button>-->
-            </div>
+        <!--</div>-->
+
+
+        <!--&lt;!&ndash;<div class="col-md-12">&ndash;&gt;-->
+
+            <!--<div class="col-md-3">-->
+                <!--<div class="form-group">-->
+                    <!--<label>Add Object:</label><select name="newSceneObj" class="form-control" ng-model="newSceneObject" ng-options="p._id as p.filename for p in objitems" required>-->
+                    <!--<option value="" selected="selected">Select Image:</option>-->
+                <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<div class="col-md-12">&ndash;&gt;-->
+
+
+            <!--<div class="col-md-3">-->
+                <!--<div class="form-group">-->
+                    <!--<label> Trigger Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >-->
+                    <!--<option value="" selected="selected">Select Audio:</option>-->
+                <!--</select>-->
+                    <!--<br>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-3">-->
+                <!--<div class="form-group">-->
+                    <!--<label> Spoken Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneSpokenAudioID" ng-options="a._id as a.title for a in audioitems" >-->
+                    <!--<option value="" selected="selected">Select Audio:</option>-->
+                <!--</select>-->
+                    <!--<br>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-3">-->
+                <!--<div class="form-group">-->
+                    <!--<label> Background Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneBackgroundAudioID" ng-options="a._id as a.title for a in audioitems" >-->
+                    <!--<option value="" selected="selected">Select Audio:</option>-->
+                <!--</select>-->
+                    <!--<br>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-3">-->
+                <!--<div class="form-group">-->
+                    <!--<label> Environment Audio:</label><select name="sceneAudio" class="form-control" ng-model="scene.sceneEnvironmentAudioID" ng-options="a._id as a.title for a in audioitems" >-->
+                    <!--<option value="" selected="selected">Select Audio:</option>-->
+                <!--</select>-->
+                    <!--<br>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<br>-->
+            <!--&lt;!&ndash;<div class="col-md-10">&ndash;&gt;-->
+            <!--&lt;!&ndash;<img ng-src="{{audioWaveformPng}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">&ndash;&gt;-->
+            <!--&lt;!&ndash;<br>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div class="col-md-12">-->
+                <!--<div class="form-group">-->
+                    <!--<label for="scene_sceneKeynote" > Keynote: </label>-->
+                    <!--<input type="text" class="form-control"  ng-model="scene.sceneKeynote" name="scene_sceneKeynote" id="scene_sceneKeynote" placeholder="Keynote"/>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-12">-->
+                <!--<div class="form-group">-->
+                    <!--<label for="scene_sceneDescription" > Description: </label>-->
+                    <!--<textarea type="text" class="form-control"  ng-model="scene.sceneDescription" name="scene_sceneDescription" id="scene_sceneDescription" rows="3" placeholder="Description"/></textarea>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-12">-->
+                <!--<div class="form-group">-->
+                    <!--<label for="scene_sceneTextInput" >Scene Text: </label>-->
+                    <!--<textarea class="form-control" name="scene_sceneText" id="scene_sceneTextInput" ng-model="scene.sceneText" placeholder="Text" rows="5"></textarea></div>-->
+                <!--&lt;!&ndash;<button class="btn btn-primary btn-large pull-right" ng-click="Login()" ng-show="userstatus == 0" ng-disabled="!form.$valid">Login</button>&ndash;&gt;-->
+                <!--&lt;!&ndash;<button class="btn btn-primary btn-large pull-left" ng-click="Logout()" ng-hide="userstatus == 0 " >Logout</button>&ndash;&gt;-->
+            <!--</div>-->
     </form>
     <!--<label >Update Title: </label> -->
     <!--<input type="textarea" class="form-control" ng-model="item.title" name="imagetitle" placeholder="{{item.title}}"/> </br>-->
