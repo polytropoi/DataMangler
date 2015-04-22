@@ -1848,6 +1848,24 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
         });
     });
 
+    app.get('/sceneloc/:key', function (req, res){
+
+        resObj = {};
+
+        db.scenes.find({ "short_id" : req.params.key}, function(err, scenes) {
+            if (err || !scenes) {
+                console.log("cain't get no scenes... " + err);
+            } else {
+                resObj.sceneLatitude = scenes[0].sceneLatitude;
+                resObj.sceneLongitude = scenes[0].sceneLongitude;
+                resObj.sceneLocationRange = scenes[0].sceneLocationRange;
+//                console.log(JSON.stringify(scenes));
+                res.json(resObj);
+            }
+        });
+
+    });
+
     app.get('/seq/:_seqID', function (req, res) {
         console.log("tryna get sequence");
         var pathNumbers = [];

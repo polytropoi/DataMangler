@@ -118,15 +118,15 @@
 
                 <td>Restrict to Time?    <a class="btn pull-right " ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRestrictToTime]" ng-click="scene.sceneRestrictToTime = !scene.sceneRestrictToTime">{{!scene.sceneRestrictToTime && '' || ''}}
                 </a></td>
-                <td>Time Range: <input type="text" ng-model="scene.sceneRestrictRange"></td>
+                <td>Time Range: <input type="text" ng-model="scene.sceneTimeRange"></td>
             </tr>
             <tr>
 
                 <td>
-                    Start Time:  <input type="text" ng-model="scene.sceneLatitude">
+                    Start Time:  <input type="text" ng-model="scene.sceneStartTime">
                 </td>
                 <td>
-                    End Time:  <input type="text" ng-model="scene.sceneLongitude">
+                    End Time:  <input type="text" ng-model="scene.sceneEndTime">
                 </td>
             </tr>
 
