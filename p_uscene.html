@@ -74,8 +74,8 @@
                     Share With User(s):
                 </td>
                 <td>
-                    <textarea type="text" class="form-control" ng-model="scene.sceneShareWithUsers" name="scene_sceneNumber" placeholder="delimit usernames or emails with a comma" ></textarea>
-
+                    <textarea type="text" class="form-control" ng-model="scene.sceneShareWith" name="scene_sceneShareWithUsers" placeholder="delimit usernames or emails with a comma" ></textarea>
+                    <a class="btn btn-primary" ng-show=canSend ng-click="onShareScene()">Send Now</a>
                 </td>
             </tr>
             <tr>
@@ -83,10 +83,11 @@
                     User(s) Allowed to Post in this Scene:
                 </td>
                 <td>
-                    <textarea type="text" class="form-control" ng-model="scene.sceneShareWithUsers" name="scene_sceneNumber" placeholder="delimit usernames or emails with a comma" ></textarea>
+                    <textarea type="text" class="form-control" ng-model="scene.sceneCanPost" name="scene_sceneNumber" placeholder="delimit usernames or emails with a comma" ></textarea>
 
                 </td>
             </tr>
+
         </table>
     </div>
     <div class="col-md-12"><hr></div>
@@ -301,14 +302,30 @@
                     </a>
                 </td>
                 <td>
+                    Use Camera As Background?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseCameraBackground]" ng-click="scene.sceneUseCameraBackground = !scene.sceneUseCameraBackground">{{!scene.sceneUseCameraBackground && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     Use Skybox?
                 </td>
                 <td>
                     <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSkybox]" ng-click="scene.sceneUseSkybox = !scene.sceneUseSkybox">{{!scene.sceneUseSkybox && '' || ''}}
                     </a>
                 </td>
+                <td>
+                    Select Skybox:
+                </td>
+                <td>
+                    <select name="sceneSkybox" class="form-control" ng-model="scene.sceneSkybox" ng-options="s.name for s in skybox" required>
+                        <option value="" selected="selected">Select Skybox:</option>
+                    </select>
+                </td>
             </tr>
-
             <tr>
                 <td>
                     Use Sun Shafts?
@@ -417,23 +434,62 @@
 
 
         <!--<div class="col-md-12">-->
-    <div class="col-md-5" style="margin-left: 0px;">
+    <div class="col-md-7" style="margin-left: 0px;">
                 <label>Scatter Options: </label>
                 <table class="table">
                     <tr>
                         <td>
-                            Scatter Meshes?
+                            Scatter World Meshes?
                         </td>
                         <td>
                             <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && '' || ''}}
                             </a>
                         </td>
                         <td>
-                            Scatter Interactive Objects?
+                            Scatter World Objects?
                         </td>
                         <td>
                             <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && '' || ''}}
                             </a>
+                        </td>
+                    </tr>
+                    <tr>
+                    <td>
+                        Scatter Viewport Meshes?
+                        </td>
+                        <td>
+                            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterViewportMeshesv]" ng-click="scene.sceneScatterViewportMeshes = !scene.sceneScatterViewportMeshes">{{!scene.sceneScatterViewportMeshes && '' || ''}}
+                            </a>
+                        </td>
+                        <td>
+                            Scatter Viewport Objects?
+                        </td>
+                        <td>
+                            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterViewportObjects]" ng-click="scene.sceneScatterViewportObjects = !scene.sceneScatterViewportObjects">{{!scene.sceneScatterViewportObjects && '' || ''}}
+                            </a>
+                        </td>
+                </tr>
+                    <tr>
+                        <!--<td>-->
+                            <!--Use Target Object?-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseTargetObject]" ng-click="scene.sceneUseTargetObject = !scene.sceneUseTargetObject">{{!scene.sceneUseTargetObject && '' || ''}}-->
+                            <!--</a>  </td>-->
+                        <!---->
+                        <td>
+                        Target Heading: </td><td><select name="sceneTime" class="form-control" ng-model="scene.sceneTargetHeading" ng-options="t.name for t in headings" required>
+                        <option value="" selected="selected">Select Heading:</option>
+                    </select>
+                        </td>
+                        </td>
+                        <td>
+                        Target Object:
+                        </td>
+                        <td>
+                            <select name="arTarget" class="form-control" ng-model="scene.sceneTargetObject" ng-options="t.name for t in targetobjex" >
+                                <option value="" selected="selected">Select Object:</option>
+                            </select>
                         </td>
                     </tr>
                     </table>
@@ -462,30 +518,8 @@
                     </tr>
                 </table>
                 </div>
-    <div class="col-md-5" style="margin-left: 10px;">
-                <label>User Mesh Options: </label>
-                <table class="table">
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <label>Add Scene Obj:</label><select name="newSceneObj" class="form-control" ng-model="newSceneObj" ng-options="p._id as (p.title ? p.title : p.filename) for p in objitems " >
-                                <option value="" selected="selected">Select Obj:</option>
-                            </select>
-                                <button class="btn-default btn-default-sm" ng-click="AddSceneObj(newSceneObj)">Add</button>
-                            </div><br>
-                        </td>
-                        <td>
-                            <!--<div ng-repeat="picture in scenePictureThumbs">-->
-                                <!--<div class="col-md-2">-->
-                                    <!--<img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">-->
-                                    <!--<button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>-->
-                                <!--</div></div>-->
-                        </td>
 
-                    </tr>
-                </table>
-                    </div>
-    <div class="col-md-5" style="margin-left: 10px;">
+    <div class="col-md-7" style="margin-left: 10px;">
         <label>User Audio Options: </label>
         <table class="table">
             <tr>
@@ -522,6 +556,29 @@
 
             </tr>
 
+        </table>
+    </div>
+    <div class="col-md-4" style="margin-left: 10px;">
+        <label>User Mesh Options: </label>
+        <table class="table">
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label>Add Scene Obj:</label><select name="newSceneObj" class="form-control" ng-model="newSceneObj" ng-options="p._id as (p.title ? p.title : p.filename) for p in objitems " >
+                        <option value="" selected="selected">Select Obj:</option>
+                    </select>
+                        <button class="btn-default btn-default-sm" ng-click="AddSceneObj(newSceneObj)">Add</button>
+                    </div><br>
+                </td>
+                <td>
+                    <!--<div ng-repeat="picture in scenePictureThumbs">-->
+                    <!--<div class="col-md-2">-->
+                    <!--<img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">-->
+                    <!--<button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>-->
+                    <!--</div></div>-->
+                </td>
+
+            </tr>
         </table>
     </div>
             <!--<div class="row">-->

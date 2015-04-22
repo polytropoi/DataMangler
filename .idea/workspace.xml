@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="007fd320-610d-407e-83b6-eb72f4a4f5d4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/p_uscene.html" afterPath="$PROJECT_DIR$/p_uscene.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smdata.js" afterPath="$PROJECT_DIR$/smdata.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smnode.js" afterPath="$PROJECT_DIR$/smnode.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -30,7 +31,7 @@
       <file leaf-file-name="p_uscenes.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/p_uscenes.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.375" vertical-offset="0" max-vertical-offset="735">
+            <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="735">
               <caret line="23" column="40" selection-start-line="22" selection-start-column="47" selection-end-line="23" selection-end-column="40" />
               <folding />
             </state>
@@ -40,8 +41,8 @@
       <file leaf-file-name="p_uscene.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/p_uscene.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-17.48" vertical-offset="866" max-vertical-offset="9510">
-              <caret line="116" column="16" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="16" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="6678" max-vertical-offset="10365">
+              <caret line="480" column="167" selection-start-line="480" selection-start-column="159" selection-end-line="480" selection-end-column="167" />
               <folding />
             </state>
           </provider>
@@ -90,10 +91,10 @@
       <file leaf-file-name="smdata.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smdata.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-24.884615" vertical-offset="16528" max-vertical-offset="40845">
-              <caret line="1145" column="72" selection-start-line="1145" selection-start-column="72" selection-end-line="1145" selection-end-column="72" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="14606" max-vertical-offset="41430">
+              <caret line="1005" column="28" selection-start-line="1005" selection-start-column="28" selection-end-line="1005" selection-end-column="28" />
               <folding>
-                <marker date="1429368008000" expanded="false" signature="96193:96207" placeholder="..." />
+                <marker date="1429637841000" expanded="false" signature="97418:97432" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -102,8 +103,8 @@
       <file leaf-file-name="smnode.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/smnode.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.50845253" vertical-offset="27479" max-vertical-offset="46515">
-              <caret line="1859" column="65" selection-start-line="1859" selection-start-column="65" selection-end-line="1859" selection-end-column="65" />
+            <state vertical-scroll-proportion="0.21351126" vertical-offset="32369" max-vertical-offset="46635">
+              <caret line="2176" column="0" selection-start-line="2176" selection-start-column="0" selection-end-line="2176" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -140,9 +141,9 @@
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/p_newscene.html" />
         <option value="$PROJECT_DIR$/p_nscene.html" />
-        <option value="$PROJECT_DIR$/smdata.js" />
         <option value="$PROJECT_DIR$/p_uscenes.html" />
         <option value="$PROJECT_DIR$/p_uscene.html" />
+        <option value="$PROJECT_DIR$/smdata.js" />
         <option value="$PROJECT_DIR$/smnode.js" />
       </list>
     </option>
@@ -178,6 +179,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -198,7 +200,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -280,7 +281,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="2560" height="1345" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -360,7 +361,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="35205">
           <caret line="842" column="57" selection-start-line="842" selection-start-column="57" selection-end-line="842" selection-end-column="57" />
           <folding>
-            <marker date="1429368008000" expanded="false" signature="96193:96207" placeholder="..." />
+            <marker date="1429637841000" expanded="false" signature="97418:97432" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -399,7 +400,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="34605">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1429368008000" expanded="false" signature="96193:96207" placeholder="..." />
+            <marker date="1429637841000" expanded="false" signature="97418:97432" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -629,7 +630,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="765">
           <caret line="44" column="6" selection-start-line="44" selection-start-column="6" selection-end-line="44" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -637,7 +637,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="480">
           <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -675,7 +674,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/p_uscenes.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.375" vertical-offset="0" max-vertical-offset="735">
+        <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="735">
           <caret line="23" column="40" selection-start-line="22" selection-start-column="47" selection-end-line="23" selection-end-column="40" />
           <folding />
         </state>
@@ -685,7 +684,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.50583655" vertical-offset="0" max-vertical-offset="2625">
           <caret line="26" column="70" selection-start-line="26" selection-start-column="70" selection-end-line="26" selection-end-column="70" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -693,35 +691,31 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.11673152" vertical-offset="0" max-vertical-offset="3150">
           <caret line="6" column="29" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
-          <folding>
-            <element signature="n#style#0;n#nav#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smdata.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-24.884615" vertical-offset="16528" max-vertical-offset="40845">
-          <caret line="1145" column="72" selection-start-line="1145" selection-start-column="72" selection-end-line="1145" selection-end-column="72" />
-          <folding>
-            <marker date="1429368008000" expanded="false" signature="96193:96207" placeholder="..." />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/p_uscene.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.48" vertical-offset="866" max-vertical-offset="9510">
-          <caret line="116" column="16" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="16" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="6678" max-vertical-offset="10365">
+          <caret line="480" column="167" selection-start-line="480" selection-start-column="159" selection-end-line="480" selection-end-column="167" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smdata.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="14606" max-vertical-offset="41430">
+          <caret line="1005" column="28" selection-start-line="1005" selection-start-column="28" selection-end-line="1005" selection-end-column="28" />
+          <folding>
+            <marker date="1429637841000" expanded="false" signature="97418:97432" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/smnode.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.50845253" vertical-offset="27479" max-vertical-offset="46515">
-          <caret line="1859" column="65" selection-start-line="1859" selection-start-column="65" selection-end-line="1859" selection-end-column="65" />
+        <state vertical-scroll-proportion="0.21351126" vertical-offset="32369" max-vertical-offset="46635">
+          <caret line="2176" column="0" selection-start-line="2176" selection-start-column="0" selection-end-line="2176" selection-end-column="0" />
           <folding />
         </state>
       </provider>

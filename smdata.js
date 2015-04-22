@@ -950,6 +950,12 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             "http://strr.us/hm4.jpg"
         ];
 
+        $scope.skybox = [
+            {name:'bluesky'},
+            {name:'space1'},
+            {name:'evening'},
+            {name:'midnight'}
+        ];
         $scope.time = [
             {name:'morning'},
             {name:'midday'},
@@ -976,13 +982,33 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             {name:'storm'}
         ];
 
-        $scope.enviroOptions = {
-            dynamicSky: false,
-            simpleWater: true,
-            oceanWater: false,
-            scatterMeshes:true,
-            scatterObjects:true
-        }
+//        $scope.enviroOptions = {
+//            dynamicSky: false,
+//            simpleWater: true,
+//            oceanWater: false,
+//            scatterMeshes:true,
+//            scatterObjects:true
+//        }
+        $scope.headings = [
+            {name: 'north'},
+            {name: 'south'},
+            {name: 'east'},
+            {name: 'west'},
+            {name: 'northeast'},
+            {name: 'northwest'},
+            {name: 'southeast'},
+            {name: 'southwest'}
+        ];
+        $scope.targetobjex = [
+            {name: 'key'},
+            {name: 'train'},
+            {name: 'trapdoor'},
+            {name: 'bigeye'}
+
+
+        ]
+
+        $scope.canSend = true;
 //        $scope.scene.scatterMeshes = true;
 
 //        $scope.$watch('enviroOptions', function (options){
@@ -1146,6 +1172,19 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                     $location.path( "#/uscenes/" + $routeParams.user_id);
                 }
             });
+        }
+        $scope.onShareScene = function () {
+            $http.post('/share_scene/' + $routeParams.scene_id,  $scope.scene).success(function(response){
+                console.log("submit response:  " + response);
+                if (response == "noauth") {
+                    $scope.headermessage = "You must be logged in to do that!"
+                } else {
+                    $scope.headermessage = response;
+                    $scope.canSend = false;
+//                    $location.path( "#/uscenes/" + $routeParams.user_id);
+                }
+            });
+
         }
     }
 

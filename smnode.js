@@ -1812,7 +1812,9 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     sceneScatterMeshes : req.body.sceneScatterMeshes,
                     sceneScatterObjects : req.body.sceneScatterObjects,
                     sceneUseDynamicSky : req.body.sceneUseDynamicSky,
+                    sceneUseCameraBackground : req.body.sceneUseCameraBackground,
                     sceneUseSkybox : req.body.sceneUseSkybox,
+                    sceneSkybox : req.body.sceneSkybox,
                     sceneUseGlobalFog : req.body.sceneUseGlobalFog,
                     sceneRenderFloorPlane : req.body.sceneRenderFloorPlane,
                     sceneUseFloorPlane : req.body.sceneUseFloorPlane,
@@ -2170,25 +2172,31 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
 //              });
 //      });
 
-  app.post('/share_node', requiredAuthentication, function (req, res) {
-      console.log("share node: " + req.body._id)
-      var o_id = new BSON.ObjectID(req.body._id);
-      db.audio_items.find({ "_id" : o_id}, function(err, audio_item) {
-            if (err || !audio_item) {
-            console.log("error getting audio items: " + err);
-            } else {
-                console.log('reset request from: ' + req.body.email);
+  app.post('/share_scene/:_id', requiredAuthentication, function (req, res) {
+      console.log("share node: " + req.body._id + " wmail: " + req.body.sceneShareWith);
+
+//      var o_id = new BSON.ObjectID(req.body._id);
+//      db.audio_items.find({ "_id" : o_id}, function(err, audio_item) {
+//            if (err || !audio_item) {
+//            console.log("error getting audio items: " + err);
+//            } else {
+//                console.log('reset request from: ' + req.body.user.user_email);
                 // ws.send("authorized");
-                var subject = "ServiceMedia user " + req.session.user.userName + " has shared a node with you";
+                var subject = "A Ticket to Ride on the Space/Time RailRoad!";
                 var from = "polytropoi@gmail.com";
-                var to = [req.body.email];
+                var to = [req.body.sceneShareWith];
                 var bcc = [];
                 //var reset = "";
                 var timestamp = Math.round(Date.now() / 1000);
                 
-                if (validator.isEmail(req.body.email) == true) {
-                    var htmlbody = "<h3>ServiceMedia " + audio_item[0].short_id + "</h3><hr><br>" +
-                    "Click here to access this node: </br>" + "http://servicemedia.net/#/play/" + audio_item[0].short_id;
+                if (validator.isEmail(req.body.sceneShareWith) == true) {
+                    var htmlbody = req.session.user.userName + " has shared a guest pass to the Space/Time RailRoad with you!</h3><hr><br>" +
+                    "Click here to access the scene: </br>" + "http://strr.us/?scene=" + req.body.short_id +
+                        "<br> Android App:  http://strr.us/strr.apk " +
+
+
+                            "<br> Scene Title: " + req.body.sceneTitle +
+                            "<br> Scene Key: " + req.body.short_id;
 
                     ses.sendEmail( { 
                        Source: from, 
@@ -2215,8 +2223,8 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
                       } else {
                       res.send("invalid email address");
                     }
-                  }
-                });                    
+//                    }
+//                });
   });
 
 /*
