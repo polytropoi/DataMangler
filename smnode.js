@@ -1811,6 +1811,10 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     sceneColorizeSky : req.body.sceneColorizeSky,
                     sceneScatterMeshes : req.body.sceneScatterMeshes,
                     sceneScatterObjects : req.body.sceneScatterObjects,
+                    sceneUseTargetObject : req.body.sceneUseTargetObject,
+                    sceneTargetObjectHeading : req.body.sceneTargetObjectHeading,
+                    sceneTargetObject : req.body.sceneTargetObject,
+                    sceneTargetEvent : req.body.sceneTargetEvent,
                     sceneUseDynamicSky : req.body.sceneUseDynamicSky,
                     sceneUseCameraBackground : req.body.sceneUseCameraBackground,
                     sceneUseSkybox : req.body.sceneUseSkybox,
@@ -1821,7 +1825,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     sceneUseEnvironment : req.body.sceneUseEnvironment,
                     sceneUseTerrain : req.body.sceneUseTerrain,
                     sceneUseHeightmap : req.body.sceneUseHeightmap,
-                    sceneHeightmap : req.body.sceneHeightmap,
+                    sceneHeightmapUrl : req.body.sceneHeightmapUrl,
                     sceneRestrictToLocation : req.body.sceneRestrictToLocation,
                     sceneLocationRange : req.body.sceneLocationRange,
                     sceneLatitude : req.body.sceneLatitude,
@@ -2182,7 +2186,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
 //            } else {
 //                console.log('reset request from: ' + req.body.user.user_email);
                 // ws.send("authorized");
-                var subject = "A Ticket to Ride on the Space/Time RailRoad!";
+                var subject = "Space/Time RailRoad ticket to " + req.body.sceneTitle;
                 var from = "polytropoi@gmail.com";
                 var to = [req.body.sceneShareWith];
                 var bcc = [];
@@ -2190,9 +2194,9 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
                 var timestamp = Math.round(Date.now() / 1000);
                 
                 if (validator.isEmail(req.body.sceneShareWith) == true) {
-                    var htmlbody = req.session.user.userName + " has shared a guest pass to the Space/Time RailRoad with you!</h3><hr><br>" +
+                    var htmlbody = req.session.user.userName + " has shared a guest pass on the Space/Time RailRoad with you!</h3><hr><br>" +
                     "Click here to access the scene: </br>" + "http://strr.us/?scene=" + req.body.short_id +
-                        "<br> Android App:  http://strr.us/strr.apk " +
+                        "<br> Get the Android App here:  http://strr.us/strr.apk " +
 
 
                             "<br> Scene Title: " + req.body.sceneTitle +
@@ -2914,7 +2918,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
     function(err, result) { // #last function, close async
         console.log("waterfall done: " + result);
     //  res.redirect('/upload.html');
-        res.send(result);
+        res.json(result);
         }
       );  
     }); //end app.post /upload
