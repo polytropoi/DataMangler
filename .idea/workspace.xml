@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="007fd320-610d-407e-83b6-eb72f4a4f5d4" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/p_uscene.html" afterPath="$PROJECT_DIR$/p_uscene.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smdata.js" afterPath="$PROJECT_DIR$/smdata.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smnode.js" afterPath="$PROJECT_DIR$/smnode.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="servmed_web.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,11 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="p_uscene.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="p_uscene.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/p_uscene.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-22.833334" vertical-offset="6652" max-vertical-offset="10515">
-              <caret line="480" column="144" selection-start-line="480" selection-start-column="144" selection-end-line="480" selection-end-column="144" />
+            <state vertical-scroll-proportion="0.47677594" vertical-offset="7181" max-vertical-offset="10440">
+              <caret line="502" column="35" selection-start-line="502" selection-start-column="28" selection-end-line="502" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -81,8 +81,20 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-27.791666" vertical-offset="3608" max-vertical-offset="4785">
-              <caret line="285" column="48" selection-start-line="285" selection-start-column="48" selection-end-line="285" selection-end-column="48" />
+            <state vertical-scroll-proportion="-16.25" vertical-offset="0" max-vertical-offset="4800">
+              <caret line="26" column="45" selection-start-line="26" selection-start-column="45" selection-end-line="26" selection-end-column="45" />
+              <folding>
+                <element signature="n#style#0;n#a#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="geolocation.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/geolocation.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="810">
+              <caret line="13" column="73" selection-start-line="13" selection-start-column="73" selection-end-line="13" selection-end-column="73" />
               <folding />
             </state>
           </provider>
@@ -91,20 +103,20 @@
       <file leaf-file-name="smdata.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smdata.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.109091" vertical-offset="17349" max-vertical-offset="41565">
-              <caret line="1190" column="52" selection-start-line="1190" selection-start-column="52" selection-end-line="1190" selection-end-column="52" />
+            <state vertical-scroll-proportion="-20.23077" vertical-offset="16049" max-vertical-offset="41745">
+              <caret line="1105" column="29" selection-start-line="1105" selection-start-column="29" selection-end-line="1105" selection-end-column="29" />
               <folding>
-                <marker date="1429823619000" expanded="true" signature="99556:99570" placeholder="..." />
+                <marker date="1429988297000" expanded="false" signature="99864:99878" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="smnode.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="smnode.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/smnode.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.5149546" vertical-offset="29174" max-vertical-offset="46695">
-              <caret line="1817" column="69" selection-start-line="1817" selection-start-column="69" selection-end-line="1817" selection-end-column="69" />
+            <state vertical-scroll-proportion="-9.846154" vertical-offset="19634" max-vertical-offset="46695">
+              <caret line="1327" column="22" selection-start-line="1327" selection-start-column="14" selection-end-line="1327" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -138,13 +150,14 @@
         <option value="$PROJECT_DIR$/css/bootstrap.css.map" />
         <option value="$PROJECT_DIR$/navular.html" />
         <option value="$PROJECT_DIR$/p_uaudios.html" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/p_newscene.html" />
         <option value="$PROJECT_DIR$/p_nscene.html" />
         <option value="$PROJECT_DIR$/p_uscenes.html" />
-        <option value="$PROJECT_DIR$/p_uscene.html" />
         <option value="$PROJECT_DIR$/smnode.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/geolocation.js" />
         <option value="$PROJECT_DIR$/smdata.js" />
+        <option value="$PROJECT_DIR$/p_uscene.html" />
       </list>
     </option>
   </component>
@@ -198,6 +211,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="servmed_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="servmed_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -217,14 +244,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Node.js.local">
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
-      <method />
-    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -235,14 +254,12 @@
       <option name="showConsoleOnStdOut" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="CucumberJavaScriptRunConfigurationType" factoryName="Cucumber.js">
-      <option name="cucumberJsArguments" />
-      <option name="executablePath" />
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
       <option name="filePath" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
-      <envs />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
       <method />
     </configuration>
     <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
@@ -250,6 +267,16 @@
       <setting name="settingsFile" value="" />
       <setting name="serverType" value="INTERNAL" />
       <setting name="preferredDebugBrowser" value="Chrome" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="CucumberJavaScriptRunConfigurationType" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" />
+      <option name="executablePath" />
+      <option name="filePath" />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
@@ -288,18 +315,18 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.10988578" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925835" sideWeight="0.49980307" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32925835" sideWeight="0.49980307" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33007336" sideWeight="0.50019693" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6138614" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -316,9 +343,9 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.08192202" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -341,13 +368,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="5115">
-          <caret line="1" column="31" selection-start-line="1" selection-start-column="31" selection-end-line="1" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/smnode.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="26115" max-vertical-offset="40530">
@@ -361,7 +381,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="35205">
           <caret line="842" column="57" selection-start-line="842" selection-start-column="57" selection-end-line="842" selection-end-column="57" />
           <folding>
-            <marker date="1429823619000" expanded="true" signature="99556:99570" placeholder="..." />
+            <marker date="1429988297000" expanded="false" signature="99864:99878" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -400,7 +420,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="34605">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1429823619000" expanded="true" signature="99556:99570" placeholder="..." />
+            <marker date="1429988297000" expanded="false" signature="99864:99878" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -610,13 +630,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/css/bootstrap.css.map">
+      <provider editor-type-id="sourcemapFileViewerProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="389">
           <caret line="0" column="111576" selection-start-line="0" selection-start-column="111576" selection-end-line="0" selection-end-column="111576" />
         </state>
-      </provider>
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/express/node_modules/connect/node_modules/multiparty/index.js">
@@ -678,24 +698,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-27.791666" vertical-offset="3608" max-vertical-offset="4785">
-          <caret line="285" column="48" selection-start-line="285" selection-start-column="48" selection-end-line="285" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/smdata.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.109091" vertical-offset="17349" max-vertical-offset="41565">
-          <caret line="1190" column="52" selection-start-line="1190" selection-start-column="52" selection-end-line="1190" selection-end-column="52" />
-          <folding>
-            <marker date="1429823619000" expanded="true" signature="99556:99570" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/p_uscenes.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-14.375" vertical-offset="0" max-vertical-offset="735">
@@ -704,18 +706,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/p_uscene.html">
+    <entry file="file://$PROJECT_DIR$/js/geolocation.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-22.833334" vertical-offset="6652" max-vertical-offset="10515">
-          <caret line="480" column="144" selection-start-line="480" selection-start-column="144" selection-end-line="480" selection-end-column="144" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="810">
+          <caret line="13" column="73" selection-start-line="13" selection-start-column="73" selection-end-line="13" selection-end-column="73" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.25" vertical-offset="0" max-vertical-offset="4800">
+          <caret line="26" column="45" selection-start-line="26" selection-start-column="45" selection-end-line="26" selection-end-column="45" />
+          <folding>
+            <element signature="n#style#0;n#a#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/smnode.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.5149546" vertical-offset="29174" max-vertical-offset="46695">
-          <caret line="1817" column="69" selection-start-line="1817" selection-start-column="69" selection-end-line="1817" selection-end-column="69" />
+        <state vertical-scroll-proportion="-9.846154" vertical-offset="19634" max-vertical-offset="46695">
+          <caret line="1327" column="22" selection-start-line="1327" selection-start-column="14" selection-end-line="1327" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/smdata.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-20.23077" vertical-offset="16049" max-vertical-offset="41745">
+          <caret line="1105" column="29" selection-start-line="1105" selection-start-column="29" selection-end-line="1105" selection-end-column="29" />
+          <folding>
+            <marker date="1429988297000" expanded="false" signature="99864:99878" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/p_uscene.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.47677594" vertical-offset="7181" max-vertical-offset="10440">
+          <caret line="502" column="35" selection-start-line="502" selection-start-column="28" selection-end-line="502" selection-end-column="35" />
           <folding />
         </state>
       </provider>

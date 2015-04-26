@@ -1,4 +1,4 @@
-var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'colorpicker.module', 'mediaPlayer', 'angularFileUpload']);
+var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'colorpicker.module', 'geolocation', 'mediaPlayer', 'angularFileUpload']);
 
     smApp.config(['$compileProvider',
     function ($compileProvider) {
@@ -902,7 +902,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             }
         }
 
-    function USceneCtrl($scope, $http, $routeParams, usernav) {
+    function USceneCtrl($scope, $http, $routeParams, usernav, geolocation) {
         $scope.urls = usernav.urls;
         $('#unityPlayer').toggleClass('hidden', true);
         $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
@@ -947,7 +947,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
         $scope.heightmaps = [
 
-            "http://strr.us/hm1.jpg",
+//            "http://strr.us/hm1.jpg",
             "http://strr.us/hm2.jpg",
             "http://strr.us/hm3.jpg",
             "http://strr.us/hm4.jpg"
@@ -1072,6 +1072,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
 
 
+
+
             $http.get('/useraudio/' + $routeParams.user_id).success(function (data) {
                 $scope.audioitems = data;
                 $scope.predicate = '-otimestamp';
@@ -1097,6 +1099,16 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             });
 
         });
+
+        $scope.GetCurrentLocation = function () {
+            geolocation.getLocation().then(function(data){
+                $scope.scene.sceneLatitude = data.coords.latitude;
+                $scope.scene.sceneLongitude = data.coords.longitude;
+            });
+        };
+
+
+
         $scope.AddScenePicture = function(pictureID) {
 //                if (id != null && id != undefined && id.length > 0) {
             console.log("XXX gotsa new pictureID: " + pictureID);

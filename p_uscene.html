@@ -3,22 +3,16 @@
 
 <div class="well" style="margin-top: 20px;">
     <div class="row">
-    <a class="btn btn-primary btn-lg pull-right"target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
-    <!--<a class="btn btn-primary btn-lg pull-right"target="_blank" href="strr://play/?scene={{scene.short_id}}">Mobile Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>-->
-    <button class="btn btn-primary btn-lg " ng-click="onSaveScene()" >Save</button>
-    <span><p>{{headermessage}}</p>
+    <a class="btn btn-primary btn-lg "target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
+    <button class="btn btn-primary btn-lg pull-right " ng-click="onSaveScene()" >Save</button>
+    <br><span class="pull-right"><p>{{headermessage}}</p></span>
+    <span>
         <h4>Scene Key: <a target="_blank" href="http://servicemedia.net/scene/{{scene.short_id}}">{{scene.short_id}}</a></h4></span> <span ><h4>Scene Title: {{scene.sceneTitle}}</h4></span>
 
 
 
 
 <form name="form">
-
-
-    <!--<div class="col-md-2"></div>-->
-    <!--<form class="form-horizontal" role="form" name="newsceneform">-->
-        <!--<div class="col-md-3"></div>-->
-        <!--<div class="col-md-5">-->
 
     <div class="col-md-12"><hr></div>
         <div class="col-md-6">
@@ -29,7 +23,7 @@
                     Domain:
                 </td>
                 <td>
-                    <input type="text" class="form-control" ng-model="scene.sceneDomain" name="scene_sceneDomain" id="scene_sceneDomain" placeholder=" Domain" required>
+                    <input type="text" class="form-control" ng-model="scene.sceneDomain" name="scene_sceneDomain" id="scene_sceneDomain" placeholder=" Domain" >
                 </td>
             </tr>
             <tr>
@@ -55,7 +49,7 @@
                     Scene Title
                 </td>
                 <td>
-                    <input type="text" class="form-control" ng-model="scene.sceneTitle" name="scene_sceneTitle" id="scene_sceneTitleInput" placeholder=" Title" >
+                    <input type="text" class="form-control" ng-model="scene.sceneTitle" name="scene_sceneTitle" id="scene_sceneTitleInput" placeholder=" Title" required>
 
                 </td>
             </tr>
@@ -75,7 +69,7 @@
                 </td>
                 <td>
                     <textarea type="text" class="form-control" ng-model="scene.sceneShareWith" name="scene_sceneShareWithUsers" placeholder="delimit usernames or emails with a comma" ></textarea>
-                    <a class="btn btn-primary" ng-show=canSend ng-click="onShareScene()">Send Now</a>
+                    <a class="btn btn-info btn-sm pull-right glyphicon glyphicon-envelope" ng-show="canSend && scene.sceneShareWith != null" ng-click="onShareScene()"> Send Now</a>
                 </td>
             </tr>
             <tr>
@@ -97,17 +91,17 @@
             <tr>
                 <td>Restrict to Location?    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRestrictToLocation]" ng-click="scene.sceneRestrictToLocation = !scene.sceneRestrictToLocation">{{!scene.sceneRestrictToLocation && '' || ''}}
                 </a></td>
-                <td>Range in meters: <input type="text" ng-model="scene.sceneLocationRange" type="number"></td>
+                <td>Range in meters: <input class="pull-right" type="text" ng-model="scene.sceneLocationRange" type="number"></td>
 
             </tr>
             <tr>
                 <td>
-                   Latitude:  <input type="text" ng-model="scene.sceneLatitude">
+                   Latitude:  <input class="pull-right" type="text" ng-model="scene.sceneLatitude" >
                 </td>
                 <td>
-                    Longitude:  <input type="text" ng-model="scene.sceneLongitude">
+                    Longitude:  <input class="pull-right" type="text" ng-model="scene.sceneLongitude" >
                 </td>
-
+            <button class="btn btn-info btn-sm glyphicon glyphicon-globe pull-right" ng-click="GetCurrentLocation()"> Use Current Location</button>
             </tr>
 
         </table>
@@ -119,16 +113,17 @@
 
                 <td>Restrict to Time?    <a class="btn pull-right " ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRestrictToTime]" ng-click="scene.sceneRestrictToTime = !scene.sceneRestrictToTime">{{!scene.sceneRestrictToTime && '' || ''}}
                 </a></td>
-                <td>Time Range: <input type="text" ng-model="scene.sceneTimeRange"></td>
+                <td>Time Range: <input class="pull-right" type="text" ng-model="scene.sceneTimeRange"></td>
             </tr>
             <tr>
 
                 <td>
-                    Start Time:  <input type="text" ng-model="scene.sceneStartTime">
+                    Start Time:  <input class="pull-right" type="text" ng-model="scene.sceneStartTime">
                 </td>
                 <td>
-                    End Time:  <input type="text" ng-model="scene.sceneEndTime">
+                    End Time:  <input class="pull-right" type="text" ng-model="scene.sceneEndTime">
                 </td>
+                <button class="btn btn-info btn-sm glyphicon glyphicon-time pull-right" ng-click="GetCurrentTime()"> Use Current Time</button>
             </tr>
 
         </table>
@@ -215,7 +210,7 @@
                 </td>
                 <td>
 
-                    <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" required>
+                    <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" >
                         <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
                     </select>
                 </td>
@@ -233,7 +228,7 @@
                 </td>
                 <td>
 
-                    <select name="sceneHeightmap" class="form-control" ng-model="scene.sceneHeightmap.name" ng-options="e as e for e in heightmaps" required>
+                    <select name="sceneHeightmap" class="form-control" ng-model="scene.sceneHeightmap.name" ng-options="e as e for e in heightmaps" >
                         <option value="" selected="{{sceneHeightmap.name}}">Select Heightmap:</option>
                     </select>
                 </td>
@@ -321,7 +316,7 @@
                     Select Skybox:
                 </td>
                 <td>
-                    <select name="sceneSkybox" class="form-control" ng-model="scene.sceneSkybox" ng-options="s.name for s in skybox" required>
+                    <select name="sceneSkybox" class="form-control" ng-model="scene.sceneSkybox" ng-options="s.name for s in skybox" >
                         <option value="" selected="selected">Select Skybox:</option>
                     </select>
                 </td>
@@ -348,7 +343,7 @@
                     Time of Day:
                 </td>
                 <td>
-                    <select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in time" required>
+                    <select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in time" >
                         <option value="" selected="selected">Select Time:</option>
                     </select>
                 </td>
@@ -356,7 +351,7 @@
                     Time Speed:
                 </td>
                 <td>
-                    <select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTimescale" ng-options="t.name for t in speed" required>
+                    <select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTimescale" ng-options="t.name for t in speed" >
                         <option value="" selected="selected">Select Timescale:</option>
                     </select>
                 </td>
@@ -369,7 +364,7 @@
                     Weather:
                 </td>
                 <td>
-                    <select name="sceneWeather" class="form-control" ng-model="scene.sceneWeather" ng-options="w.name for w in weather" required>
+                    <select name="sceneWeather" class="form-control" ng-model="scene.sceneWeather" ng-options="w.name for w in weather" >
                         <option value="" selected="selected">Select Weather:</option>
                     </select>
                 </td>
@@ -377,7 +372,7 @@
                     Season:
                 </td>
                 <td>
-                    <select name="sceneSeason" class="form-control" ng-model="scene.sceneSeason" ng-options="s.name for s in season" required>
+                    <select name="sceneSeason" class="form-control" ng-model="scene.sceneSeason" ng-options="s.name for s in season" >
                         <option value="" selected="selected">Select Season:</option>
                     </select>
                 </td>
@@ -478,7 +473,7 @@
                             </a>  </td>
 
                         <td>
-                        Target Heading: </td><td><select name="sceneTime" class="form-control" ng-model="scene.sceneTargetHeading" ng-options="t.name for t in headings" required>
+                        Target Heading: </td><td><select name="sceneTime" class="form-control" ng-model="scene.sceneTargetHeading" ng-options="t.name for t in headings" >
                         <option value="" selected="selected">Select Heading:</option>
                     </select>
                         </td>
@@ -601,7 +596,7 @@
                 <!--</div>-->
             <!--</div>-->
             <!--</div>-->
-            <!--<!--{{scenePictureThumbs}}-->-->
+            <!--<!--{{scenePictureThumbs}}-->
                 <!--<div class="row">-->
             <!--<div ng-repeat="picture in scenePictureThumbs">-->
                 <!--<div class="col-md-2">-->

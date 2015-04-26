@@ -1825,7 +1825,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     sceneUseEnvironment : req.body.sceneUseEnvironment,
                     sceneUseTerrain : req.body.sceneUseTerrain,
                     sceneUseHeightmap : req.body.sceneUseHeightmap,
-                    sceneHeightmapUrl : req.body.sceneHeightmapUrl,
+                    sceneHeightmap : req.body.sceneHeightmap,
                     sceneRestrictToLocation : req.body.sceneRestrictToLocation,
                     sceneLocationRange : req.body.sceneLocationRange,
                     sceneLatitude : req.body.sceneLatitude,
