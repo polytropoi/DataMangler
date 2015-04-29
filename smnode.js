@@ -1848,7 +1848,11 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 //                    sceneAmbientAudio2ID : req.body.sceneAmbientAudio2ID,
                     sceneKeynote : req.body.sceneKeynote,
                     sceneDescription : req.body.sceneDescription,
-                    sceneText : req.body.sceneText }
+                    sceneText : req.body.sceneText,
+                    sceneTextLoop : req.body.sceneTextLoop
+
+//                    sceneTextOptions : req.body.sceneTextOptions
+                    }
                 });
             } if (err) {res.send(error)} else {res.send("updated " + new Date())}
         });

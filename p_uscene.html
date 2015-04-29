@@ -672,14 +672,18 @@
                 </div>
             </div>
             <div class="col-md-12">
+
                 <div class="form-group">
-                    <label for="scene_sceneTextInput" >Scene Text: </label>
+                    <a class="btn pull-right" ng-class="{true: 'btn-info ', false: 'btn-success'}[!scene.sceneTextLoop]" ng-click="scene.sceneTextLoop = !scene.sceneTextLoop">{{!scene.sceneTextLoop && 'Do Not Loop Text' || 'Loop Text'}}
+                    </a>
+                    <label for="scene_sceneTextInput" >Scene Text: (delimit with tilde "~" or tab)</label>
                     <textarea class="form-control" name="scene_sceneText" id="scene_sceneTextInput" ng-model="scene.sceneText" placeholder="Text" rows="5"></textarea></div>
                 <!--<button class="btn btn-primary btn-large pull-right" ng-click="Login()" ng-show="userstatus == 0" ng-disabled="!form.$valid">Login</button>-->
 
             </div>
     </form>
-        <button class="btn btn-primary btn-large pull-right" ng-click="onDeleteScene()" ng-hide="userstatus == 0 " >Delete Scene</button>
+        <button class="btn btn-primary btn-sm pull-left" ng-click="onDeleteScene()" ng-hide="userstatus == 0 " >Delete Scene</button>
+    <button class="btn btn-primary btn-lg pull-right " ng-click="onSaveScene()" >Save</button>
     </br></br>
 
 

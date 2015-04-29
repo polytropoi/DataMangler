@@ -985,6 +985,14 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             {name:'storm'}
         ];
 
+//        $scope.textOptions = [
+//            {name:'walking, looping, slow'},
+//            {name:'clear'},
+//            {name:'pcloudy'},
+//            {name:'rain'},
+//            {name:'storm'}
+//        ];
+
 //        $scope.enviroOptions = {
 //            dynamicSky: false,
 //            simpleWater: true,
