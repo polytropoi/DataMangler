@@ -917,6 +917,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //        $scope.environments = [];
 
         $scope.sceneEnvironment = {};
+        $scope.sceneTargetEvent = {};
+        $scope.sceneTargetObject = {};
         $scope.sceneEnvironment.options = {};
 
 //
@@ -1011,17 +1013,16 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             {name: 'southwest'}
         ];
         $scope.targetobjex = [
-            {name: 'key'},
-            {name: 'train'},
-            {name: 'trapdoor'},
-            {name: 'bigeye'},
-            {name: 'chest1'}
 
+            'crypt',
+            'train',
+            'dinosaur',
+            'spacestation'
 
         ];
         $scope.targetevents = [
-            {name: 'previous scene'},
-            {name: 'next scene'}
+              'previous scene',
+                'next scene'
 
         ];
 

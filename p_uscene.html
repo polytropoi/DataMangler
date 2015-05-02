@@ -31,7 +31,7 @@
                     Previous Scene
                 </td>
                 <td>
-                    <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_scenePreviousScene" placeholder=" short code" >
+                    <input type="text" class="form-control" ng-model="scene.scenePreviousScene" name="scene_scenePreviousScene" id="scene_scenePreviousScene" placeholder="prev. scene short code" >
 
                 </td>
             </tr>
@@ -40,7 +40,7 @@
                     Next Scene
                 </td>
                 <td>
-                    <input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNextScene" placeholder=" short code" >
+                    <input type="text" class="form-control" ng-model="scene.sceneNextScene" name="scene_sceneNextScene" id="scene_sceneNextScene" placeholder="next scene short code" >
 
                 </td>
             </tr>
@@ -473,7 +473,7 @@
                             </a>  </td>
 
                         <td>
-                        Target Heading: </td><td><select name="sceneTime" class="form-control" ng-model="scene.sceneTargetHeading" ng-options="t.name for t in headings" >
+                        Target Heading: </td><td><select name="sceneTime" class="form-control" ng-model="scene.sceneTargetHeading" ng-options="e as e for e in headings" >
                         <option value="" selected="selected">Select Heading:</option>
                     </select>
                         </td>
@@ -484,7 +484,7 @@
                         Target Object:
                         </td>
                         <td>
-                            <select name="arTarget" class="form-control" ng-model="scene.sceneTargetObject" ng-options="t.name for t in targetobjex" >
+                            <select name="sceneTargetObject" class="form-control" ng-model="scene.sceneTargetObject.name" ng-options="e as e for e in targetobjex" >
                                 <option value="" selected="selected">Select Object:</option>
                             </select>
                         </td>
@@ -492,8 +492,11 @@
                                 Target Event:
                             </td>
                             <td>
-                                <select name="arTarget" class="form-control" ng-model="scene.sceneTargetEvent" ng-options="t.name for t in targetevents" >
-                                    <option value="" selected="selected">Select Event:</option>
+                                <!--<select name="sceneTargetEvent" class="form-control" ng-model="scene.sceneTargetEvent.name" ng-options="e as e for e in targetevents" >-->
+                                    <!--<option value="" selected={{sceneTargetEvent.name}}>Select Event:</option>-->
+                                <!--</select>-->
+                                <select name="sceneTargetEvent" class="form-control" ng-model="scene.sceneTargetEvent.name" ng-options="e as e for e in targetevents" >
+                                    <option value="" selected="{{sceneTargetEvent.name}}">Select Event:</option>
                                 </select>
                             </td>
                     </tr>
