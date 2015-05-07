@@ -4,6 +4,8 @@
 <div class="well" style="margin-top: 20px;">
     <div class="row">
     <a class="btn btn-primary btn-lg "target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
+
+    <button class="btn btn-primary btn-md "target="_blank" ng-click="UploadScreenshot()">Upload Screenshot</button>
     <button class="btn btn-primary btn-lg pull-right " ng-click="onSaveScene()" >Save</button>
     <br><span class="pull-right"><p>{{headermessage}}</p></span>
     <span>
@@ -434,34 +436,67 @@
                 <table class="table">
                     <tr>
                         <td>
-                            Scatter World Meshes?
+                            Scatter World Meshes?<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && '' || ''}}
+                        </a>
                         </td>
                         <td>
-                            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && '' || ''}}
-                            </a>
+
+                            <div class="btn-group">
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.crystal" btn-checkbox>Crystals</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.conifer" btn-checkbox>Trees - Conifer</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.rock" btn-checkbox>Rocks</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.tree2" btn-checkbox>Trees - Small</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.redflower" btn-checkbox>Red Flowers</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.bush" btn-checkbox>Bushes</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.rock2" btn-checkbox>More Rocks</label>
+                            </div>
+                        </td>
+
+                        <td>
+                            Scatter World Objects? <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && '' || ''}}
+                        </a>
                         </td>
                         <td>
-                            Scatter World Objects?
-                        </td>
-                        <td>
-                            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && '' || ''}}
-                            </a>
+
+                            <div class="btn-group">
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.gate1" btn-checkbox>Basic Gates</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.picobj" btn-checkbox>Picture Objects</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.textobj" btn-checkbox>Text Objects</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.key1" btn-checkbox>Keys</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.snowman" btn-checkbox>Snowmen</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.mailbox" btn-checkbox>Mailboxes</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.rabbit" btn-checkbox>Rabbits</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.kitten" btn-checkbox>Kittens</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.treasure1" btn-checkbox>Treasure Chests</label>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                     <td>
-                        Scatter Viewport Meshes?
+                        Show Viewport Meshes?<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneShowViewportMeshes]" ng-click="scene.sceneShowViewportMeshes = !scene.sceneShowViewportMeshes">{{!scene.sceneShowViewportMeshes && '' || ''}}
+                    </a>
                         </td>
                         <td>
-                            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterViewportMeshesv]" ng-click="scene.sceneScatterViewportMeshes = !scene.sceneScatterViewportMeshes">{{!scene.sceneScatterViewportMeshes && '' || ''}}
-                            </a>
+
+                            <div class="btn-group">
+                                <label class="btn btn-primary" ng-model="scene.sceneViewportMeshLayers.fish" btn-checkbox>fish</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneViewportMeshLayers.birds" btn-checkbox>birds</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneViewportMeshLayers.clouds" btn-checkbox>clouds</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneViewportMeshLayers.fireworks" btn-checkbox>fireworks</label>
+                            </div>
                         </td>
                         <td>
-                            Scatter Viewport Objects?
+                            Show Viewport Objects?<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneShowViewportObjects]" ng-click="scene.sceneShowViewportObjects = !scene.sceneShowViewportObjects">{{!scene.sceneShowViewportObjects && '' || ''}}
+                        </a>
                         </td>
                         <td>
-                            <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterViewportObjects]" ng-click="scene.sceneScatterViewportObjects = !scene.sceneScatterViewportObjects">{{!scene.sceneScatterViewportObjects && '' || ''}}
-                            </a>
+
+                            <div class="btn-group">
+                                <label class="btn btn-primary" ng-model="scene.sceneViewportObjectLayers.groundedText" btn-checkbox>Text - Grounded</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneViewportObjectLayers.groundedPictures" btn-checkbox>Pics - Grounded</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneViewportObjectLayers.flyingText" btn-checkbox>Text - Flying</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneViewportObjectLayers.flyingPictures" btn-checkbox>Pics - Flying</label>
+                            </div>
                         </td>
                 </tr>
                     <tr>
@@ -538,6 +573,8 @@
                     <select name="sceneAudio" class="form-control" ng-model="scene.scenePrimaryAudioID" ng-options="a._id as a.title for a in audioitems" >
                         <option value="" selected="selected">Select Audio:</option>
                     </select>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneLoopPrimaryAudio]" ng-click="scene.sceneLoopPrimaryAudio = !scene.sceneLoopPrimaryAudio">{{!scene.sceneLoopPrimaryAudio && ' Do Not Loop' || ' Loop'}}
+                    </a>
                 </td>
 
             </tr>

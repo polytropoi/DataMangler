@@ -77,6 +77,9 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             }
 	});
 
+//    smApp.run(function($rootScope) {
+//        $rootScope.sceneKey = "";
+//    });
 
 	smApp.filter('getById', function() {
 		  return function(input, id) {
@@ -902,7 +905,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             }
         }
 
-    function USceneCtrl($scope, $http, $routeParams, usernav, geolocation) {
+    function USceneCtrl($scope, $http, $rootScope, $routeParams, usernav, geolocation, $location) {
         $scope.urls = usernav.urls;
         $('#unityPlayer').toggleClass('hidden', true);
         $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
@@ -987,21 +990,6 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             {name:'storm'}
         ];
 
-//        $scope.textOptions = [
-//            {name:'walking, looping, slow'},
-//            {name:'clear'},
-//            {name:'pcloudy'},
-//            {name:'rain'},
-//            {name:'storm'}
-//        ];
-
-//        $scope.enviroOptions = {
-//            dynamicSky: false,
-//            simpleWater: true,
-//            oceanWater: false,
-//            scatterMeshes:true,
-//            scatterObjects:true
-//        }
         $scope.headings = [
             {name: 'north'},
             {name: 'south'},
@@ -1150,6 +1138,14 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         };
 
 
+        $scope.UploadScreenshot = function() {
+
+            $location.path( "uploadpicture");
+            $rootScope.sceneKey = $scope.scene.short_id;
+            $rootScope.$broadcast('uploadScreenshot', "testa");
+
+
+        };
 
         $scope.DeleteScenePicture = function(id) {
 
@@ -2528,9 +2524,21 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 /*
 
 */
-function NewPictureCtrl($scope, $http, $routeParams, $cookies, $location, $timeout, $upload, $route, usernav) {
+function NewPictureCtrl($scope, $http, $routeParams, $cookies, $location, $timeout, $upload, $route, usernav, $location) {
 
   			console.log("tryna load NewPictureCtrl controller");
+
+            $scope.$on('uploadScreenshot', function(event, args) {
+
+                console.log("args: " + args);
+                // do what you want to do
+            });
+
+
+            $scope.AddTag = function (tag) {
+                console.log("tryna AddTag");
+                $scope.item.tags.push(tag);
+            }
 
 		    $scope.inprogress = false;
   			$scope.upstatus = "choose a file (jpg or png) or drag/drop into the outlined area";

@@ -24,13 +24,14 @@
 
 app = express();
 
+
 var whitelist = ['strr.us.s3.amazonaws.com', 'strr.us', 'elnoise.com', 'philosphersgarden.com', 'mvmv.us', 'servicemedia.net'];
 var corsOptions = function (origin) {
     console.log("checking vs whitelist:" + origin);
     if ( whitelist.indexOf(origin) !== -1 ) {
         return true;
     } else {
-        return false;
+        return true; //fornow...
     }
 };
 
@@ -1810,7 +1811,13 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     sceneTweakColors : req.body.sceneTweakColors,
                     sceneColorizeSky : req.body.sceneColorizeSky,
                     sceneScatterMeshes : req.body.sceneScatterMeshes,
+                    sceneScatterMeshLayers : req.body.sceneScatterMeshLayers,
+                    sceneScatterObjectLayers : req.body.sceneScatterObjectLayers,
                     sceneScatterObjects : req.body.sceneScatterObjects,
+                    sceneShowViewportMeshes : req.body.sceneShowViewportMeshes,
+                    sceneShowViewportObjects : req.body.sceneShowViewportObjects,
+                    sceneViewportMeshLayers : req.body.sceneViewportMeshLayers,
+                    sceneViewportObjectLayers : req.body.sceneViewportObjectLayers,
                     sceneUseTargetObject : req.body.sceneUseTargetObject,
                     sceneTargetObjectHeading : req.body.sceneTargetObjectHeading,
                     sceneTargetObject : req.body.sceneTargetObject,
@@ -1847,6 +1854,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 //                    sceneAudioID : req.body.sceneAudioID,
                     sceneAmbientAudioID : req.body.sceneAmbientAudioID,
                     scenePrimaryAudioID : req.body.scenePrimaryAudioID,
+                    sceneLoopPrimaryAudio : req.body.sceneLoopPrimaryAudio,
 //                    sceneAmbientAudio2ID : req.body.sceneAmbientAudio2ID,
                     sceneKeynote : req.body.sceneKeynote,
                     sceneDescription : req.body.sceneDescription,
