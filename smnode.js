@@ -2741,9 +2741,8 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
 
 app.post('/uploadpicture', requiredAuthentication, function (req, res) {
 
+    console.log("tryna upload..." + JSON.stringify(req.body));
 
-    console.log("tryna upload...");
-        
         var returnString = "";
             var uName = req.body.username;
             var uPass = req.body.userpass;

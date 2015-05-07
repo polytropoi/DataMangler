@@ -2600,7 +2600,7 @@ function NewPictureCtrl($scope, $http, $routeParams, $rootScope, $cookies, $loca
   			$scope.uploadInProgress = false;
   			$scope.uploadComplete = false;
 
-  			$scope.tags = [];
+//  			$scope.tags = [];
 
   			//$scope.upload = [];
 
