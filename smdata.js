@@ -56,7 +56,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             when('/newpath/:u_id', {controller:NewPathCtrl, templateUrl:'p_newpath.html'}).
 	      when('/uploadaudio', {controller:NewAudioCtrl, templateUrl:'p_add_audio.html'}).
 	      when('/uploadtext', {controller:NewAudioCtrl, templateUrl:'p_uploadtext.html'}).
-	      when('/uploadpicture', {controller:NewPictureCtrl, templateUrl:'p_add_picture.html'}).
+	      when('/uploadpicture/:type/:short_id', {controller:NewPictureCtrl, templateUrl:'p_add_picture.html'}).
         when('/uploadobject', {controller:NewObjectCtrl, templateUrl:'p_add_object.html'}).
 	      when('/uploadtext', {controller:UploadTextCtrl, templateUrl:'p_uploadtext.html'}).
 	      when('/webplayer', {controller:WebplayerCtrl, templateUrl:'p_webplayer.html'}).
@@ -76,6 +76,17 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 }
             }
 	});
+
+    smApp.factory('messages', function(){
+        var messages = {};
+
+        messages.list = [];
+
+        messages.add = function(message){
+            messages.list.push({id: messages.list.length, text: message});
+        };
+        return messages;
+    });
 
 //    smApp.run(function($rootScope) {
 //        $rootScope.sceneKey = "";
@@ -1138,14 +1149,15 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         };
 
 
-        $scope.UploadScreenshot = function() {
-
-            $location.path( "uploadpicture");
-            $rootScope.sceneKey = $scope.scene.short_id;
-            $rootScope.$broadcast('uploadScreenshot', "testa");
-
-
-        };
+//        $scope.UploadScreenshot = function() {
+//
+//
+//           // $rootScope.sceneKey = $scope.scene.short_id;
+//            $rootScope.$broadcast('uploadScreenshot', "testa");
+////            $location.path( "uploadpicture");
+//
+//
+//        };
 
         $scope.DeleteScenePicture = function(id) {
 
@@ -2524,21 +2536,32 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 /*
 
 */
-function NewPictureCtrl($scope, $http, $routeParams, $cookies, $location, $timeout, $upload, $route, usernav, $location) {
+function NewPictureCtrl($scope, $http, $routeParams, $rootScope, $cookies, $location, $timeout, $upload, $route, usernav, $location) {
 
   			console.log("tryna load NewPictureCtrl controller");
 
-            $scope.$on('uploadScreenshot', function(event, args) {
+//            $rootScope.$on('uploadScreenshot', function(event, args) {
+//
+//                console.log("args: " + args);
+//                // do what you want to do
+//            });
+        $scope.tags = [];
+        $scope.AddTag = function (tag) {
+            console.log("tryna AddTag");
+            $scope.tags.push(tag);
+            console.log("tags: " + $scope.tags)
+        }
 
-                console.log("args: " + args);
-                // do what you want to do
-            });
 
+        if ($routeParams.type != null) {
 
-            $scope.AddTag = function (tag) {
-                console.log("tryna AddTag");
-                $scope.item.tags.push(tag);
+                if ($routeParams.type = "postcard") {
+
+                    $scope.AddTag($routeParams.short_id + "_postcard");
+                }
             }
+
+
 
 		    $scope.inprogress = false;
   			$scope.upstatus = "choose a file (jpg or png) or drag/drop into the outlined area";
@@ -2613,7 +2636,7 @@ function NewPictureCtrl($scope, $http, $routeParams, $cookies, $location, $timeo
 		        url: '/uploadpicture', //upload.php script, node.js route, or servlet url
 
 		        // headers: {'headerKey': 'headerValue'}, withCredential: true,
-		        data: {title: "", tags: ""},
+		        data: {title: "", tags: $scope.tags},
 		        file: $scope.selectedFile,
 		        /* set file formData name for 'Content-Desposition' header. Default: 'file' */
 		        fileFormDataName: 'picture_upload'
