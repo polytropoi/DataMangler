@@ -2552,12 +2552,15 @@ function NewPictureCtrl($scope, $http, $routeParams, $rootScope, $cookies, $loca
             console.log("tags: " + $scope.tags)
         }
 
+        $scope.postcardForScene = "";
 
         if ($routeParams.type != null) {
 
-                if ($routeParams.type = "postcard") {
+                if ($routeParams.type = "postcard" && ($routeParams.short_id.length > 5)) {
 
-                    $scope.AddTag($routeParams.short_id + "_postcard");
+                    $scope.AddTag($routeParams.short_id + "_postcard")
+//                    $scope.type = "postcard"
+                    $scope.postcardForScene = $routeParams.short_id;
                 }
             }
 
@@ -2636,7 +2639,7 @@ function NewPictureCtrl($scope, $http, $routeParams, $rootScope, $cookies, $loca
 		        url: '/uploadpicture', //upload.php script, node.js route, or servlet url
 
 		        // headers: {'headerKey': 'headerValue'}, withCredential: true,
-		        data: {title: "", tags: $scope.tags},
+		        data: {title: "", tags: $scope.tags, postcardForScene : $scope.postcardForScene },
 		        file: $scope.selectedFile,
 		        /* set file formData name for 'Content-Desposition' header. Default: 'file' */
 		        fileFormDataName: 'picture_upload'

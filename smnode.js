@@ -958,23 +958,23 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 console.log("# " + picture_items.length);
                    for (var i = 0; i < picture_items.length; i++) {
 
-                var item_string_filename = JSON.stringify(picture_items[i].filename);
-                    item_string_filename = item_string_filename.replace(/\"/g, "");
-                var item_string_filename_ext = getExtension(item_string_filename);
-                var expiration = new Date();
-                    expiration.setMinutes(expiration.getMinutes() + 30);
-                var baseName = path.basename(item_string_filename, (item_string_filename_ext));
-                    console.log(baseName);
-                var thumbName = 'thumb.' + baseName + item_string_filename_ext;
-                var halfName = 'half.' + baseName + item_string_filename_ext;
-                var standardName = 'standard.' + baseName + item_string_filename_ext;
+                    var item_string_filename = JSON.stringify(picture_items[i].filename);
+                        item_string_filename = item_string_filename.replace(/\"/g, "");
+                    var item_string_filename_ext = getExtension(item_string_filename);
+                    var expiration = new Date();
+                        expiration.setMinutes(expiration.getMinutes() + 30);
+                    var baseName = path.basename(item_string_filename, (item_string_filename_ext));
+                        console.log(baseName);
+                    var thumbName = 'thumb.' + baseName + item_string_filename_ext;
+                    var halfName = 'half.' + baseName + item_string_filename_ext;
+                    var standardName = 'standard.' + baseName + item_string_filename_ext;
 
-                //var pngName = baseName + '.png';
+                    //var pngName = baseName + '.png';
 
-                var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
-                                //var urlPng = knoxClient.signedUrl(audio_item[0]._id + "." + pngName, expiration);
-                picture_items[i].URLthumb = urlThumb; //jack in teh signed urls into the object array
-                       //console.log("picture item: " + urlThumb, picture_items[0]);
+                    var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
+                                    //var urlPng = knoxClient.signedUrl(audio_item[0]._id + "." + pngName, expiration);
+                    picture_items[i].URLthumb = urlThumb; //jack in teh signed urls into the object array
+                           //console.log("picture item: " + urlThumb, picture_items[0]);
 
                 }
 
@@ -1374,47 +1374,47 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 
   
 
-	app.post('/useritemkeys', function (req, res) {  //return the keys saved by this user, req. happens after login
-		var uID = req.body.userID;
-		console.log("tryna get itemkeys for userID: " + uID);
-		//var u_id = new BSON.ObjectID(uID); 
-		db.audio_item_keys.find({ "keyUserID" : uID}, function(err, itemKeys) {
-			if (err || !itemKeys) {
-				console.log("cain't get no itemKeys... " + err);	
-			} else {
-				console.log(JSON.stringify(itemKeys));
-				res.json(itemKeys);
-			}
-		});
-	});
-
-  app.post('/itemkeys', function (req, res) {  //return the keys saved by this user, req. happens after login
-    var uID = req.body.audioItemID;
-    console.log("tryna get itemkeys for audioItemID: " + uID);
-    //var u_id = new BSON.ObjectID(uID); 
-    db.audio_item_keys.find({ "keyAudioItemID" : uID}, function(err, itemKeys) {
-      if (err || !itemKeys) {
-        console.log("cain't get no itemKeys... " + err);  
-      } else {
-        console.log(JSON.stringify(itemKeys));
-        res.json(itemKeys);
-      }
-    });
-  });
-
-  app.post('/itemkeyspublic', function (req, res) {  //return the keys saved by this user, req. happens after login
-    var uID = req.body.userID;
-    console.log("tryna get itemkeys for userID: " + uID);
-    //var u_id = new BSON.ObjectID(uID); 
-    db.audio_item_keys.find({ "keyUserID" : uID}, function(err, itemKeys) {
-      if (err || !itemKeys) {
-        console.log("cain't get no itemKeys... " + err);  
-      } else {
-        console.log(JSON.stringify(itemKeys));
-        res.json(itemKeys);
-      }
-    });
-  });
+//	app.post('/useritemkeys', function (req, res) {  //return the keys saved by this user, req. happens after login
+//		var uID = req.body.userID;
+//		console.log("tryna get itemkeys for userID: " + uID);
+//		//var u_id = new BSON.ObjectID(uID);
+//		db.audio_item_keys.find({ "keyUserID" : uID}, function(err, itemKeys) {
+//			if (err || !itemKeys) {
+//				console.log("cain't get no itemKeys... " + err);
+//			} else {
+//				console.log(JSON.stringify(itemKeys));
+//				res.json(itemKeys);
+//			}
+//		});
+//	});
+//
+//  app.post('/itemkeys', function (req, res) {  //return the keys saved by this user, req. happens after login
+//    var uID = req.body.audioItemID;
+//    console.log("tryna get itemkeys for audioItemID: " + uID);
+//    //var u_id = new BSON.ObjectID(uID);
+//    db.audio_item_keys.find({ "keyAudioItemID" : uID}, function(err, itemKeys) {
+//      if (err || !itemKeys) {
+//        console.log("cain't get no itemKeys... " + err);
+//      } else {
+//        console.log(JSON.stringify(itemKeys));
+//        res.json(itemKeys);
+//      }
+//    });
+//  });
+//
+//  app.post('/itemkeyspublic', function (req, res) {  //return the keys saved by this user, req. happens after login
+//    var uID = req.body.userID;
+//    console.log("tryna get itemkeys for userID: " + uID);
+//    //var u_id = new BSON.ObjectID(uID);
+//    db.audio_item_keys.find({ "keyUserID" : uID}, function(err, itemKeys) {
+//      if (err || !itemKeys) {
+//        console.log("cain't get no itemKeys... " + err);
+//      } else {
+//        console.log(JSON.stringify(itemKeys));
+//        res.json(itemKeys);
+//      }
+//    });
+//  });
 
 	app.post('/savedaudioitems', function (req, res) { //return audio items, referenced by keys in above method (when saved playlist selected)
 		console.log("tryna savekeys");
@@ -1760,6 +1760,100 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
     });
 });
 
+app.get('/publicscenes', function (req, res) {
+    var publicScenesResponse = {};
+    var publicScenes = [];
+    publicScenesResponse.publicScenes = publicScenes;
+
+    async.waterfall([
+
+    function (callback) {
+        db.scenes.find({ sceneShareWithPublic: true}, function (err, scenes) {
+                if (err || !scenes) {
+                    console.log("cain't get no scenes... " + err)
+//                    callback(null);
+                } else {
+                console.log("gots scenes: " + scenes.length);
+                    callback(null, scenes);
+                }
+
+            });
+
+    },
+
+    function (scenes, callback) {
+                //            console.log(JSON.stringify(scenes));
+                //            res.json(scenes);
+
+        scenes.forEach(function (scene) {
+
+                    console.log("getting pics for " + scene.short_id);
+                    //                db.image_items.find({postcardForScene: scene.short_id}, function (err, images) {
+                    db.image_items.find({postcardForScene: scene.short_id}).sort({otimestamp: -1}).limit(maxItems).toArray(function (err, picture_items) {
+
+                        if (err || !picture_items || picture_items.length == 0) {
+                            console.log("error getting picture items: " + err);
+
+                        } else {
+                            console.log("# " + picture_items.length);
+                            for (var i = 0; i < 1; i++) {
+
+                                var item_string_filename = JSON.stringify(picture_items[i].filename);
+                                item_string_filename = item_string_filename.replace(/\"/g, "");
+                                var item_string_filename_ext = getExtension(item_string_filename);
+                                var expiration = new Date();
+                                expiration.setMinutes(expiration.getMinutes() + 30);
+                                var baseName = path.basename(item_string_filename, (item_string_filename_ext));
+                                console.log(baseName);
+                                var thumbName = 'thumb.' + baseName + item_string_filename_ext;
+                                var halfName = 'half.' + baseName + item_string_filename_ext;
+                                var standardName = 'standard.' + baseName + item_string_filename_ext;
+
+                                var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
+                                var publicScene = {
+                                    sceneOwner: scene.userName,
+                                    sceneKey: scene.short_id,
+                                    sceneThumb: urlThumb
+                                };
+
+                            }
+                        console.log("publicScene: " + publicScene);
+                            publicScenesResponse.publicScenes.push(publicScene);
+                        console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
+                        }
+
+                    });
+                callback(null, publicScenesResponse);
+                });
+
+
+            }
+//    }
+//
+//        });
+////        res.send(JSON.stringify(publicScenesResponse));
+//
+//
+//        console.log("public scene: " + JSON.stringify(publicScenesResponse));
+//
+//        },
+//            function(pscenes, callback) {  //gen a short code and insert //not for picss
+//
+//                callback(null,pscenes);
+//            }
+
+
+        ], //end async flow
+
+        function(err, result) { // #last function, close async
+            console.log("waterfall done: " + JSON.stringify(result));
+            //  res.redirect('/upload.html');
+            res.json(result);
+        }
+    );
+
+});
+
 app.post('/newscene', requiredAuthentication, function (req, res) {
 
     db.scenes.save(req.body, function (err, saved) {
@@ -1806,6 +1900,8 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 
                 db.scenes.update( { "_id": o_id }, { $set: {
                     sceneDomain : req.body.sceneDomain,
+                    sceneShareWithPublic : req.body.sceneShareWithPublic,
+                    sceneShareWithUsers : req.body.sceneShareWithUsers,
                     sceneEnvironment : req.body.sceneEnvironment,
                     sceneRandomizeColors : req.body.sceneRandomizeColors,
                     sceneTweakColors : req.body.sceneTweakColors,
@@ -2036,15 +2132,15 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 
                     function (callback) { //fethc audio items
 
-                                db.audio_items.find({_id: {$in: requestedAudioItems }}, function (err, audio_items)
-                                {
-                                    if (err || !audio_items) {
-                                        console.log("error getting audio items: " + err);
-                                        callback(null);
-                                    } else {
-                                        callback(null, audio_items) //send them along
-                                    }
-                                });
+                        db.audio_items.find({_id: {$in: requestedAudioItems }}, function (err, audio_items)
+                        {
+                            if (err || !audio_items) {
+                                console.log("error getting audio items: " + err);
+                                callback(null);
+                            } else {
+                                callback(null, audio_items) //send them along
+                            }
+                        });
                     },
 
                     function(audio_items, callback) { //add the signed URLs to the obj array
@@ -2851,6 +2947,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
         //alt_album : req.files.audio_upload.album,
          tags: req.body.tags,
         item_status: "private",
+        postcardForScene : req.body.postcardForScene,
         otimestamp : ts,
         ofilesize : fsize}, 
         function (err, saved) {
