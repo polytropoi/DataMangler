@@ -25,13 +25,13 @@
 app = express();
 
 
-var whitelist = ['strr.us.s3.amazonaws.com', 'strr.us', 'elnoise.com', 'philosphersgarden.com', 'mvmv.us', 'servicemedia.net'];
+var whitelist = ['strr.us.s3.amazonaws.com', 'strr.us', 'elnoise.com', 'philosphersgarden.com', 'mvmv.us', 'servicemedia.net', 'kork.us', 'spacetimerailroad.com'];
 var corsOptions = function (origin) {
     console.log("checking vs whitelist:" + origin);
     if ( whitelist.indexOf(origin) !== -1 ) {
         return true;
     } else {
-        return true; //fornow...
+        return false; //fornow...
     }
 };
 
@@ -65,7 +65,7 @@ var corsOptions = function (origin) {
         app.use(allowCrossDomain);   // make sure this is is called before the router
             app.use(function(req, res, next) {
                 res.header('Access-Control-Allow-Credentials', true);
-                res.header('Access-Control-Allow-Origin', 'kork.us');
+                res.header('Access-Control-Allow-Origin', '*');
                 res.header('Access-Control-Allow-Methods', 'GET,POST');
                 res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
                 if ('OPTIONS' == req.method) {
@@ -1765,94 +1765,157 @@ app.get('/publicscenes', function (req, res) {
     var publicScenes = [];
     publicScenesResponse.publicScenes = publicScenes;
 
-    async.waterfall([
 
-    function (callback) {
-        db.scenes.find({ sceneShareWithPublic: true}, function (err, scenes) {
-                if (err || !scenes) {
-                    console.log("cain't get no scenes... " + err)
-//                    callback(null);
-                } else {
-                console.log("gots scenes: " + scenes.length);
-                    callback(null, scenes);
-                }
+    db.scenes.find({ sceneShareWithPublic: true}, function (err, scenes) {
+    if (err || !scenes) {
+        console.log("cain't get no scenes... " + err)
 
-            });
+    } else {
+        async.each(scenes,
+            // 2nd param is the function that each item is passed to
+            function (scene, callback) {
+                // Call an asynchronous function, often a save() to DB
+//            scene.someAsyncCall(function () {
+                // Async call is done, alert via callback
+                db.image_items.find({postcardForScene: scene.short_id}).sort({otimestamp: -1}).limit(maxItems).toArray(function (err, picture_items) {
 
-    },
+                    if (err || !picture_items || picture_items.length == 0) {
+                        console.log("error getting picture items: " + err);
 
-    function (scenes, callback) {
-                //            console.log(JSON.stringify(scenes));
-                //            res.json(scenes);
+                    } else {
+                        console.log("# " + picture_items.length);
+                        for (var i = 0; i < 1; i++) {
 
-        scenes.forEach(function (scene) {
+                            var item_string_filename = JSON.stringify(picture_items[i].filename);
+                            item_string_filename = item_string_filename.replace(/\"/g, "");
+                            var item_string_filename_ext = getExtension(item_string_filename);
+                            var expiration = new Date();
+                            expiration.setMinutes(expiration.getMinutes() + 30);
+                            var baseName = path.basename(item_string_filename, (item_string_filename_ext));
+                            console.log(baseName);
+                            var thumbName = 'thumb.' + baseName + item_string_filename_ext;
+                            var halfName = 'half.' + baseName + item_string_filename_ext;
+                            var standardName = 'standard.' + baseName + item_string_filename_ext;
 
-                    console.log("getting pics for " + scene.short_id);
-                    //                db.image_items.find({postcardForScene: scene.short_id}, function (err, images) {
-                    db.image_items.find({postcardForScene: scene.short_id}).sort({otimestamp: -1}).limit(maxItems).toArray(function (err, picture_items) {
+//                            var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
+                            var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + halfName, Expires: 6000}); //just send back thumbnail urls for list
+                            var publicScene = {
+                                sceneTitle: scene.sceneTitle,
+                                sceneKey: scene.short_id,
+                                scenePostcardHalf: urlHalf
+                            };
 
-                        if (err || !picture_items || picture_items.length == 0) {
-                            console.log("error getting picture items: " + err);
-
-                        } else {
-                            console.log("# " + picture_items.length);
-                            for (var i = 0; i < 1; i++) {
-
-                                var item_string_filename = JSON.stringify(picture_items[i].filename);
-                                item_string_filename = item_string_filename.replace(/\"/g, "");
-                                var item_string_filename_ext = getExtension(item_string_filename);
-                                var expiration = new Date();
-                                expiration.setMinutes(expiration.getMinutes() + 30);
-                                var baseName = path.basename(item_string_filename, (item_string_filename_ext));
-                                console.log(baseName);
-                                var thumbName = 'thumb.' + baseName + item_string_filename_ext;
-                                var halfName = 'half.' + baseName + item_string_filename_ext;
-                                var standardName = 'standard.' + baseName + item_string_filename_ext;
-
-                                var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
-                                var publicScene = {
-                                    sceneOwner: scene.userName,
-                                    sceneKey: scene.short_id,
-                                    sceneThumb: urlThumb
-                                };
-
-                            }
-                        console.log("publicScene: " + publicScene);
-                            publicScenesResponse.publicScenes.push(publicScene);
-                        console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
                         }
+//                        console.log("publicScene: " + publicScene);
+                        publicScenesResponse.publicScenes.push(publicScene);
+//                        console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
+                    }
 
-                    });
-                callback(null, publicScenesResponse);
+                    callback();
                 });
-
-
+            },
+            // 3rd param is the function to call when everything's done
+            function (err) {
+                // All tasks are done now
+//            doSomethingOnceAllAreDone();
+//                console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
+                res.send(publicScenesResponse);
             }
-//    }
-//
-//        });
-////        res.send(JSON.stringify(publicScenesResponse));
-//
-//
-//        console.log("public scene: " + JSON.stringify(publicScenesResponse));
-//
-//        },
-//            function(pscenes, callback) {  //gen a short code and insert //not for picss
-//
-//                callback(null,pscenes);
-//            }
+        );
+    }
 
-
-        ], //end async flow
-
-        function(err, result) { // #last function, close async
-            console.log("waterfall done: " + JSON.stringify(result));
-            //  res.redirect('/upload.html');
-            res.json(result);
-        }
-    );
-
+    });
 });
+
+
+//    async.waterfall([
+//
+//    function (callback) {
+//        db.scenes.find({ sceneShareWithPublic: true}, function (err, scenes) {
+//                if (err || !scenes) {
+//                    console.log("cain't get no scenes... " + err)
+////                    callback(null);
+//                } else {
+//                console.log("gots scenes: " + scenes.length);
+//                    callback(null, scenes);
+//                }
+//
+//            });
+//
+//    },
+//
+//    function (scenes, callback) {
+//                //            console.log(JSON.stringify(scenes));
+//                //            res.json(scenes);
+//
+//        scenes.forEach(function (scene) {
+//
+//                    console.log("getting pics for " + scene.short_id);
+//                    //                db.image_items.find({postcardForScene: scene.short_id}, function (err, images) {
+//                    db.image_items.find({postcardForScene: scene.short_id}).sort({otimestamp: -1}).limit(maxItems).toArray(function (err, picture_items) {
+//
+//                        if (err || !picture_items || picture_items.length == 0) {
+//                            console.log("error getting picture items: " + err);
+//
+//                        } else {
+//                            console.log("# " + picture_items.length);
+//                            for (var i = 0; i < 1; i++) {
+//
+//                                var item_string_filename = JSON.stringify(picture_items[i].filename);
+//                                item_string_filename = item_string_filename.replace(/\"/g, "");
+//                                var item_string_filename_ext = getExtension(item_string_filename);
+//                                var expiration = new Date();
+//                                expiration.setMinutes(expiration.getMinutes() + 30);
+//                                var baseName = path.basename(item_string_filename, (item_string_filename_ext));
+//                                console.log(baseName);
+//                                var thumbName = 'thumb.' + baseName + item_string_filename_ext;
+//                                var halfName = 'half.' + baseName + item_string_filename_ext;
+//                                var standardName = 'standard.' + baseName + item_string_filename_ext;
+//
+//                                var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
+//                                var publicScene = {
+//                                    sceneOwner: scene.userName,
+//                                    sceneKey: scene.short_id,
+//                                    sceneThumb: urlThumb
+//                                };
+//
+//                            }
+//                        console.log("publicScene: " + publicScene);
+//                            publicScenesResponse.publicScenes.push(publicScene);
+//                        console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
+//                        }
+//
+//                    });
+//                callback(null, publicScenesResponse);
+//                });
+//
+//
+//            }
+////    }
+////
+////        });
+//////        res.send(JSON.stringify(publicScenesResponse));
+////
+////
+////        console.log("public scene: " + JSON.stringify(publicScenesResponse));
+////
+////        },
+////            function(pscenes, callback) {  //gen a short code and insert //not for picss
+////
+////                callback(null,pscenes);
+////            }
+//
+//
+//        ], //end async flow
+//
+//        function(err, result) { // #last function, close async
+//            console.log("waterfall done: " + JSON.stringify(result));
+//            //  res.redirect('/upload.html');
+//            res.json(result);
+//        }
+//    );
+
+//});
 
 app.post('/newscene', requiredAuthentication, function (req, res) {
 
