@@ -1809,6 +1809,7 @@ app.get('/publicscenes', function (req, res) {
 //                        console.log("publicScene: " + publicScene);
                         publicScenesResponse.publicScenes.push(publicScene);
 //                        console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
+//                            publicScenes.push(publicScene);
                     }
 
                     callback();

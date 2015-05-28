@@ -963,10 +963,11 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
         $scope.heightmaps = [
 
-//            "http://strr.us/hm1.jpg",
+            "http://strr.us/hm1.jpg",
             "http://strr.us/hm2.jpg",
             "http://strr.us/hm3.jpg",
-            "http://strr.us/hm4.jpg"
+            "http://strr.us/hm4.jpg",
+            "http://strr.us/hm5.jpg"
         ];
 
         $scope.skybox = [
