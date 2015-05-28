@@ -1737,6 +1737,7 @@ app.get('/uscenes/:_id',  requiredAuthentication, function (req, res) { //get sc
         if (err || !scenes) {
             console.log("cain't get no scenes... " + err);
         } else {
+
             console.log(JSON.stringify(scenes));
             res.json(scenes);
         }
@@ -1759,6 +1760,74 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
         }
     });
 });
+app.get('/privatescenes/:_id', requiredAuthentication, function (req, res) {
+    var publicScenesResponse = {};
+    var publicScenes = [];
+    publicScenesResponse.publicScenes = publicScenes;
+
+
+    db.scenes.find({  "user_id" : req.params._id}, function (err, scenes) {
+        if (err || !scenes) {
+            console.log("cain't get no scenes... " + err)
+
+        } else {
+            async.each(scenes,
+                // 2nd param is the function that each item is passed to
+                function (scene, callback) {
+                    // Call an asynchronous function, often a save() to DB
+//            scene.someAsyncCall(function () {
+                    // Async call is done, alert via callback
+                    db.image_items.find({postcardForScene: scene.short_id}).sort({otimestamp: -1}).limit(maxItems).toArray(function (err, picture_items) {
+
+                        if (err || !picture_items || picture_items.length == 0) {
+                            console.log("error getting picture items: " + err);
+
+                        } else {
+                            console.log("# " + picture_items.length);
+                            for (var i = 0; i < 1; i++) {
+
+                                var item_string_filename = JSON.stringify(picture_items[i].filename);
+                                item_string_filename = item_string_filename.replace(/\"/g, "");
+                                var item_string_filename_ext = getExtension(item_string_filename);
+                                var expiration = new Date();
+                                expiration.setMinutes(expiration.getMinutes() + 30);
+                                var baseName = path.basename(item_string_filename, (item_string_filename_ext));
+                                console.log(baseName);
+                                var thumbName = 'thumb.' + baseName + item_string_filename_ext;
+                                var halfName = 'half.' + baseName + item_string_filename_ext;
+                                var standardName = 'standard.' + baseName + item_string_filename_ext;
+
+//                            var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
+                                var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + halfName, Expires: 6000}); //just send back thumbnail urls for list
+                                var publicScene = {
+                                    sceneTitle: scene.sceneTitle,
+                                    sceneKey: scene.short_id,
+                                    scenePostcardHalf: urlHalf
+                                };
+
+                            }
+//                        console.log("publicScene: " + publicScene);
+                            publicScenesResponse.publicScenes.push(publicScene);
+//                        console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
+//                            publicScenes.push(publicScene);
+                        }
+
+                        callback();
+                    });
+                },
+                // 3rd param is the function to call when everything's done
+                function (err) {
+                    // All tasks are done now
+//            doSomethingOnceAllAreDone();
+//                console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
+                    res.send(publicScenesResponse);
+                }
+            );
+        }
+
+    });
+});
+
 
 app.get('/publicscenes', function (req, res) {
     var publicScenesResponse = {};
