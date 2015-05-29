@@ -80,7 +80,9 @@ var corsOptions = function (origin) {
         app.use(express.methodOverride());
 
         app.use(express.methodOverride());
-        app.use(express.session({ secret: 'permanententropy',
+        app.use(express.session({
+            secret: 'permanententropy',
+//            path: '/',
             maxAge: 1000,
             httpOnly: false
         }));
@@ -115,6 +117,7 @@ var corsOptions = function (origin) {
                          });
 
   function requiredAuthentication(req, res, next) {
+
     if (req.session.user) {
         next();
     } else {
@@ -123,6 +126,16 @@ var corsOptions = function (origin) {
         }
     }
     
+    function amirite (id) { //check id against session
+    console.log("checking " + JSON.stringify(req.session));
+        if (JSON.stringify(req.session.user._id) == id) {
+            console.log("Logged in: " + req.session.user.userName);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function getExtension(filename) {
       	var i = filename.lastIndexOf('.');
        	return (i < 0) ? '' : filename.substr(i);
@@ -209,10 +222,12 @@ var corsOptions = function (origin) {
                         bcrypt.compare(pass, hash, function(err, match) {  //check password vs hash
                                 if (match) { 
                                 req.session.user = authUser[0];
+//                                res.send(req.session.sid);
+                                res.cookie('_id', req.session.user._id, { maxAge: 900000, httpOnly: false});
                                 res.json(req.session.user._id);
                                 // req.session.auth = authUser[0]._id;
                                 appAuth = authUser[0]._id;
-                                console.log("auth = " + JSON.stringify(req.session.user));
+                                console.log("auth = " + JSON.stringify(req.session.sid));
                                 } else {
                                 console.log("auth fail");
                                 req.session.auth = "noauth";
@@ -1760,72 +1775,86 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
         }
     });
 });
+
 app.get('/privatescenes/:_id', requiredAuthentication, function (req, res) {
-    var publicScenesResponse = {};
-    var publicScenes = [];
-    publicScenesResponse.publicScenes = publicScenes;
+
+//    if (amirite(req.body.userID)) {
 
 
-    db.scenes.find({  "user_id" : req.params._id}, function (err, scenes) {
-        if (err || !scenes) {
-            console.log("cain't get no scenes... " + err)
+//        if (req.body.userID == req.cookie._id) { //cheap session check...
+            console.log("private scenes for userID " + req.params._id);
+        var privateScenesResponse = {};
+        var privateScenes = [];
+        privateScenesResponse.privateScenes = privateScenes;
 
-        } else {
-            async.each(scenes,
-                // 2nd param is the function that each item is passed to
-                function (scene, callback) {
-                    // Call an asynchronous function, often a save() to DB
+
+        db.scenes.find({ "user_id": req.params._id}, function (err, scenes) {
+            if (err || !scenes) {
+                console.log("cain't get no scenes... " + err)
+
+            } else {
+                console.log("gotsome scenes: " + scenes);
+                async.each(scenes,
+                    // 2nd param is the function that each item is passed to
+                    function (scene, callback) {
+                        console.log(JSON.stringify(scene));
+                        // Call an asynchronous function, often a save() to DB
 //            scene.someAsyncCall(function () {
-                    // Async call is done, alert via callback
-                    db.image_items.find({postcardForScene: scene.short_id}).sort({otimestamp: -1}).limit(maxItems).toArray(function (err, picture_items) {
+                        // Async call is done, alert via callback
+                        db.image_items.find({postcardForScene: scene.short_id}).sort({otimestamp: -1}).limit(maxItems).toArray(function (err, picture_items) {
 
-                        if (err || !picture_items || picture_items.length == 0) {
-                            console.log("error getting picture items: " + err);
+                            if (err || !picture_items || picture_items.length == 0) {
+                                console.log("error getting picture items: " + err);
 
-                        } else {
-                            console.log("# " + picture_items.length);
-                            for (var i = 0; i < 1; i++) {
+                            } else {
+                                console.log("# " + picture_items.length);
+                                for (var i = 0; i < 1; i++) {
 
-                                var item_string_filename = JSON.stringify(picture_items[i].filename);
-                                item_string_filename = item_string_filename.replace(/\"/g, "");
-                                var item_string_filename_ext = getExtension(item_string_filename);
-                                var expiration = new Date();
-                                expiration.setMinutes(expiration.getMinutes() + 30);
-                                var baseName = path.basename(item_string_filename, (item_string_filename_ext));
-                                console.log(baseName);
-                                var thumbName = 'thumb.' + baseName + item_string_filename_ext;
-                                var halfName = 'half.' + baseName + item_string_filename_ext;
-                                var standardName = 'standard.' + baseName + item_string_filename_ext;
+                                    var item_string_filename = JSON.stringify(picture_items[i].filename);
+                                    item_string_filename = item_string_filename.replace(/\"/g, "");
+                                    var item_string_filename_ext = getExtension(item_string_filename);
+                                    var expiration = new Date();
+                                    expiration.setMinutes(expiration.getMinutes() + 30);
+                                    var baseName = path.basename(item_string_filename, (item_string_filename_ext));
+                                    console.log(baseName);
+                                    var thumbName = 'thumb.' + baseName + item_string_filename_ext;
+                                    var halfName = 'half.' + baseName + item_string_filename_ext;
+                                    var standardName = 'standard.' + baseName + item_string_filename_ext;
 
 //                            var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
-                                var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + halfName, Expires: 6000}); //just send back thumbnail urls for list
-                                var publicScene = {
-                                    sceneTitle: scene.sceneTitle,
-                                    sceneKey: scene.short_id,
-                                    scenePostcardHalf: urlHalf
-                                };
+                                    var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + halfName, Expires: 6000}); //just send back thumbnail urls for list
+                                    var privateScene = {
+                                        sceneTitle: scene.sceneTitle,
+                                        sceneKey: scene.short_id,
+                                        scenePostcardHalf: urlHalf
+                                    };
 
-                            }
+                                }
 //                        console.log("publicScene: " + publicScene);
-                            publicScenesResponse.publicScenes.push(publicScene);
+                                privateScenesResponse.privateScenes.push(privateScene);
 //                        console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
 //                            publicScenes.push(publicScene);
-                        }
+                            }
 
-                        callback();
-                    });
-                },
-                // 3rd param is the function to call when everything's done
-                function (err) {
-                    // All tasks are done now
+                            callback();
+                        });
+                    },
+                    // 3rd param is the function to call when everything's done
+                    function (err) {
+                        // All tasks are done now
 //            doSomethingOnceAllAreDone();
 //                console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
-                    res.send(publicScenesResponse);
-                }
-            );
-        }
+                        res.send(privateScenesResponse);
+                    }
+                );
+            }
 
-    });
+        });
+//    } else {
+//        res.send("noauth");
+//
+//    }
+//    }
 });
 
 
@@ -2981,7 +3010,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
             var fname = req.files.picture_upload.name;
             fname =  fname.replace(/ /g, "_");
             var fsize = req.files.picture_upload.size;
-        console.log("filename: " + fname);
+            console.log("filename: " + fname);
             var fpath = req.files.picture_upload.path;
         var parsedTags = {};
         //var item_id = "";
