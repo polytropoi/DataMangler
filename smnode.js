@@ -1776,24 +1776,24 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
     });
 });
 
-app.get('/privatescenes/:_id', requiredAuthentication, function (req, res) {
+app.get('/availablescenes/:_id', requiredAuthentication, function (req, res) {
 
 //    if (amirite(req.body.userID)) {
 
 
 //        if (req.body.userID == req.cookie._id) { //cheap session check...
             console.log("private scenes for userID " + req.params._id);
-        var privateScenesResponse = {};
-        var privateScenes = [];
-        privateScenesResponse.privateScenes = privateScenes;
+        var availableScenesResponse = {};
+        var availableScenes = [];
+        availableScenesResponse.availableScenes = availableScenes;
 
-
-        db.scenes.find({ "user_id": req.params._id}, function (err, scenes) {
+                        //mongolian "OR" syntax...
+        db.scenes.find( {$or: [{ "user_id": req.params._id}, { sceneShareWithPublic: true }]}, function (err, scenes) {
             if (err || !scenes) {
                 console.log("cain't get no scenes... " + err)
 
             } else {
-                console.log("gotsome scenes: " + scenes);
+//                console.log("gotsome scenes: " + scenes);
                 async.each(scenes,
                     // 2nd param is the function that each item is passed to
                     function (scene, callback) {
@@ -1823,15 +1823,17 @@ app.get('/privatescenes/:_id', requiredAuthentication, function (req, res) {
 
 //                            var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
                                     var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + halfName, Expires: 6000}); //just send back thumbnail urls for list
-                                    var privateScene = {
+                                    var availableScene = {
                                         sceneTitle: scene.sceneTitle,
                                         sceneKey: scene.short_id,
+                                        sceneStatus : scene.sceneShareWithPublic ? "public" : "private",
+                                        sceneOwner: scene.userName,
                                         scenePostcardHalf: urlHalf
                                     };
 
                                 }
 //                        console.log("publicScene: " + publicScene);
-                                privateScenesResponse.privateScenes.push(privateScene);
+                                availableScenesResponse.availableScenes.push(availableScene);
 //                        console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
 //                            publicScenes.push(publicScene);
                             }
@@ -1844,7 +1846,7 @@ app.get('/privatescenes/:_id', requiredAuthentication, function (req, res) {
                         // All tasks are done now
 //            doSomethingOnceAllAreDone();
 //                console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
-                        res.send(privateScenesResponse);
+                        res.send(availableScenesResponse);
                     }
                 );
             }
@@ -1864,7 +1866,7 @@ app.get('/publicscenes', function (req, res) {
     publicScenesResponse.publicScenes = publicScenes;
 
 
-    db.scenes.find({ sceneShareWithPublic: true}, function (err, scenes) {
+    db.scenes.find({ sceneShareWithPublic: true }, function (err, scenes) {
     if (err || !scenes) {
         console.log("cain't get no scenes... " + err)
 
@@ -3007,7 +3009,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
                 var expires = new Date();
                 expires.setMinutes(expires.getMinutes() + 30);
             var ts = Math.round(Date.now() / 1000); 
-            var fname = req.files.picture_upload.name;
+            var fname = req.files.picture_upload.name.toLowerCase();
             fname =  fname.replace(/ /g, "_");
             var fsize = req.files.picture_upload.size;
             console.log("filename: " + fname);
@@ -3020,11 +3022,11 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
     function(callback) { //check for proper extensions
     var fname_ext = getExtension(fname); 
     console.log("extension of " + fname + "is " + fname_ext);
-    if (fname_ext === ".jpeg" || fname_ext === ".jpg" || fname_ext === ".png" || fname_ext === ".gif") {
+    if (fname_ext === ".jpeg" || fname_ext === ".jpg" || fname_ext === ".JPG" || fname_ext === ".png" || fname_ext === ".gif") {
         callback(null);
         } else {
-        callback();
-        res.send("bad file");
+        callback(error);
+        res.end("bad file");
         }
     },
 
@@ -3124,8 +3126,22 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
             }
         );
     },
-    
-    function(itemID, callback) {//get a URL of the original file now in s3, to send down the line       
+
+    function (itemID, callback) { //if the pic has a scenepic tag, stick it's id in the appropriate scene
+
+        var theTags = req.body.tags.split(",");
+        for (var i in theTags) {
+            console.log("checking tags: " + theTags[i]);
+            if (theTags[i].search("_scenepic") != -1) {
+                var shortID = theTags[i].substring(0, 6);
+                console.log("tryna update scene " + shortID);
+                db.scenes.update({short_id: shortID}, {$push: {scenePictures: itemID}} );
+            }
+        };
+        callback(null, itemID)
+    },
+
+    function(itemID, callback) {//get a URL of the original file now in s3, to send down the line
          var bucketFolder = 'servicemedia.' + req.session.user._id;
         //var tempURL = knoxClient.signedUrl(fname, expires);
         var params = {Bucket: bucketFolder, Key: fname };
@@ -3149,7 +3165,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
         },
 
     function(tUrl, iID, callback) { //send to transloadit..
-        console.log("transcodeAudioURL request: " + tUrl);
+        console.log("transcodePictureURL request: " + tUrl);
         var encodePictureUrlParams = {
                 steps: {
             ':original': {
@@ -3191,7 +3207,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
     function(err, result) { // #last function, close async
         console.log("waterfall done: " + result);
     //  res.redirect('/upload.html');
-        res.json(result);
+        res.end(result);
         }
       );  
     }); //end app.post /upload

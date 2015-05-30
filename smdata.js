@@ -55,7 +55,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             when('/newscene/:u_id', {controller:NewSceneCtrl, templateUrl:'p_nscene.html'}).
             when('/newpath/:u_id', {controller:NewPathCtrl, templateUrl:'p_newpath.html'}).
 	      when('/uploadaudio', {controller:NewAudioCtrl, templateUrl:'p_add_audio.html'}).
-	      when('/uploadtext', {controller:NewAudioCtrl, templateUrl:'p_uploadtext.html'}).
+//	      when('/uploadtext', {controller:NewAudioCtrl, templateUrl:'p_uploadtext.html'}).
 	      when('/uploadpicture/:type/:short_id', {controller:NewPictureCtrl, templateUrl:'p_add_picture.html'}).
         when('/uploadobject', {controller:NewObjectCtrl, templateUrl:'p_add_object.html'}).
 	      when('/uploadtext', {controller:UploadTextCtrl, templateUrl:'p_uploadtext.html'}).
@@ -2423,7 +2423,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
 		function NewAudioCtrl($scope, $http, $routeParams, $cookies, $location, $timeout, $upload, $route, usernav) {
 
-  			console.log("tryna load NewPictureCtrl controller");
+  			console.log("tryna load NewAudioCtrl controller");
 
 		    $scope.inprogress = false;
   			$scope.upstatus = "choose a file (mp3, ogg, wav, aif) or drag/drop into the outlined area";
@@ -2557,11 +2557,17 @@ function NewPictureCtrl($scope, $http, $routeParams, $rootScope, $cookies, $loca
 
         if ($routeParams.type != null) {
 
-                if ($routeParams.type = "postcard" && ($routeParams.short_id.length > 5)) {
+                if ($routeParams.type == "postcard" && ($routeParams.short_id.length > 5)) {
 
                     $scope.AddTag($routeParams.short_id + "_postcard")
 //                    $scope.type = "postcard"
                     $scope.postcardForScene = $routeParams.short_id;
+                }
+                if ($routeParams.type == "scenepic" && ($routeParams.short_id.length > 5)) {
+
+                    $scope.AddTag($routeParams.short_id + "_scenepic");
+    //                    $scope.type = "postcard"
+//                    $scope.postcardForScene = $routeParams.short_id;
                 }
             }
 

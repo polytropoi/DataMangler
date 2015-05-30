@@ -6,8 +6,10 @@
     <a class="btn btn-primary btn-lg "target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
 
     <button class="btn btn-primary btn-lg pull-right " ng-click="onSaveScene()" >Save</button>
-    <br><span class="pull-right"><p>{{headermessage}}</p></span> <a class="btn btn-primary btn-sm pull-right "target="_blank" href="#/uploadpicture/postcard/{{scene.short_id}}">Upload Screenshot</a>
+    <br><span class="pull-right"><p>{{headermessage}}</p></span>
     <span>
+         <a class="btn btn-primary btn-sm pull-right "target="_blank" href="#/uploadpicture/postcard/{{scene.short_id}}">Upload Screenshot/Postcard</a>
+        <a class="btn btn-primary btn-sm pull-right "target="_blank" href="#/uploadpicture/scenepic/{{scene.short_id}}">Upload Scene Picture</a>
         <h4>Scene Key: <a target="_blank" href="http://servicemedia.net/scene/{{scene.short_id}}">{{scene.short_id}}</a></h4></span> <span ><h4>Scene Title: {{scene.sceneTitle}}</h4></span>
 
 
