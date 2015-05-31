@@ -1025,7 +1025,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 }
 
                 res.json(audio_items);
-                console.log("returning audio_items for " + req.params.u_id);
+//                console.log("returning audio_items for " + req.params.u_id);
             }
         });
     });
@@ -1195,7 +1195,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 } else {
             
                 res.json(audio_items);
-                console.log("returning audio_items for " + req.params.userName);
+//                console.log("returning audio_items for " + req.params.userName);
                         }
                 });
     });
@@ -1816,7 +1816,7 @@ app.get('/availablescenes/:_id', requiredAuthentication, function (req, res) {
                                     var expiration = new Date();
                                     expiration.setMinutes(expiration.getMinutes() + 30);
                                     var baseName = path.basename(item_string_filename, (item_string_filename_ext));
-                                    console.log(baseName);
+//                                    console.log(baseName);
                                     var thumbName = 'thumb.' + baseName + item_string_filename_ext;
                                     var halfName = 'half.' + baseName + item_string_filename_ext;
                                     var standardName = 'standard.' + baseName + item_string_filename_ext;
@@ -3129,7 +3129,8 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
 
     function (itemID, callback) { //if the pic has a scenepic tag, stick it's id in the appropriate scene
 
-        var theTags = req.body.tags.split(",");
+//        var theTags = new Array();
+        var theTags = JSON.parse(req.body.tags);
         for (var i in theTags) {
             console.log("checking tags: " + theTags[i]);
             if (theTags[i].search("_scenepic") != -1) {
