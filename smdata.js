@@ -33,6 +33,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         when('/uobj/:obj_id', {controller:UObjCtrl, templateUrl:'p_uobj.html'}).
         when('/upaths/:u_id', {controller:UPathsCtrl, templateUrl:'p_upaths.html'}).
         when('/upath/:user_id/:path_id', {controller:UPathCtrl, templateUrl:'p_upath.html'}).
+
+        when('/uprofile/:user_id', {controller:UProfileCtrl, templateUrl:'p_uprofile.html'}).
         when('/path/:path_id', {controller:PathCtrl, templateUrl:'p_path.html'}).
 
 //        when('/useqs/:u_id', {controller:USeqsCtrl, templateUrl:'p_useqs.html'}).
@@ -54,8 +56,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 	      //when('/uploadaudio', {controller:UploadAudioCtrl, templateUrl:'p_uploadaudio.html'}).
             when('/newscene/:u_id', {controller:NewSceneCtrl, templateUrl:'p_nscene.html'}).
             when('/newpath/:u_id', {controller:NewPathCtrl, templateUrl:'p_newpath.html'}).
-	      when('/uploadaudio', {controller:NewAudioCtrl, templateUrl:'p_add_audio.html'}).
-//	      when('/uploadtext', {controller:NewAudioCtrl, templateUrl:'p_uploadtext.html'}).
+	      when('/uploadaudio/:type/:short_id', {controller:NewAudioCtrl, templateUrl:'p_add_audio.html'}).
+
 	      when('/uploadpicture/:type/:short_id', {controller:NewPictureCtrl, templateUrl:'p_add_picture.html'}).
         when('/uploadobject', {controller:NewObjectCtrl, templateUrl:'p_add_object.html'}).
 	      when('/uploadtext', {controller:UploadTextCtrl, templateUrl:'p_uploadtext.html'}).
@@ -155,7 +157,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function HomeCtrl($scope, usernav, $http, $cookies, $timeout, $route) {
  			$('#unityPlayer').toggleClass('hidden', true);
 
-  			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
   			$scope.user = {};
 //            $timeout( function () {
   			$scope.urls = usernav.urls;
@@ -195,7 +197,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
   		}
 
 		function LoginCtrl ($scope, $http, $routeParams, $cookies, $location, usernav) {
-			//$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			//$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
 			//console.log($cookies._id);
 			$scope.user = {};
 			$scope.updatestring = "";
@@ -268,7 +270,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 			}
 
 		function NewUserCtrl ($scope, $http, $routeParams, $cookies, $location) {
-			//$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			//$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
 
 			$scope.user = {}
 			$scope.headermessage = "Enter your desired credentials below";
@@ -315,7 +317,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 			$scope.user = {}
 			$scope.ready = true;
 			console.log("tryna load ResetPasswordController");
-			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
  			$scope.headermessage = "Enter your email to reset your password";
 
 
@@ -376,23 +378,59 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  			}
 
 
- 		function UProfileCtrl($scope, $http, $routeParams, usernav) {
+ 		function UProfileCtrl($scope, $http, $routeParams, usernav, $cookies, $location) {
 
  			$('#unityPlayer').toggleClass('hidden', true);
-			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
-  			$http.get('/useraudio/:' + $routeParams.u_id).success(function (data) {
-		                    $scope.audioitems = data;
-		                    $scope.predicate = '-otimestamp';
-		                  //  $scope.setPagingData(largeLoad,page,pageSize);
-		                 //   $scope.setPagingData(page,pageSize);
-		                });
+//			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+            $scope.user = {};
+            $scope.userprofile = {};
+//            $timeout( function () {
+            $scope.urls = usernav.urls;
+//            }, 0, true);
+//            console.log(usernav.urls[0])
+//            if (usernav.urls[0] == 0) {
+//                $route.reload();
+//            }
+            console.log("tryna load HomeCtrl controller" + $scope.urls + " " + $cookies._id	);
+            if ($cookies._id !== null && $cookies._id !== undefined) {
+                $http.get('/amirite/' + $cookies._id).success(function (data) {  //check server if this cookie is still valid
+                    console.log(data);
+
+
+                    $scope.userstatus = data;
+                    $scope.urls = usernav.urls;
+                    if ($scope.userstatus != "0") {
+                        $scope.user._id = $cookies._id;
+                        $scope.user._id = $scope.user._id.replace (/"/g,'');
+                        $scope.headermessage = "You are logged in as " + $scope.userstatus;
+                        $http.get('/profile/'+ $scope.user._id).success(function (data) {
+                            $scope.userprofile = data;
+                        });
+
+                    } else {
+                        $scope.headermessage = "You are not logged in...";
+                        delete $cookies._id; //if server session doesn't match, the client cookie is bad
+                    }
+                }).error(function (errdata) {
+                    console.log(errdata);
+                    $scope.userstatus = "0";
+                    $scope.headermessage = "You are not logged in...";
+                    delete $cookies._id; //if server session doesn't match, the client cookie is bad
+                });
+            } else {
+                $scope.userstatus = "0";
+                $scope.headermesssage = "You are not logged in...";
+                delete $cookies._id; //if server session doesn't match, the client cookie is bad
+
+            }
  		}
 
  		function UAudiosCtrl($scope, $http, $routeParams, usernav) {
 
  			$('#unityPlayer').toggleClass('hidden', true);
  			$scope.urls = usernav.urls;
-			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
   			$http.get('/useraudio/' + $routeParams.u_id).success(function (data) {
 		                    $scope.audioitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -404,7 +442,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UAudioCtrl($scope, $http, $routeParams, usernav) {
  			$scope.urls = usernav.urls;
  			$('#unityPlayer').toggleClass('hidden', true);
-			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
   			$http.get('/useraudio/' + $routeParams.audio_id).success(function (data) {
 		                    $scope.audioitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -416,7 +454,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UPicsCtrl($scope, $http, $routeParams, usernav) {
  			$scope.urls = usernav.urls;
  			$('#unityPlayer').toggleClass('hidden', true);
-			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
   			$http.get('/userpics/' + $routeParams.u_id).success(function (data) {
 		                    $scope.imageitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -429,7 +467,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UPicCtrl($scope, $http, $routeParams, $cookies, $location, usernav) {
             $scope.urls = usernav.urls;
             $('#unityPlayer').toggleClass('hidden', true);
-            $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
 
             $('#unityPlayer').toggleClass('hidden', true);
             $scope.headermessage = "";
@@ -525,7 +563,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
     function UObjsCtrl($scope, $http, $routeParams, usernav) {
         $scope.urls = usernav.urls;
         $('#unityPlayer').toggleClass('hidden', true);
-        $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+        $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
         $http.get('/userobjs/' + $routeParams.u_id).success(function (data) {
             $scope.obj_items = data;
             $scope.predicate = '-otimestamp';
@@ -538,7 +576,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
     function UObjCtrl($scope, $http, $routeParams, $cookies, $location, usernav) {
         $scope.urls = usernav.urls;
         $('#unityPlayer').toggleClass('hidden', true);
-        $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+        $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
 
         $('#unityPlayer').toggleClass('hidden', true);
         $scope.headermessage = "";
@@ -634,7 +672,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //            $scope.urls = usernav.urls;
             $scope.urls = usernav.urls;
             $('#unityPlayer').toggleClass('hidden', true);
-            $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
             if ($cookies._id !== null && $cookies._id !== undefined) {
                 //$scope.path = {};
                 $scope.paths = [];
@@ -682,7 +720,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         //            $scope.urls = usernav.urls;
             $scope.urls = usernav.urls;
             $('#unityPlayer').toggleClass('hidden', true);
-            $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
             if ($cookies._id !== null && $cookies._id !== undefined) {
                 //$scope.path = {};
                 $scope.paths = [];
@@ -728,7 +766,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
        
         function NewPathCtrl($scope, $http, $routeParams, $cookies, $location) {
             console.log("XXX NewPathControl load");
-            $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
             if ($cookies._id !== null && $cookies._id !== undefined) {
                 $scope.path = {};
                 $scope.pictureitems = [];
@@ -916,10 +954,10 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             }
         }
 
-    function USceneCtrl($scope, $http, $rootScope, $routeParams, usernav, geolocation, $location) {
+    function USceneCtrl($scope, $http, $routeParams, usernav, $location) {
         $scope.urls = usernav.urls;
         $('#unityPlayer').toggleClass('hidden', true);
-        $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+        $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
         $scope.scene = {};
 //        $scope.enviroments = [{name="genericFlat", "genericTerrain", "weatherTerrain", "oceanScene", "desertScene", "spaceScene1", "winterScene1"]
 
@@ -1044,7 +1082,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
             $scope.scene = data;
 
-
+            $scope.headermessage = "updated: " + $scope.scene.sceneLastUpdate;
 
     //		                    $scope.predicate = '-otimestamp';
             console.log("XXXX scene:", $scope.scene);
@@ -1110,10 +1148,40 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         });
 
         $scope.GetCurrentLocation = function () {
-            geolocation.getLocation().then(function(data){
-                $scope.scene.sceneLatitude = data.coords.latitude;
-                $scope.scene.sceneLongitude = data.coords.longitude;
-            });
+
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
+
+            function success(pos) {
+                var crd = pos.coords;
+
+                console.log('Your current position is:');
+                console.log('Latitude : ' + crd.latitude);
+                console.log('Longitude: ' + crd.longitude);
+                console.log('More or less ' + crd.accuracy + ' meters.');
+
+                $scope.$apply(function () {
+                    $scope.scene.sceneLatitude = crd.latitude;
+                    $scope.scene.sceneLongitude = crd.longitude;
+                });
+
+            };
+
+            function error(err) {
+                console.warn('ERROR(' + err.code + '): ' + err.message);
+            };
+
+            navigator.geolocation.getCurrentPosition(success, error, options);
+
+            console.log("tryna getLocation");
+//            geolocation.getLocation().then(function(data) {
+//                console.log(data);
+//                $scope.scene.sceneLatitude = data.coords.latitude;
+//                $scope.scene.sceneLongitude = data.coords.longitude;
+//            });
         };
 
 
@@ -1230,7 +1298,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
     function NewSceneCtrl($scope, $http, $routeParams, $cookies, $location) {
 
         console.log("XXXX tryan load new scene ctrl");
-        $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+        $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
         if ($cookies._id !== null && $cookies._id !== undefined) {
             $scope.scene = {};
             $scope.scene.scenePictures = [];
@@ -1461,7 +1529,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
     function PathCtrl($scope, $http, $routeParams, $cookies, $route, $location, usernav) {
         console.log("tryna load path");
         $scope.urls = usernav.urls;
-        $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+        $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
 
         $('#unityPlayer').toggleClass('hidden', true);
         $scope.headermessage = "";
@@ -1584,7 +1652,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         function UPathCtrl($scope, $http, $routeParams, $cookies, $location, usernav) {
             console.log("tryna load path");
             $scope.urls = usernav.urls;
-            $.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
 
             $('#unityPlayer').toggleClass('hidden', true);
             $scope.headermessage = "";
@@ -1874,7 +1942,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UKeysCtrl($scope, $http, $routeParams, usernav) {
  			$scope.urls = usernav.urls;
  			$('#unityPlayer').toggleClass('hidden', true);
-			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
   			$http.get('/useraudio/:' + $routeParams.u_id).success(function (data) {
 		                    $scope.audioitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -1886,7 +1954,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UKeyCtrl($scope, $http, $routeParams, usernav) {
  			$scope.urls = usernav.urls;
  			$('#unityPlayer').toggleClass('hidden', true);
-			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
   			$http.get('/useraudio/:' + $routeParams.audio_id).success(function (data) {
 		                    $scope.audioitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -1899,7 +1967,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
 		function DetailAudioCtrl($scope, $http, $routeParams, $cookies, $location, usernav) {
 
-			//$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			//$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
  			$('#unityPlayer').toggleClass('hidden', true);
  			$scope.headermessage = "";
   			$scope.user = {};
@@ -2001,7 +2069,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
 
  		function ItemDetailCtrl($scope, $http, $routeParams) {
- 			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+ 			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
  			$('#unityPlayer').toggleClass('hidden', true);
   			console.log("tryna load ItemDetailCtrl controller");
     		$scope.item_id = $routeParams.item_id;
@@ -2020,7 +2088,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
   		function ItemLongDetailCtrl($scope, $http, $routeParams) {
 
- 			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+ 			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
  			$('#unityPlayer').toggleClass('hidden', true);
 
 
@@ -2082,7 +2150,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function ItemPlayCtrl($scope, $http, $routeParams) {
 
 
- 			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+ 			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
 
 
  			//$('#unityPlayer').toggleClass('hidden', false);
@@ -2129,7 +2197,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UnityPlayCtrl($scope, $http, $routeParams) {
 
 
- 			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+ 			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
 
 
  			$('#unityPlayer').toggleClass('hidden', false);
@@ -2173,19 +2241,19 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function AudioItemsCtrl($scope, $http) {
  			$('#unityPlayer').toggleClass('hidden', true);
   			console.log("tryna load HomeCtrl controller");
-  			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
   		}
 
  		function PictureItemsCtrl($scope, $http) {
  			$('#unityPlayer').toggleClass('hidden', true);
   			console.log("tryna load HomeCtrl controller");
-  			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
   		}
 
  		function TextItemsCtrl($scope, $http) {
  			$('#unityPlayer').toggleClass('hidden', true);
   			console.log("tryna load HomeCtrl controller");
-  			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
   		}
 
 
@@ -2221,7 +2289,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
   		   			);
   		   		}
 			});
-			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
 
 			}
 
@@ -2276,7 +2344,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 				*/
 
 
-  			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
 
 			$scope.myInterval = 5000;
 			var slides = $scope.slides = [];
@@ -2292,7 +2360,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
   		function ItemsCtrl($scope, $http) {
   			$('#unityPlayer').toggleClass('hidden', true);
-			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
   			$http.get('/audiodata.json').success(function (data) {
 		                    $scope.audioitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -2410,7 +2478,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 			  })
 			}
 
-			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");
+			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
   		}
 
   		function DetailCtrl($scope, $http) {
@@ -2426,7 +2494,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
   			console.log("tryna load NewAudioCtrl controller");
 
 		    $scope.inprogress = false;
-  			$scope.upstatus = "choose a file (mp3, ogg, wav, aif) or drag/drop into the outlined area";
+  			$scope.upstatus = "choose a file (mp3, ogg, wav, or aif) or drag/drop into the outlined area";
 
 			$scope.urls = usernav.urls;
   				if ($cookies._id !== null && $cookies._id !== undefined) {
@@ -2455,6 +2523,34 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 			$scope.headermesssage = "You are not logged in...no upload for you";
 			delete $cookies._id; //if server session doesn't match, the client cookie is bad
 			}
+
+            $scope.tags = [];
+            $scope.AddTag = function (tag) {
+                console.log("tryna AddTag");
+                $scope.tags.push(tag);
+                console.log("tags: " + $scope.tags)
+            }
+
+
+            if ($routeParams.type != null) {
+
+                if ($routeParams.type == "primary" && ($routeParams.short_id.length > 5)) {
+
+                    $scope.AddTag($routeParams.short_id + "_primary")
+//                    $scope.type = "postcard"
+//                    $scope.postcardForScene = $routeParams.short_id;
+                }
+                if ($routeParams.type == "ambient" && ($routeParams.short_id.length > 5)) {
+
+                    $scope.AddTag($routeParams.short_id + "_ambient");
+
+                }
+                if ($routeParams.type == "trigger" && ($routeParams.short_id.length > 5)) {
+
+                    $scope.AddTag($routeParams.short_id + "_trigger");
+
+                }
+            }
 
   			//$scope.picture = {};
   		//	$scope.theFiles = [];
@@ -2799,7 +2895,7 @@ function NewPictureCtrl($scope, $http, $routeParams, $rootScope, $cookies, $loca
 
   		function UploadTextCtrl($scope, $http) {
   			$('#unityPlayer').toggleClass('hidden', true);
-  			$.backstretch("http://www.imgbase.info/images/safe-wallpapers/digital_art/3d_space_scene/12628_3d_space_scene_space_station.jpg");	
+  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");	
 
   		}
 /*

@@ -6,12 +6,13 @@
     <a class="btn btn-primary btn-lg "target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
 
     <button class="btn btn-primary btn-lg pull-right " ng-click="onSaveScene()" >Save</button>
+
     <br><span class="pull-right"><p>{{headermessage}}</p></span>
     <span>
 
         <h4>Scene Key: <a target="_blank" href="http://servicemedia.net/scene/{{scene.short_id}}">{{scene.short_id}}</a></h4></span> <span ><h4>Scene Title: {{scene.sceneTitle}}</h4></span>
 
-    <a class="btn btn-primary btn-sm "target="_blank" href="#/uploadpicture/postcard/{{scene.short_id}}">Upload Screenshot/Postcard</a>
+    <a class="btn btn-primary btn-sm "target="_blank" href="#/uploadpicture/postcard/{{scene.short_id}}">Upload Scene Postcard</a>
     <a class="btn btn-primary btn-sm pull-right "target="_blank" href="#/uploadpicture/scenepic/{{scene.short_id}}">Upload Scene Picture</a>
 
 
@@ -93,19 +94,21 @@
        <label>Location Key Options: </label>
         <table class="table">
             <tr>
-                <td>Restrict to Location?    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRestrictToLocation]" ng-click="scene.sceneRestrictToLocation = !scene.sceneRestrictToLocation">{{!scene.sceneRestrictToLocation && '' || ''}}
-                </a></td>
-                <td>Range in meters: <input class="pull-right" type="text" ng-model="scene.sceneLocationRange" type="number"></td>
+                <td> <button class="btn btn-info btn-sm glyphicon glyphicon-globe pull-left form-control" ng-click="GetCurrentLocation()"> Set Current Location</button>
+                    <br><br>Restrict to location?<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRestrictToLocation]" ng-click="scene.sceneRestrictToLocation = !scene.sceneRestrictToLocation">{{!scene.sceneRestrictToLocation && '' || ''}}
+                    </a>
+                </td>
+                <td>Range in meters: <input class="pull-right form-control" type="text" ng-model="scene.sceneLocationRange" type="number"></td>
 
             </tr>
             <tr>
                 <td>
-                   Latitude:  <input class="pull-right" type="text" ng-model="scene.sceneLatitude" >
+                   Latitude:  <input class="pull-right form-control" type="text" ng-model="scene.sceneLatitude" >
                 </td>
                 <td>
-                    Longitude:  <input class="pull-right" type="text" ng-model="scene.sceneLongitude" >
+                    Longitude:  <input class="pull-right form-control" type="text" ng-model="scene.sceneLongitude" >
                 </td>
-            <button class="btn btn-info btn-sm glyphicon glyphicon-globe pull-right" ng-click="GetCurrentLocation()"> Use Current Location</button>
+
             </tr>
 
         </table>
@@ -115,19 +118,20 @@
         <table class="table">
             <tr>
 
-                <td>Restrict to Time?    <a class="btn pull-right " ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRestrictToTime]" ng-click="scene.sceneRestrictToTime = !scene.sceneRestrictToTime">{{!scene.sceneRestrictToTime && '' || ''}}
+                <td>
+                    <button class="btn btn-info btn-sm glyphicon glyphicon-time pull-left form-control" ng-click="GetCurrentTime()"> Set Current Time</button>
+                    <br><br>Restrict to Time?<a class="btn pull-right " ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneRestrictToTime]" ng-click="scene.sceneRestrictToTime = !scene.sceneRestrictToTime">{{!scene.sceneRestrictToTime && '' || ''}}
                 </a></td>
-                <td>Time Range: <input class="pull-right" type="text" ng-model="scene.sceneTimeRange"></td>
+                <td>Time Range: <input class="pull-right form-control" type="text" ng-model="scene.sceneTimeRange"></td>
             </tr>
             <tr>
 
                 <td>
-                    Start Time:  <input class="pull-right" type="text" ng-model="scene.sceneStartTime">
+                    Start Time:  <input class="pull-right form-control" type="text" ng-model="scene.sceneStartTime">
                 </td>
                 <td>
-                    End Time:  <input class="pull-right" type="text" ng-model="scene.sceneEndTime">
+                    End Time:  <input class="pull-right form-control" type="text" ng-model="scene.sceneEndTime">
                 </td>
-                <button class="btn btn-info btn-sm glyphicon glyphicon-time pull-right" ng-click="GetCurrentTime()"> Use Current Time</button>
             </tr>
 
         </table>
@@ -186,14 +190,14 @@
                     <td> <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneColorizeSky]" ng-click="scene.sceneColorizeSky = !scene.sceneColorizeSky">{{!scene.sceneColorizeSky && '' || ''}}
                     </a></td>
                     <td>Highlight Color</td>
-                    <td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneHighlightColor" colorpicker ng-model="scene.sceneHighlightColor" type="text"></td>
+                    <td>  <input class="change-element-color pull-right form-control" my-bgcolor="scene.sceneHighlightColor" colorpicker ng-model="scene.sceneHighlightColor" type="text"></td>
                 </tr>
                 <tr>
                     <td>Color 1</td>
-                    <td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor1" colorpicker ng-model="scene.sceneColor1" type="text" ></td>
+                    <td>  <input class="change-element-color pull-right form-control" my-bgcolor="scene.sceneColor1" colorpicker ng-model="scene.sceneColor1" type="text" ></td>
 
                     <td>Color 2</td>
-                    <td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text"></td>
+                    <td>  <input class="change-element-color pull-right form-control" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text"></td>
                 </tr>
 
             </table>
@@ -433,17 +437,18 @@
 
 
         <!--<div class="col-md-12">-->
-    <div class="col-md-7" style="margin-left: 0px;">
+    <div class="col-md-12" style="margin-left: 0px;">
                 <label>Scatter Options: </label>
                 <table class="table">
                     <tr>
+                        <!--<td>-->
+                            <!--Scatter World Meshes?<a class="btn" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && '' || ''}}-->
+                        <!--</a>-->
+                        <!--</td>-->
                         <td>
-                            Scatter World Meshes?<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && '' || ''}}
-                        </a>
-                        </td>
-                        <td>
-
-                            <div class="btn-group">
+                          <a class="btn pull-left" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterMeshes]" ng-click="scene.sceneScatterMeshes = !scene.sceneScatterMeshes">{{!scene.sceneScatterMeshes && '' || ''}}
+                        </a>  Scatter World Meshes? <br><br>
+                            <div class="btn-group ">
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.crystal" btn-checkbox>Crystals</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.conifer" btn-checkbox>Trees - Conifer</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.rock" btn-checkbox>Rocks</label>
@@ -454,13 +459,13 @@
                             </div>
                         </td>
 
+                        <!--<td>-->
+                            <!---->
+                        <!--</td>-->
                         <td>
-                            Scatter World Objects? <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && '' || ''}}
-                        </a>
-                        </td>
-                        <td>
-
-                            <div class="btn-group">
+                           <a class="btn pull-left" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneScatterObjects]" ng-click="scene.sceneScatterObjects = !scene.sceneScatterObjects">{{!scene.sceneScatterObjects && '' || ''}}
+                        </a>  Scatter World Objects?<br><br>
+                            <div class="btn-group ">
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.gate1" btn-checkbox>Basic Gates</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.picobj" btn-checkbox>Picture Objects</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.textobj" btn-checkbox>Text Objects</label>
@@ -473,34 +478,40 @@
                             </div>
                         </td>
                     </tr>
+                </table>
+        </div>
+        <div class="col-md-12" style="margin-left: 0px;">
+                    <label>Viewport Options: </label>
+                    <table class="table">
                     <tr>
-                    <td>
-                        Show Viewport Meshes?<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneShowViewportMeshes]" ng-click="scene.sceneShowViewportMeshes = !scene.sceneShowViewportMeshes">{{!scene.sceneShowViewportMeshes && '' || ''}}
-                    </a>
-                        </td>
                         <td>
-
-                            <div class="btn-group">
+                          <a class="btn pull-left" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneShowViewportMeshes]" ng-click="scene.sceneShowViewportMeshes = !scene.sceneShowViewportMeshes">{{!scene.sceneShowViewportMeshes && '' || ''}}
+                        </a>  Show Viewport Meshes?<br><br>
+                            <div class="btn-group ">
                                 <label class="btn btn-primary" ng-model="scene.sceneViewportMeshLayers.fish" btn-checkbox>fish</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneViewportMeshLayers.birds" btn-checkbox>birds</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneViewportMeshLayers.clouds" btn-checkbox>clouds</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneViewportMeshLayers.fireworks" btn-checkbox>fireworks</label>
                             </div>
                         </td>
-                        <td>
-                            Show Viewport Objects?<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneShowViewportObjects]" ng-click="scene.sceneShowViewportObjects = !scene.sceneShowViewportObjects">{{!scene.sceneShowViewportObjects && '' || ''}}
-                        </a>
-                        </td>
-                        <td>
 
-                            <div class="btn-group">
+                        <td>
+                          <a class="btn pull-left" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneShowViewportObjects]" ng-click="scene.sceneShowViewportObjects = !scene.sceneShowViewportObjects">{{!scene.sceneShowViewportObjects && '' || ''}}
+                        </a>  Show Viewport Objects?<br><br>
+                            <div class="btn-group ">
                                 <label class="btn btn-primary" ng-model="scene.sceneViewportObjectLayers.groundedText" btn-checkbox>Text - Grounded</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneViewportObjectLayers.groundedPictures" btn-checkbox>Pics - Grounded</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneViewportObjectLayers.flyingText" btn-checkbox>Text - Flying</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneViewportObjectLayers.flyingPictures" btn-checkbox>Pics - Flying</label>
                             </div>
                         </td>
-                </tr>
+
+                        </tr>
+                        </table>
+                        </div>
+    <div class="col-md-6" style="margin-left: 0px;">
+        <label>Target Options: </label>
+        <table class="table">
                     <tr>
                         <td>
                             Use Target Object?
@@ -571,12 +582,14 @@
                 <td>
                 Scene Primary Audio
                 </td>
-                <td>
+                <td><br><br>
+
                     <select name="sceneAudio" class="form-control" ng-model="scene.scenePrimaryAudioID" ng-options="a._id as a.title for a in audioitems" >
                         <option value="" selected="selected">Select Audio:</option>
                     </select>
                     <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneLoopPrimaryAudio]" ng-click="scene.sceneLoopPrimaryAudio = !scene.sceneLoopPrimaryAudio">{{!scene.sceneLoopPrimaryAudio && ' Do Not Loop' || ' Loop'}}
                     </a>
+                    <a class="btn btn-primary btn-sm pull-left"target="_blank" href="#/uploadaudio/primaryaudio/{{scene.short_id}}">Upload Primary Audio</a>
                 </td>
 
             </tr>
@@ -588,7 +601,9 @@
                     <select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbientAudioID" ng-options="a._id as a.title for a in audioitems" >
                         <option value="" selected="selected">Select Audio:</option>
                     </select>
+                    <a class="btn btn-primary btn-sm pull-left"target="_blank" href="#/uploadaudio/ambientaudio/{{scene.short_id}}">Upload Ambient Audio</a>
                 </td>
+
 
             </tr>
             <tr>
@@ -599,6 +614,7 @@
                     <select name="sceneAudio" class="form-control" ng-model="scene.sceneTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >
                         <option value="" selected="selected">Select Audio:</option>
                     </select>
+                    <a class="btn btn-primary btn-sm pull-left"target="_blank" href="#/uploadaudio/triggeraudio/{{scene.short_id}}">Upload Trigger Audio</a>
                 </td>
 
             </tr>

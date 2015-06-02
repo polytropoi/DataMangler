@@ -27,7 +27,8 @@
 				  </thead>
 				  <tbody>
 		<!--		    <tr ng-repeat="item in audioitems (filteredAudioitems = (taga= | filter: query))| orderBy:predicate:reverse"> -->
-				      <tr ng-repeat="item in scenes | filter: query: strict | orderBy:predicate:reverse">
+				      <!--<tr ng-repeat="item in scenes | filter: query: strict | orderBy:predicate:reverse">-->
+                        <tr ng-repeat="item in scenes | filter: query: strict | orderBy: '-sceneLastUpdate'">
                       <th><div class="btn btn-primary btn-md" ng-click="rowClick(item)">{{item.short_id}}</div></th>
 				      <th>{{ item.sceneTitle }}</th>
 				      <!--<th>{{ item.sceneEnvironment.name }}</th>-->

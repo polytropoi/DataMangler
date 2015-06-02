@@ -1860,7 +1860,7 @@ app.get('/availablescenes/:_id', requiredAuthentication, function (req, res) {
 });
 
 
-app.get('/publicscenes', function (req, res) {
+app.get('/publicscenes', function (req, res) { //deprecated, see available scenes above...
     var publicScenesResponse = {};
     var publicScenes = [];
     publicScenesResponse.publicScenes = publicScenes;
@@ -2052,7 +2052,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 
     app.post('/update_scene/:_id', requiredAuthentication, function (req, res) {
         console.log(req.params._id);
-
+        var lastUpdateTimestamp = new Date();
         var o_id = new BSON.ObjectID(req.body._id);  //convert to BSON for searchie
         console.log('path requested : ' + req.body._id);
         db.scenes.find({ "_id" : o_id}, function(err, scene) {
@@ -2119,7 +2119,8 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                     sceneKeynote : req.body.sceneKeynote,
                     sceneDescription : req.body.sceneDescription,
                     sceneText : req.body.sceneText,
-                    sceneTextLoop : req.body.sceneTextLoop
+                    sceneTextLoop : req.body.sceneTextLoop,
+                    sceneLastUpdate : lastUpdateTimestamp
 
 //                    sceneTextOptions : req.body.sceneTextOptions
                     }
@@ -2927,6 +2928,31 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
             }
         );
     },
+
+        function (itemID, callback) { //if the clip has a tag, stick it's id in the appropriate scene.slot
+
+//        var theTags = new Array();
+            var theTags = JSON.parse(req.body.tags);
+            for (var i in theTags) {
+                console.log("checking tags: " + theTags[i]);
+                if (theTags[i].search("_primary") != -1) {
+                    var shortID = theTags[i].substring(0, 6);
+                    console.log("tryna update scene " + shortID);
+                    db.scenes.update({short_id: shortID}, {$push: {scenePrimaryAudioID: itemID}} );
+                }
+                if (theTags[i].search("_ambient") != -1) {
+                    var shortID = theTags[i].substring(0, 6);
+                    console.log("tryna update scene " + shortID);
+                    db.scenes.update({short_id: shortID}, {$push: {sceneAmbientAudioID: itemID}} );
+                }
+                if (theTags[i].search("_trigger") != -1) {
+                    var shortID = theTags[i].substring(0, 6);
+                    console.log("tryna update scene " + shortID);
+                    db.scenes.update({short_id: shortID}, {$push: {sceneTriggerAudioID: itemID}} );
+                }
+            };
+            callback(null, itemID)
+        },
     
     function(itemID, callback) {//get a URL of the original file now in s3, to send down the line       
          var bucketFolder = 'servicemedia.' + req.session.user._id;

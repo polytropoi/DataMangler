@@ -13,7 +13,8 @@ angular.module('geolocation')
                 var deferred = $q.defer();
                 if ($window.navigator && $window.navigator.geolocation) {
                     $window.navigator.geolocation.getCurrentPosition(function(position){
-                        $rootScope.$apply(function(){deferred.resolve(position);});
+//                        $rootScope.$apply(function(){deferred.resolve(position);});
+                        deferred.resolve(position);
                     }, function(error) {
                         switch (error.code) {
                             case 1:
