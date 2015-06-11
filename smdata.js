@@ -12,6 +12,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 		$routeProvider.
 		when('/', {controller:HomeCtrl, templateUrl:'p_home.html'}).
 		when('/home', {controller:HomeCtrl, templateUrl:'p_home.html'}).
+            when('/about', {controller:AboutCtrl, templateUrl:'p_about.html'}).
 		when('/login', {controller:LoginCtrl, templateUrl:'p_login.html'}).
 		when('/register', {controller:NewUserCtrl, templateUrl:'p_newuser.html'}).
 		when('/reset', {controller:ResetPasswordCtrl, templateUrl:'p_resetpw.html'}).
@@ -311,8 +312,15 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 		}
 
 		//}
+        function AboutCtrl($scope, $http, $routeParams) {
 
-		function ResetPasswordCtrl($scope, $http, $routeParams) {
+            $scope.user = {};
+            console.log("tryna load aboutpage");
+            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+
+        }
+
+        function ResetPasswordCtrl($scope, $http, $routeParams) {
 
 			$scope.user = {}
 			$scope.ready = true;
@@ -1087,8 +1095,6 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
     //		                    $scope.predicate = '-otimestamp';
             console.log("XXXX scene:", $scope.scene);
             console.log("XXX environments: " + $scope.environments[0]);
-
-
 
             $http.get('/userpics/' + $routeParams.user_id).success(function (data) {
                 $scope.pictureitems = data;

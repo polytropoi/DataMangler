@@ -1861,9 +1861,9 @@ app.get('/availablescenes/:_id', requiredAuthentication, function (req, res) {
 
 
 app.get('/publicscenes', function (req, res) { //deprecated, see available scenes above...
-    var publicScenesResponse = {};
-    var publicScenes = [];
-    publicScenesResponse.publicScenes = publicScenes;
+    var availableScenesResponse = {};
+    var availableScenes = [];
+    availableScenesResponse.availableScenes = availableScenes;
 
 
     db.scenes.find({ sceneShareWithPublic: true }, function (err, scenes) {
@@ -1875,7 +1875,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
             // 2nd param is the function that each item is passed to
             function (scene, callback) {
                 // Call an asynchronous function, often a save() to DB
-//            scene.someAsyncCall(function () {
+    //            scene.someAsyncCall(function () {
                 // Async call is done, alert via callback
                 db.image_items.find({postcardForScene: scene.short_id}).sort({otimestamp: -1}).limit(maxItems).toArray(function (err, picture_items) {
 
@@ -1899,15 +1899,17 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
 //                            var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
                             var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + halfName, Expires: 6000}); //just send back thumbnail urls for list
-                            var publicScene = {
+                            var availableScene = {
                                 sceneTitle: scene.sceneTitle,
                                 sceneKey: scene.short_id,
+                                sceneStatus : scene.sceneShareWithPublic ? "public" : "private",
+                                sceneOwner: scene.userName,
                                 scenePostcardHalf: urlHalf
                             };
 
                         }
 //                        console.log("publicScene: " + publicScene);
-                        publicScenesResponse.publicScenes.push(publicScene);
+                        availableScenesResponse.availableScenes.push(availableScene);
 //                        console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
 //                            publicScenes.push(publicScene);
                     }
@@ -1920,7 +1922,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                 // All tasks are done now
 //            doSomethingOnceAllAreDone();
 //                console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
-                res.send(publicScenesResponse);
+                res.send(availableScenesResponse);
             }
         );
     }
@@ -2064,43 +2066,43 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 
                 db.scenes.update( { "_id": o_id }, { $set: {
                     sceneDomain : req.body.sceneDomain,
-                    sceneShareWithPublic : req.body.sceneShareWithPublic,
-                    sceneShareWithUsers : req.body.sceneShareWithUsers,
-                    sceneEnvironment : req.body.sceneEnvironment,
-                    sceneRandomizeColors : req.body.sceneRandomizeColors,
-                    sceneTweakColors : req.body.sceneTweakColors,
-                    sceneColorizeSky : req.body.sceneColorizeSky,
-                    sceneScatterMeshes : req.body.sceneScatterMeshes,
-                    sceneScatterMeshLayers : req.body.sceneScatterMeshLayers,
-                    sceneScatterObjectLayers : req.body.sceneScatterObjectLayers,
-                    sceneScatterObjects : req.body.sceneScatterObjects,
-                    sceneShowViewportMeshes : req.body.sceneShowViewportMeshes,
-                    sceneShowViewportObjects : req.body.sceneShowViewportObjects,
-                    sceneViewportMeshLayers : req.body.sceneViewportMeshLayers,
-                    sceneViewportObjectLayers : req.body.sceneViewportObjectLayers,
-                    sceneUseTargetObject : req.body.sceneUseTargetObject,
-                    sceneTargetObjectHeading : req.body.sceneTargetObjectHeading,
+                    sceneShareWithPublic : req.body.sceneShareWithPublic != null ? req.body.sceneShareWithPublic : false,
+                    sceneShareWithUsers : req.body.sceneShareWithUsers != null ? req.body.sceneShareWithUsers : "",
+                    sceneEnvironment : req.body.sceneEnvironment != null ? req.body.sceneEnvironment : {},
+                    sceneRandomizeColors : req.body.sceneRandomizeColors != null ? req.body.sceneRandomizeColors : false,
+                    sceneTweakColors : req.body.sceneTweakColors != null ? req.body.sceneTweakColors : false,
+                    sceneColorizeSky : req.body.sceneColorizeSky != null ? req.body.sceneColorizeSky : false,
+                    sceneScatterMeshes : req.body.sceneScatterMeshes != null ? req.body.sceneScatterMeshes : false,
+                    sceneScatterMeshLayers : req.body.sceneScatterMeshLayers != null ? req.body.sceneScatterMeshLayers : {},
+                    sceneScatterObjectLayers : req.body.sceneScatterObjectLayers != null ? req.body.sceneScatterObjectLayers : {},
+                    sceneScatterObjects : req.body.sceneScatterObjects != null ? req.body.sceneScatterObjects : false,
+                    sceneShowViewportMeshes : req.body.sceneShowViewportMeshes != null ? req.body.sceneShowViewportMeshes : false,
+                    sceneShowViewportObjects : req.body.sceneShowViewportObjects != null ? req.body.sceneShowViewportObjects : false,
+                    sceneViewportMeshLayers : req.body.sceneViewportMeshLayers != null ? req.body.sceneViewportMeshLayers : {},
+                    sceneViewportObjectLayers : req.body.sceneViewportObjectLayers != null ? req.body.sceneViewportObjectLayers : {},
+                    sceneUseTargetObject : req.body.sceneUseTargetObject != null ? req.body.sceneUseTargetObject : false,
+                    sceneTargetObjectHeading : req.body.sceneTargetObjectHeading != null ? req.body.sceneTargetObjectHeading : 0,
                     sceneTargetObject : req.body.sceneTargetObject,
                     sceneTargetEvent : req.body.sceneTargetEvent,
                     sceneNextScene : req.body.sceneNextScene,
                     scenePreviousScene : req.body.scenePreviousScene,
-                    sceneUseDynamicSky : req.body.sceneUseDynamicSky,
-                    sceneUseCameraBackground : req.body.sceneUseCameraBackground,
-                    sceneUseSkybox : req.body.sceneUseSkybox,
+                    sceneUseDynamicSky : req.body.sceneUseDynamicSky != null ? req.body.sceneUseDynamicSky : false,
+                    sceneUseCameraBackground : req.body.sceneUseCameraBackground != null ? req.body.sceneUseCameraBackground : false,
+                    sceneUseSkybox : req.body.sceneUseSkybox != null ? req.body.sceneUseSkybox : false,
                     sceneSkybox : req.body.sceneSkybox,
-                    sceneUseGlobalFog : req.body.sceneUseGlobalFog,
-                    sceneRenderFloorPlane : req.body.sceneRenderFloorPlane,
-                    sceneUseFloorPlane : req.body.sceneUseFloorPlane,
-                    sceneUseEnvironment : req.body.sceneUseEnvironment,
-                    sceneUseTerrain : req.body.sceneUseTerrain,
-                    sceneUseHeightmap : req.body.sceneUseHeightmap,
+                    sceneUseGlobalFog : req.body.sceneUseGlobalFog != null ? req.body.sceneUseGlobalFog : false,
+                    sceneRenderFloorPlane : req.body.sceneRenderFloorPlane != null ? req.body.sceneRenderFloorPlane : false,
+                    sceneUseFloorPlane : req.body.sceneUseFloorPlane != null ? req.body.sceneUseFloorPlane : false,
+                    sceneUseEnvironment : req.body.sceneUseEnvironment != null ? req.body.sceneUseEnvironment : false,
+                    sceneUseTerrain : req.body.sceneUseTerrain != null ? req.body.sceneUseTerrain : false,
+                    sceneUseHeightmap : req.body.sceneUseHeightmap != null ? req.body.sceneUseHeightmap : false,
                     sceneHeightmap : req.body.sceneHeightmap,
-                    sceneRestrictToLocation : req.body.sceneRestrictToLocation,
+                    sceneRestrictToLocation : req.body.sceneRestrictToLocation != null ? req.body.sceneRestrictToLocation : false,
                     sceneLocationRange : req.body.sceneLocationRange,
                     sceneLatitude : req.body.sceneLatitude,
                     sceneLongitude : req.body.sceneLongitude,
-                    sceneUseSimpleWater : req.body.sceneUseSimpleWater,
-                    sceneUseOcean : req.body.sceneUseOcean,
+                    sceneUseSimpleWater : req.body.sceneUseSimpleWater != null ? req.body.sceneUseSimpleWater : false,
+                    sceneUseOcean : req.body.sceneUseOcean != null ? req.body.sceneUseOcean : false,
                     sceneTime: req.body.sceneTime,
                     sceneTimescale: req.body.sceneTimescale,
                     sceneWeather: req.body.sceneWeather,
@@ -2114,12 +2116,12 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 //                    sceneAudioID : req.body.sceneAudioID,
                     sceneAmbientAudioID : req.body.sceneAmbientAudioID,
                     scenePrimaryAudioID : req.body.scenePrimaryAudioID,
-                    sceneLoopPrimaryAudio : req.body.sceneLoopPrimaryAudio,
+                    sceneLoopPrimaryAudio : req.body.sceneLoopPrimaryAudio != null ? req.body.sceneLoopPrimaryAudio : false,
 //                    sceneAmbientAudio2ID : req.body.sceneAmbientAudio2ID,
                     sceneKeynote : req.body.sceneKeynote,
                     sceneDescription : req.body.sceneDescription,
                     sceneText : req.body.sceneText,
-                    sceneTextLoop : req.body.sceneTextLoop,
+                    sceneTextLoop : req.body.sceneTextLoop != null ? req.body.sceneTextLoop : false,
                     sceneLastUpdate : lastUpdateTimestamp
 
 //                    sceneTextOptions : req.body.sceneTextOptions
@@ -2303,6 +2305,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                                 console.log("error getting audio items: " + err);
                                 callback(null);
                             } else {
+
                                 callback(null, audio_items) //send them along
                             }
                         });
@@ -2331,6 +2334,9 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                             audio_items[i].URLmp3 = urlMp3; //jack in teh signed urls into the object array
                             audio_items[i].URLogg = urlOgg;
                             audio_items[i].URLpng = urlPng;
+                            if (audio_items[i].tags.length < 1) {audio_items[i].tags = [""]}
+
+
                             //pathResponse.audio.push(urlMp3, urlOgg, urlPng);
 
                         }
@@ -2383,7 +2389,7 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                             picture_items[i].urlHalf = urlHalf; //jack in teh signed urls into the object array
                             picture_items[i].urlStandard = urlStandard; //jack in teh signed urls into the object array
                             //pathResponse.path.pictures.push(urlThumb, urlQuarter, urlHalf, urlStandard);
-
+                            if (picture_items[i].tags.length < 1) {picture_items.tags = [""]}
                         }
 
 //                        console.log('tryna send ' + pictr);

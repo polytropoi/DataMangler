@@ -12,8 +12,8 @@
 
         <h4>Scene Key: <a target="_blank" href="http://servicemedia.net/scene/{{scene.short_id}}">{{scene.short_id}}</a></h4></span> <span ><h4>Scene Title: {{scene.sceneTitle}}</h4></span>
 
-    <a class="btn btn-primary btn-sm "target="_blank" href="#/uploadpicture/postcard/{{scene.short_id}}">Upload Scene Postcard</a>
-    <a class="btn btn-primary btn-sm pull-right "target="_blank" href="#/uploadpicture/scenepic/{{scene.short_id}}">Upload Scene Picture</a>
+
+
 
 
 <form name="form">
@@ -85,6 +85,89 @@
                     <textarea type="text" class="form-control" ng-model="scene.sceneCanPost" name="scene_sceneNumber" placeholder="delimit usernames or emails with a comma" ></textarea>
 
                 </td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="col-md-12" style="margin-left: 10px;">
+        <label>User Picture Options: </label>
+        <table class="table">
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label>Add Scene Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as (p.title ? p.title : p.filename) for p in pictureitems " >
+                        <option value="" selected="selected">Select Image:</option>
+                    </select>
+                        <button class="btn-default btn-default-sm" ng-click="AddScenePicture(newScenePicture)">Add</button>
+                    </div>
+                </td>
+            <td>
+                <br><a class="btn btn-primary btn-sm "target="_blank" href="#/uploadpicture/postcard/{{scene.short_id}}">Upload Scene Postcard</a>
+            </td>
+                <td>
+                    <br><a class="btn btn-primary btn-sm "target="_blank" href="#/uploadpicture/scenepic/{{scene.short_id}}">Upload Scene Picture</a>
+                </td>
+            </tr>
+        </table>
+
+                <!--<td>-->
+                    <div ng-repeat="picture in scenePictureThumbs">
+                        <div class="col-md-3">
+                            <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+                            <button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>
+                        </div>
+                    </div>
+                <!--</td>-->
+
+            <!--</tr>-->
+        <!--</table>-->
+    </div>
+
+    <div class="col-md-12" style="margin-left: 10px;">
+        <label>User Audio Options: </label>
+        <table class="table">
+            <tr>
+                <td>
+                    Scene Primary Audio
+                </td>
+                <td>
+
+                    <select name="sceneAudio" class="form-control" ng-model="scene.scenePrimaryAudioID" ng-options="a._id as a.title for a in audioitems" >
+                        <option value="" selected="selected">Select Audio:</option>
+                    </select>
+
+
+                </td>
+                <td><a class="btn btn-primary btn-sm pull-left"target="_blank" href="#/uploadaudio/primaryaudio/{{scene.short_id}}">Upload Primary Audio</a></td>
+                <td><a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneLoopPrimaryAudio]" ng-click="scene.sceneLoopPrimaryAudio = !scene.sceneLoopPrimaryAudio">{{!scene.sceneLoopPrimaryAudio && ' Do Not Loop' || ' Loop'}}
+                </a></td>
+
+            </tr>
+            <tr>
+                <td>
+                    Scene Ambient Audio
+                </td>
+                <td>
+                    <select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbientAudioID" ng-options="a._id as a.title for a in audioitems" >
+                        <option value="" selected="selected">Select Audio:</option>
+                    </select>
+
+                </td>
+                <td><a class="btn btn-primary btn-sm pull-left"target="_blank" href="#/uploadaudio/ambientaudio/{{scene.short_id}}">Upload Ambient Audio</a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    Scene Trigger Audio
+                </td>
+                <td>
+                    <select name="sceneAudio" class="form-control" ng-model="scene.sceneTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >
+                        <option value="" selected="selected">Select Audio:</option>
+                    </select>
+
+                </td>
+                <td> <a class="btn btn-primary btn-sm pull-left"target="_blank" href="#/uploadaudio/triggeraudio/{{scene.short_id}}">Upload Trigger Audio</a></td>
+                <td></td>
             </tr>
 
         </table>
@@ -351,7 +434,7 @@
                     Time of Day:
                 </td>
                 <td>
-                    <select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in time" >
+                    <select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t as t for t in time" >
                         <option value="" selected="selected">Select Time:</option>
                     </select>
                 </td>
@@ -550,77 +633,7 @@
                     </tr>
                     </table>
             </div>
-    <div class="col-md-4" style="margin-left: 50px;">
-                <label>User Picture Options: </label>
-                <table class="table">
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <label>Add Scene Picture:</label><select name="newScenePic" class="form-control" ng-model="newScenePicture" ng-options="p._id as (p.title ? p.title : p.filename) for p in pictureitems " >
-                                <option value="" selected="selected">Select Image:</option>
-                            </select>
-                                <button class="btn-default btn-default-sm" ng-click="AddScenePicture(newScenePicture)">Add</button>
-                            </div>
-                        </td>
-                        <td>
-                            <div ng-repeat="picture in scenePictureThumbs">
-                                <!--<div class="col-md-2">-->
-                                <p>    <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
-                                    <button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>
-                                </p>
-                            </div>
-                        </td>
 
-                    </tr>
-                </table>
-                </div>
-
-    <div class="col-md-7" style="margin-left: 10px;">
-        <label>User Audio Options: </label>
-        <table class="table">
-            <tr>
-                <td>
-                Scene Primary Audio
-                </td>
-                <td><br><br>
-
-                    <select name="sceneAudio" class="form-control" ng-model="scene.scenePrimaryAudioID" ng-options="a._id as a.title for a in audioitems" >
-                        <option value="" selected="selected">Select Audio:</option>
-                    </select>
-                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneLoopPrimaryAudio]" ng-click="scene.sceneLoopPrimaryAudio = !scene.sceneLoopPrimaryAudio">{{!scene.sceneLoopPrimaryAudio && ' Do Not Loop' || ' Loop'}}
-                    </a>
-                    <a class="btn btn-primary btn-sm pull-left"target="_blank" href="#/uploadaudio/primaryaudio/{{scene.short_id}}">Upload Primary Audio</a>
-                </td>
-
-            </tr>
-            <tr>
-                <td>
-                    Scene Ambient Audio
-                </td>
-                <td>
-                    <select name="sceneAudio" class="form-control" ng-model="scene.sceneAmbientAudioID" ng-options="a._id as a.title for a in audioitems" >
-                        <option value="" selected="selected">Select Audio:</option>
-                    </select>
-                    <a class="btn btn-primary btn-sm pull-left"target="_blank" href="#/uploadaudio/ambientaudio/{{scene.short_id}}">Upload Ambient Audio</a>
-                </td>
-
-
-            </tr>
-            <tr>
-                <td>
-                    Scene Trigger Audio
-                </td>
-                <td>
-                    <select name="sceneAudio" class="form-control" ng-model="scene.sceneTriggerAudioID" ng-options="a._id as a.title for a in audioitems" >
-                        <option value="" selected="selected">Select Audio:</option>
-                    </select>
-                    <a class="btn btn-primary btn-sm pull-left"target="_blank" href="#/uploadaudio/triggeraudio/{{scene.short_id}}">Upload Trigger Audio</a>
-                </td>
-
-            </tr>
-
-        </table>
-    </div>
     <div class="col-md-4" style="margin-left: 10px;">
         <label>User Mesh Options: </label>
         <table class="table">

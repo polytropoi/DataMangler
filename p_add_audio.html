@@ -43,28 +43,20 @@
     <span>Choose File</span>
     <input type="file" class="upload" ng-file-select="onFileSelect($files)"/>
   </div>
+    <div class="pull-right" ng-show="selectedFiles != null && validFileType == true">
+        File Selected: {{selectedFile.name}} <br/>size: {{selectedFile.size}} <br/>type: {{selectedFile.type}} <br/> - Press Upload Button to Begin...
+        <button class="btn btn-primary pull-right" ng-click="onFileSubmit()" ng-show="selectedFiles != null && validFileType == true" ng-disabled="!percent == 0">Upload</button><br/><br/>
+        <button class="btn btn-primary pull-right" ng-click="abort()" ng-show="selectedFiles != null" ng-disabled="percent == 0 || percent == null">Abort</button>
+                                <span class="progress" ng-show="percent >= 0">
+                                 <div style="width:{{percent}}%">{{percent}}%</div>
+                                </span>
 
-
-                <br/>
-                <br/>
+    </div>
                 <div ng-show="dropSupported" class="drop-box" ng-file-drop="onFileSelect($files);" ng-file-drop-available="dropSupported=true">or drop files here</div>
                 <div ng-show="!dropSupported">HTML5 Drop File is not supported on this browser</div>
                 <br/>
-               <!-- <input type="checkbox" ng-model="uploadRightAway">Upload right away/> -->
-                <br/>
-                <br/>
-              
-                <br/>
-                <br/>
-                <div ng-show="selectedFiles != null && validFileType == true">
-                  File Selected: {{selectedFile.name}} <br/>size: {{selectedFile.size}} <br/>type: {{selectedFile.type}} <br/> - Press Upload Button to Begin...
-                                <button class="btn btn-primary pull-right" ng-click="onFileSubmit()" ng-show="selectedFiles != null && validFileType == true" ng-disabled="!percent == 0">Upload</button><br/><br/>
-                                <button class="btn btn-primary pull-right" ng-click="abort()" ng-show="selectedFiles != null" ng-disabled="percent == 0 || percent == null">Abort</button>
-                                <span class="progress" ng-show="percent >= 0"> 
-                                 <div style="width:{{percent}}%">{{percent}}%</div>
-                                </span>
-                               
-                             </div>
+
+
 
                            </form>
                            
