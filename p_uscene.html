@@ -320,7 +320,7 @@
                 <td>
 
                     <select name="sceneHeightmap" class="form-control" ng-model="scene.sceneHeightmap.name" ng-options="e as e for e in heightmaps" >
-                        <option value="" selected="{{sceneHeightmap.name}}">Select Heightmap:</option>
+                        <option value="" selected={{sceneHeightmap.name}}>Select Heightmap:</option>
                     </select>
                 </td>
             </tr>
@@ -434,7 +434,7 @@
                     Time of Day:
                 </td>
                 <td>
-                    <select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t as t for t in time" >
+                    <select name="sceneTime" class="form-control" ng-model="scene.sceneTime" ng-options="t.name for t in time track by t.value" >
                         <option value="" selected="selected">Select Time:</option>
                     </select>
                 </td>
@@ -442,7 +442,7 @@
                     Time Speed:
                 </td>
                 <td>
-                    <select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTimescale" ng-options="t.name for t in speed" >
+                    <select name="sceneTimeSpeed" class="form-control" ng-model="scene.sceneTimescale" ng-options="t.name for t in speed track by t.name" >
                         <option value="" selected="selected">Select Timescale:</option>
                     </select>
                 </td>
@@ -455,7 +455,7 @@
                     Weather:
                 </td>
                 <td>
-                    <select name="sceneWeather" class="form-control" ng-model="scene.sceneWeather" ng-options="w.name for w in weather" >
+                    <select name="sceneWeather" class="form-control" ng-model="scene.sceneWeather" ng-options="w.name for w in weather track by w.value" >
                         <option value="" selected="selected">Select Weather:</option>
                     </select>
                 </td>
@@ -464,7 +464,7 @@
                 </td>
                 <td>
                     <select name="sceneSeason" class="form-control" ng-model="scene.sceneSeason" ng-options="s.name for s in season" >
-                        <option value="" selected="selected">Select Season:</option>
+                        <option value="" selected="{{sceneSeason.name}}">Select Season:</option>
                     </select>
                 </td>
             </tr>

@@ -976,10 +976,13 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         $scope.objectitems = [];
 //        $scope.environments = [];
 
+
         $scope.sceneEnvironment = {};
+        $scope.sceneWeather = {};
+        $scope.sceneTime = {};
         $scope.sceneTargetEvent = {};
         $scope.sceneTargetObject = {};
-        $scope.sceneEnvironment.options = {};
+//        $scope.sceneEnvironment.options = {};
 
 //
 //        $scope.environments = [
@@ -1023,11 +1026,12 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             {name:'midnight'}
         ];
         $scope.time = [
-            {name:'morning'},
-            {name:'midday'},
-            {name:'evening'},
-            {name:'midnight'}
+            {name:'morning', value: 1},
+            {name:'midday', value: 2},
+            {name:'evening', value: 3},
+            {name:'midnight', value: 4}
         ];
+
         $scope.speed = [
             {name:'normal'},
             {name:'half'},
@@ -1041,11 +1045,19 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             {name:'winter'}
         ];
         $scope.weather = [
-            {name:'fog'},
-            {name:'clear'},
-            {name:'pcloudy'},
-            {name:'rain'},
-            {name:'storm'}
+            {name:'fog', value: 1},
+            {name:'rain', value: 2},
+            {name:'storm', value: 3},
+            {name:'p_cloudy1', value: 4},
+            {name:'p_cloudy2', value: 5},
+            {name:'p_cloudy3', value: 6},
+            {name:'clear1', value: 7},
+            {name:'clear2', value: 8},
+            {name:'cloudy', value: 9},
+            {name:'butterflies', value: 10},
+            {name:'mostlycloudy', value: 11},
+            {name:'heavyrain', value: 12},
+            {name:'falling leaves', value: 13}
         ];
 
         $scope.headings = [
@@ -1081,20 +1093,28 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //            $scope.scene.sceneEnvironment.options = options;
 //        });
 
-        $scope.$watch('sceneEnvironment', function(scene){
-            console.log("XXXX sceneEnvironment: " + scene);
-            $scope.scene.sceneEnvironment = scene;
+        $scope.$watch('sceneEnvironment', function(sceneEnv){
+            console.log("XXXX sceneEnvironment: " + JSON.stringify(sceneEnv));
+            $scope.scene.sceneEnvironment = sceneEnv;
         });
-
+//        $scope.$watch('sceneWeather', function(sceneWeather){
+//            console.log("XXXX sceneWeather: " + JSON.stringify(sceneWeather));
+//            $scope.scene.sceneWeather = sceneWeather;
+//        });
+//        $scope.$watch('sceneTime', function(sceneTime){
+//            console.log("XXXX sceneTime: " + JSON.stringify(sceneTime));
+//            $scope.scene.sceneTime = sceneTime;
+//        });
         $http.get('/uscene/:' + $routeParams.user_id + '/:' + $routeParams.scene_id).success(function (data) {
 
             $scope.scene = data;
 
             $scope.headermessage = "updated: " + $scope.scene.sceneLastUpdate;
-
+//            console.log("Weather obj: " + JSON.stringify($scope.scene.sceneWeather));
+//            $scope.sceneWeather = $scope.scene.sceneWeather;
     //		                    $scope.predicate = '-otimestamp';
-            console.log("XXXX scene:", $scope.scene);
-            console.log("XXX environments: " + $scope.environments[0]);
+//            console.log("XXXX scene:", $scope.scene._id);
+//            console.log("XXX environments: " + $scope.environments[0]);
 
             $http.get('/userpics/' + $routeParams.user_id).success(function (data) {
                 $scope.pictureitems = data;
@@ -1111,7 +1131,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                         stump.title = $scope.pictureitems[i].title;
                         stump.filename = $scope.pictureitems[i].filename;
                         $scope.scenePictureThumbs.push(stump);
-                        console.log($scope.scenePictureThumbs);
+//                        console.log($scope.scenePictureThumbs);
                         }
                     }
                 }
@@ -1131,7 +1151,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 $scope.audioitems = data;
                 $scope.predicate = '-otimestamp';
                 //  $scope.setPagingData(largeLoad,page,pageSize);
-                console.log($scope.audioitems[0]);
+//                console.log($scope.audioitems[0]);
                 //   $scope.setPagingData(page,pageSize);
             }).error(function	(data) {
                 // called asynchronously if an error occurs
