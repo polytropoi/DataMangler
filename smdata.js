@@ -971,6 +971,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
         $scope.scenePictures = [];
         $scope.scenePictureThumbs = [];
+        $scope.scenePostcardThumbs = [];
         $scope.pictureitems = [];
         $scope.audioitems = [];
         $scope.objectitems = [];
@@ -1110,6 +1111,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             $scope.scene = data;
 
             $scope.headermessage = "updated: " + $scope.scene.sceneLastUpdate;
+
 //            console.log("Weather obj: " + JSON.stringify($scope.scene.sceneWeather));
 //            $scope.sceneWeather = $scope.scene.sceneWeather;
     //		                    $scope.predicate = '-otimestamp';
@@ -1124,17 +1126,29 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
                 for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
                     for (var k = 0, kk = $scope.scene.scenePictures.length; k < kk; k++) {
-                    if ($scope.scene.scenePictures[k] === $scope.pictureitems[i]._id) {
-                        var stump = {};
-                        stump._id = $scope.pictureitems[i]._id;
-                        stump.thumbUrl = $scope.pictureitems[i].URLthumb;
-                        stump.title = $scope.pictureitems[i].title;
-                        stump.filename = $scope.pictureitems[i].filename;
-                        $scope.scenePictureThumbs.push(stump);
-//                        console.log($scope.scenePictureThumbs);
+                        if ($scope.scene.scenePictures[k] === $scope.pictureitems[i]._id) {
+                            var stump = {};
+                            stump._id = $scope.pictureitems[i]._id;
+                            stump.thumbUrl = $scope.pictureitems[i].URLthumb;
+                            stump.title = $scope.pictureitems[i].title;
+                            stump.filename = $scope.pictureitems[i].filename;
+                            $scope.scenePictureThumbs.push(stump);
                         }
                     }
+
+                    for (var k = 0, kk = $scope.scene.scenePostcards.length; k < kk; k++) {
+                        if ($scope.scene.scenePostcards[k] === $scope.pictureitems[i]._id) {
+                            var stump = {};
+                            stump._id = $scope.pictureitems[i]._id;
+                            stump.thumbUrl = $scope.pictureitems[i].URLthumb;
+                            stump.title = $scope.pictureitems[i].title;
+                            stump.filename = $scope.pictureitems[i].filename;
+                            $scope.scenePostcardThumbs.push(stump);
+                        }
+                    }
+
                 }
+
                 //   $scope.setPagingData(page,pageSize);
 
             }).error(function	(data) {
@@ -1271,7 +1285,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                     }
                     //TODO get the value directly from the pictureitems object?
 
-                    for (var i = 0, ii = $scope.scenePictureThumbs.length - 1; i < ii; i++) {
+                    for (var i = 0, ii = $scope.scenePictureThumbs.length; i < ii; i++) {
                         if (($scope.scenePictureThumbs != undefined) && (id === $scope.scenePictureThumbs[i]._id)) {
                               $scope.scenePictureThumbs.splice(i, 1);
 
@@ -1280,6 +1294,28 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                     $scope.form.$dirty = true;
                     }
                 }
+        };
+        $scope.DeleteScenePostcard = function(id) {
+            if (id != undefined) {
+
+                if ($scope.scene.scenePostcards != undefined) {
+                    console.log("tryna delete postcard " + id);
+                    var scenePostcardIndex = $scope.scene.scenePostcards.indexOf(id);
+                    if (scenePostcardIndex != -1) {
+                        $scope.scene.scenePostcards.splice(scenePostcardIndex, 1);
+                    }
+
+                    for (var i = 0, ii = $scope.scenePostcardThumbs.length; i < ii; i++) {
+                        console.log("postcardThurmb " + $scope.scenePostcardThumbs[i]._id);
+                        if (($scope.scenePostcardThumbs != undefined) && (id === $scope.scenePostcardThumbs[i]._id)) {
+                            $scope.scenePostcardThumbs.splice(i, 1);
+                            console.log("tryna remove the postcard...");
+
+                        }
+                    }
+                    $scope.form.$dirty = true;
+                }
+            }
         };
 
         $scope.onSaveScene = function() {

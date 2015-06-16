@@ -3,18 +3,34 @@
 
 <div class="well" style="margin-top: 20px;">
     <div class="row">
+    <div class="col-md-3">
     <a class="btn btn-primary btn-lg "target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
+        <h4>Scene Key: <a target="_blank" href="http://servicemedia.net/scene/{{scene.short_id}}">{{scene.short_id}}</a></h4></span> <span ><h4>Scene Title: {{scene.sceneTitle}}</h4></span>
+        <a class="btn btn-primary btn-sm "target="_blank" href="#/uploadpicture/postcard/{{scene.short_id}}">Upload Scene Postcard</a>
+    </div>
 
-    <button class="btn btn-primary btn-lg pull-right " ng-click="onSaveScene()" >Save</button>
+    <div class="col-md-6">Scene Postcards:
+    <div ng-repeat="picture in scenePostcardThumbs">
+        <div class="col-md-2">
+            <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+            <button class="btn-default btn-default-sm" ng-click="DeleteScenePostcard(picture._id)">Remove</button>
+        </div>
+    </div>
 
-    <br><span class="pull-right"><p>{{headermessage}}</p></span>
+    </div>
+
+    <div class="col-md-3">
+        <!--<a class="btn btn-primary btn-lg "target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>-->
+        <button class="btn btn-primary btn-lg pull-right" ng-click="onSaveScene()" >Save</button>
+
+        <br><span><p>{{headermessage}}</p></span> </div>
+
     <span>
 
-        <h4>Scene Key: <a target="_blank" href="http://servicemedia.net/scene/{{scene.short_id}}">{{scene.short_id}}</a></h4></span> <span ><h4>Scene Title: {{scene.sceneTitle}}</h4></span>
 
+<!--</div>-->
 
-
-
+<div>
 
 <form name="form">
 
@@ -102,7 +118,7 @@
                     </div>
                 </td>
             <td>
-                <br><a class="btn btn-primary btn-sm "target="_blank" href="#/uploadpicture/postcard/{{scene.short_id}}">Upload Scene Postcard</a>
+
             </td>
                 <td>
                     <br><a class="btn btn-primary btn-sm "target="_blank" href="#/uploadpicture/scenepic/{{scene.short_id}}">Upload Scene Picture</a>

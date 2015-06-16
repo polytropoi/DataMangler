@@ -3170,6 +3170,11 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
                 console.log("tryna update scene " + shortID);
                 db.scenes.update({short_id: shortID}, {$push: {scenePictures: itemID}} );
             }
+            if (theTags[i].search("_postcard") != -1) {
+                var shortID = theTags[i].substring(0, 6);
+                console.log("tryna update scene " + shortID);
+                db.scenes.update({short_id: shortID}, {$push: {scenePostcards: itemID}} );
+            }
         };
         callback(null, itemID)
     },

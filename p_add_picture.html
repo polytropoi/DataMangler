@@ -52,14 +52,29 @@
     <div class="col-md-3"></div>
     <div class="col-md-6 well">
 <form name="picForm" novalidate> 
-  <div class="fileUpload btn btn-primary pull" >
+  <div class="fileUpload btn btn-primary pull-left" >
     <span>Choose File</span> {{tags}}
     <input type="file" class="upload" ng-file-select="onFileSelect($files)"/>
   </div>
 
+    <div ng-show="selectedFiles != null && validFileType == true">
+        File Selected: {{selectedFile.name}} <br/>size: {{selectedFile.size}} <br/>type: {{selectedFile.type}} <br/> - Press Upload Button to Begin...
+        <button class="btn btn-primary pull-right" ng-click="onFileSubmit()" ng-show="selectedFiles != null && validFileType == true" ng-disabled="!percent == 0">Upload</button><br/><br/>
+        <button class="btn btn-primary pull-right" ng-click="abort()" ng-show="selectedFiles != null" ng-disabled="percent == 0 || percent == null">Abort</button>
+                                <span class="progress" ng-show="percent >= 0">
+                                 <div style="width:{{percent}}%">{{percent}}%</div>
+                                </span>
 
+    </div>
+    <div class="response" ng-show="uploadResult.length > 0">
+        Server Response:  {{uploadResult}}
+
+        <pre>{{progress}}</pre>
+
+    </div>
                 <br/>
                 <br/>
+    <br>
                 <div ng-show="dropSupported" class="drop-box" ng-file-drop="onFileSelect($files);" ng-file-drop-available="dropSupported=true">or drop files here</div>
                 <div ng-show="!dropSupported">HTML5 Drop File is not supported on this browser</div>
                 <br/>
@@ -69,27 +84,14 @@
               
                 <br/>
                 <br/>
-                <div ng-show="selectedFiles != null && validFileType == true">
-                  File Selected: {{selectedFile.name}} <br/>size: {{selectedFile.size}} <br/>type: {{selectedFile.type}} <br/> - Press Upload Button to Begin...
-                                <button class="btn btn-primary pull-right" ng-click="onFileSubmit()" ng-show="selectedFiles != null && validFileType == true" ng-disabled="!percent == 0">Upload</button><br/><br/>
-                                <button class="btn btn-primary pull-right" ng-click="abort()" ng-show="selectedFiles != null" ng-disabled="percent == 0 || percent == null">Abort</button>
-                                <span class="progress" ng-show="percent >= 0"> 
-                                 <div style="width:{{percent}}%">{{percent}}%</div>
-                                </span>
-                               
-                             </div>
+
 
                            </form>
                            
 
 
                 </div>
-                <div class="response" ng-show="uploadResult.length > 0">
-                        Server Response:  {{uploadResult}}  
 
-          <pre>{{progress}}</pre>
-          
-          </div>
 
             <div class="col-md-3"></div>
 
