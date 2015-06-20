@@ -77,7 +77,7 @@
         </table>
         </div>
     <div class="col-md-6">
-        <label>Sharing Options: </label>
+        <label>Sharing : </label>
         <table class="table">
             <tr>
                 <td>Share With Public?</td>
@@ -106,7 +106,7 @@
         </table>
     </div>
     <div class="col-md-12" style="margin-left: 10px;">
-        <label>User Picture Options: </label>
+        <label>Scene Pictures: </label>
         <table class="table">
             <tr>
                 <td>
@@ -138,9 +138,10 @@
             <!--</tr>-->
         <!--</table>-->
     </div>
+    <br><br>
 
-    <div class="col-md-12" style="margin-left: 10px;">
-        <label>User Audio Options: </label>
+    <div class="col-md-12" style="margin-left: 10px; margin-top: 10px;">
+        <label>Scene Audio: </label>
         <table class="table">
             <tr>
                 <td>
@@ -188,9 +189,45 @@
 
         </table>
     </div>
+    <div class="col-md-12" style="margin-left: 10px;">
+        <label>Scene Weblinks: </label>
+        <table class="table">
+            <tr>
+                <td>
+                    Title:  <input class="pull-right form-control" type="text" ng-model="weblinkTitle" >
+                </td>
+                <td>
+                    URL:  <input class="pull-right form-control" type="text" ng-model="weblinkURL" >
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-primary-md pull-right" ng-click="AddSceneWeblink()">Add</button>
+
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    {{scene.sceneWebLinks}}
+                </td>
+            </tr>
+        </table>
+
+        <!--<td>-->
+        <div ng-repeat="link in sceneWeblinks">
+            <div class="col-md-3">
+                <img ng-src="{{link.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+                <button class="btn-default btn-default-sm" ng-click="RemoveSceneLink(link._id)">Remove</button><br><span>Title:  {{link.link_title}}</span>
+            </div>
+        </div>
+        <br>
+        <!--</td>-->
+
+        <!--</tr>-->
+        <!--</table>-->
+    </div>
     <div class="col-md-12"><hr></div>
     <div class="col-md-6">
-       <label>Location Key Options: </label>
+       <label>Scene Location/Geocoding: </label>
         <table class="table">
             <tr>
                 <td> <button class="btn btn-info btn-sm glyphicon glyphicon-globe pull-left form-control" ng-click="GetCurrentLocation()"> Set Current Location</button>
@@ -213,7 +250,7 @@
         </table>
     </div>
     <div class="col-md-6">
-        <label>Time Key Options: </label>
+        <label>Scene Time: </label>
         <table class="table">
             <tr>
 
@@ -274,7 +311,7 @@
             <!--</div>-->
         <!--</div>-->
         <!--</div><div class=row">-->
-        <div class="col-md-6"><label>Color Options:</label>
+        <div class="col-md-6"><label>Scene Colors:</label>
             <table class="table">
                 <tr>
                     <td>Random Colors?</td>
@@ -302,26 +339,44 @@
             </table>
         </div>
     <div class="col-md-6" >
-        <label>Ground Options: </label>
+        <label>Scene Ground: </label>
         <table class="table">
             <tr>
                 <td>
-                    Use Prefab Environment?
+                    Use Street Map?<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseStreetMap]" ng-click="scene.sceneUseStreetMap = !scene.sceneUseStreetMap">{{!scene.sceneUseStreetMap && '' || ''}}
+                </a>
                 </td>
                 <td>
-                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseEnvironment]" ng-click="scene.sceneUseEnvironment = !scene.sceneUseEnvironment">{{!scene.sceneUseEnvironment && '' || ''}}
-                    </a>
+                    Use Satellite Map?<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSatelliteMap]" ng-click="scene.sceneUseSatelliteMap = !scene.sceneUseSatelliteMap">{{!scene.sceneUseSatelliteMap && '' || ''}}
+                </a>
                 </td>
                 <td>
-                    Environment:
+                    Use Hybrid Map?<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseHybridMap]" ng-click="scene.sceneUseHybridMap = !scene.sceneUseHybridMap">{{!scene.sceneUseHybridMap && '' || ''}}
+                </a>
                 </td>
                 <td>
-
-                    <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" >
-                        <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
-                    </select>
+                    Emulate GPS?<a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneEmulateGPS]" ng-click="scene.sceneEmulateGPS = !scene.sceneEmulateGPS">{{!scene.sceneEmulateGPS && '' || ''}}
+                </a>
                 </td>
             </tr>
+            <tr>
+            <td>
+                Use Prefab Environment?
+            </td>
+            <td>
+                <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseEnvironment]" ng-click="scene.sceneUseEnvironment = !scene.sceneUseEnvironment">{{!scene.sceneUseEnvironment && '' || ''}}
+                </a>
+            </td>
+            <td>
+                Environment:
+            </td>
+            <td>
+
+                <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" >
+                    <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
+                </select>
+            </td>
+        </tr>
             <tr>
                 <td>
                     Use Heightmap?
@@ -393,7 +448,7 @@
 
 
     <div class="col-md-6"  >
-        <label>Sky Options: </label>
+        <label>Scene Sky: </label>
         <table class="table">
             <tr>
                 <td>
@@ -489,7 +544,7 @@
         </div>
 
     <div class="col-md-5" style="margin-left: 30px;">
-        <label>Water Options: </label>
+        <label>Scene Water: </label>
         <table class="table">
             <tr>
                 <td>
@@ -504,6 +559,23 @@
                 </td>
                 <td>
                     <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseOcean]" ng-click="scene.sceneUseOcean = !scene.sceneUseOcean">{{!scene.sceneUseOcean && '' || ''}}
+                    </a>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    Use Suimono - Mobile?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSuimonoMobile]" ng-click="scene.sceneUseSuimonoMobile = !scene.sceneUseSuimonoMobile">{{!scene.sceneUseSuimonoMobile && '' || ''}}
+                    </a>
+                </td>
+                <td>
+                    Use Suimono - Standalone?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseSuimonoFull]" ng-click="scene.sceneUseSuimonoFull = !scene.sceneUseSuimonoFull">{{!scene.sceneUseSuimonoFull && '' || ''}}
                     </a>
                 </td>
             </tr>
@@ -550,6 +622,7 @@
                             <div class="btn-group ">
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.crystal" btn-checkbox>Crystals</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.conifer" btn-checkbox>Trees - Conifer</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.palm1" btn-checkbox>Trees - Palm1</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.rock" btn-checkbox>Rocks</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.tree2" btn-checkbox>Trees - Small</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterMeshLayers.redflower" btn-checkbox>Red Flowers</label>
@@ -569,6 +642,7 @@
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.picobj" btn-checkbox>Picture Objects</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.textobj" btn-checkbox>Text Objects</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.key1" btn-checkbox>Keys</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.bigpalm1" btn-checkbox>PalmTree</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.snowman" btn-checkbox>Snowmen</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.mailbox" btn-checkbox>Mailboxes</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.rabbit" btn-checkbox>Rabbits</label>

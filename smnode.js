@@ -93,7 +93,7 @@ var corsOptions = function (origin) {
 
        // Create the http server and get it to listen on the specified port 8084                                                                                                                   
   var databaseUrl = "asterion:menatar@linus.mongohq.com:10093/servmed";
-  var collections = ["auth_req", "users", "audio_items", "audio_item_keys", "image_items", "obj_items", "paths", "keys", "scenes"];
+  var collections = ["auth_req", "users", "audio_items", "audio_item_keys", "image_items", "obj_items", "paths", "keys", "scenes", "weblinks"];
   var db = require("mongojs").connect(databaseUrl, collections);
   var BSON = mongo.BSONPure;
   
@@ -2020,7 +2020,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
 //});
 
-app.post('/newscene', requiredAuthentication, function (req, res) {
+    app.post('/newscene', requiredAuthentication, function (req, res) {
 
     db.scenes.save(req.body, function (err, saved) {
         if ( err || !saved ) {
@@ -2039,10 +2039,10 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 
             res.send(item_id);
 
-        }
-    });
+            }
+        });
 
-}),
+    });
 
     app.post('/delete_scene/:_id', requiredAuthentication, function (req, res) {
         console.log("tryna delete key: " + req.body._id);
@@ -2050,6 +2050,17 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
         db.scenes.remove( { "_id" : o_id }, 1 );
         res.send("deleted");
 
+    });
+
+
+    app.post('/weblink/', requiredAuthentication, function (req, res) {
+        console.log("checkin weblink: " + req.body.link_url);
+        db.scenes.find({ "link_url" : req.body.link_url}, function(err, link) {
+            if (err || !scene) {
+                console.log("error getting path items: " + err);
+            } else {
+
+            }
     });
 
     app.post('/update_scene/:_id', requiredAuthentication, function (req, res) {
@@ -2062,7 +2073,6 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
                 console.log("error getting path items: " + err);
             } else {
                 console.log("tryna update path " + req.body._id);
-
 
                 db.scenes.update( { "_id": o_id }, { $set: {
                     sceneDomain : req.body.sceneDomain,
@@ -2193,7 +2203,8 @@ app.post('/newscene', requiredAuthentication, function (req, res) {
 
     });
 
-    app.get('/scene/:_id', function (req, res) {
+
+    app.get('/scene/:_id', function (req, res) { //TODO lock down w/ requiredAuthentication
 
         console.log("tryna get scene id: ", req.params._id);
         var audioResponse = {};

@@ -975,6 +975,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         $scope.pictureitems = [];
         $scope.audioitems = [];
         $scope.objectitems = [];
+        $scope.sceneWebLinks = [];
 //        $scope.environments = [];
 
 
@@ -983,6 +984,10 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         $scope.sceneTime = {};
         $scope.sceneTargetEvent = {};
         $scope.sceneTargetObject = {};
+        $scope.sceneLinks = {};
+
+        $scope.weblinkURL = "";
+        $scope.weblinkTitle = "";
 //        $scope.sceneEnvironment.options = {};
 
 //
@@ -1086,6 +1091,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         ];
 
         $scope.canSend = true;
+
 //        $scope.scene.scatterMeshes = true;
 
 //        $scope.$watch('enviroOptions', function (options){
@@ -1224,7 +1230,30 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //            });
         };
 
+        $scope.AddSceneWeblink = function() {
+//            if (pictureID) {
+//                //$scope.scene.scenePictures = $scope.scenePictures;
+//            }
 
+            var stump = {};
+            stump.link_title = $scope.weblinkTitle;
+            stump.link_url = $scope.weblinkURL;
+            console.log("tryna add scene weblink" + stump.link_title);
+
+            $http.post('/weblink/',  stump).success(function(response){
+                console.log("submit response:  " + response);
+                if (response == "noauth") {
+                    $scope.headermessage = "You must be logged in to do that!"
+                } else {
+                    console.log(response);
+//                    $scope.headermessage = response;
+                    // $location.path( "#/uscenes/" +
+                    // $cookies._id.replace (/"/g,''));
+                }
+            });
+
+
+        };
 
         $scope.AddScenePicture = function(pictureID) {
 //                if (id != null && id != undefined && id.length > 0) {
