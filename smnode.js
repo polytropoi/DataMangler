@@ -2055,14 +2055,27 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
     app.post('/weblink/', requiredAuthentication, function (req, res) {
         console.log("checkin weblink: " + req.body.link_url);
-        db.scenes.find({ "link_url" : req.body.link_url}, function(err, link) {
-            if (err || !scene) {
-                console.log("error getting path items: " + err);
-            } else {
+        db.weblinks.find({ "link_url" : req.body.link_url}, function(err, link) {
+            if (err) {
+                console.log("error getting link items: " + err);
+            } else if (!link) {
+                console.log("no link items found");
+                db.weblink.save(req.body, function (err, saved) {
+                    if (err || !saved) {
+                        console.log('scene not saved..');
+                        res.send("nilch");
+                    } else {
+                        res.send(saved);
 
+                    }
+                });
+            } else {
+                res.send(link[0]);
             }
+        });
     });
 
+    //app.get('/weblink')
     app.post('/update_scene/:_id', requiredAuthentication, function (req, res) {
         console.log(req.params._id);
         var lastUpdateTimestamp = new Date();

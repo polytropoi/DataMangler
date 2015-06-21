@@ -1238,6 +1238,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             var stump = {};
             stump.link_title = $scope.weblinkTitle;
             stump.link_url = $scope.weblinkURL;
+
             console.log("tryna add scene weblink" + stump.link_title);
 
             $http.post('/weblink/',  stump).success(function(response){
