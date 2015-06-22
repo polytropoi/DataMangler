@@ -2055,22 +2055,81 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
     app.post('/weblink/', requiredAuthentication, function (req, res) {
         console.log("checkin weblink: " + req.body.link_url);
-        db.weblinks.find({ "link_url" : req.body.link_url}, function(err, link) {
+        var lurl = "";
+        lurl = req.body.link_url;
+        db.weblinks.find({ link_url : lurl}, function(err, links) {
             if (err) {
                 console.log("error getting link items: " + err);
-            } else if (!link) {
+            } else if (!links || links.Length == 0 || links[0] == undefined || links[0] == "") {
                 console.log("no link items found");
-                db.weblink.save(req.body, function (err, saved) {
-                    if (err || !saved) {
-                        console.log('scene not saved..');
+                db.weblinks.save(req.body, function (err, savedlink) {
+                    if (err || !savedlink) {
+                        console.log('link not saved..');
                         res.send("nilch");
                     } else {
-                        res.send(saved);
 
-                    }
+                        var weblinkParams = {
+                                'steps': {
+                                    'extract': {
+                                        'robot': '/html/convert',
+                                        'url' : req.body.link_url
+                                    }
+                                },
+                                'template_id': '3129d73016dc11e5bc305b7a5c3e7a99',
+                                'fields' : { 'link_id' : savedlink._id,
+                                            'user_id' : req.session.user._id
+                                }
+                            };
+
+                            transloadClient.send(weblinkParams, function(ok) {
+                                console.log('Success: ' + JSON.stringify(ok));
+                                if (ok != null && ok != undefined) {
+                                    var dateNow = Date.now();
+                                    db.weblinks.update({"_id": savedlink._id}, { $set: {"render_date": dateNow}});
+                                }
+                            }, function(err) {
+                                console.log('Error: ' + JSON.stringify(err));
+//                                res.send(err);
+                            });
+                        }
+                    var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: savedlink._id + ".thumb.jpg", Expires: 6000});
+                    var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: links[0]._id + ".half.jpg", Expires: 6000});
+                    var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: links[0]._id + ".standard.jpg", Expires: 6000});
+                    savedlink.urlThumb = urlThumb;
+                    savedlink.urlHalf = urlHalf;
+                    savedlink.urlStandard = urlStandard;
+                    res.send(savedlink);
                 });
             } else {
-                res.send(link[0]);
+                var weblinkParams = {
+                    'steps': {
+                        'extract': {
+                            'robot': '/html/convert',
+                            'url' : req.body.link_url
+                        }
+                    },
+                    'template_id': '3129d73016dc11e5bc305b7a5c3e7a99',
+                    'fields' : { 'link_id' : links[0]._id,
+                        'user_id' : req.session.user._id
+                    }
+                };
+
+                transloadClient.send(weblinkParams, function(ok) {
+                    console.log('Success: ' + JSON.stringify(ok));
+                    if (ok != null && ok != undefined) {
+                        var dateNow = Date.now();
+                        db.weblinks.update({"_id": links[0]._id}, { $set: {"render_date": dateNow}});
+                    }
+                }, function(err) {
+                    console.log('Error: ' + JSON.stringify(err));
+                });
+                var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: links[0]._id + ".thumb.jpg", Expires: 6000});
+                var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: links[0]._id + ".half.jpg", Expires: 6000});
+                var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: links[0]._id + ".standard.jpg", Expires: 6000});
+                links[0].urlThumb = urlThumb;
+                links[0].urlHalf = urlHalf;
+                links[0].urlStandard = urlStandard;
+                res.send(links[0]);
             }
         });
     });
@@ -2131,6 +2190,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                     sceneWeather: req.body.sceneWeather,
                     sceneSeason: req.body.sceneSeason,
                     scenePictures : req.body.scenePictures,
+                    sceneWebLinks : req.body.sceneWebLinks,
                     sceneNumber : req.body.sceneNumber,
                     sceneTitle : req.body.sceneTitle,
                     sceneColor1 : req.body.sceneColor1,
@@ -2301,8 +2361,6 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                                         });
 
                                         requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneAmbientAudioID), BSON.ObjectID(sceneData[0].scenePrimaryAudioID)];
-
-
                                         sceneResponse = sceneData[0];
                                         callback(null);
                                     }

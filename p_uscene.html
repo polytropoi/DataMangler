@@ -128,9 +128,9 @@
 
                 <!--<td>-->
                     <div ng-repeat="picture in scenePictureThumbs">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
-                            <button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>
+                           <span>Title:  {{picture.title}}</span> <br><button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Remove</button>
                         </div>
                     </div>
                 <!--</td>-->
@@ -203,20 +203,17 @@
                     <button class="btn btn-primary btn-primary-md pull-right" ng-click="AddSceneWeblink()">Add</button>
 
                 </td>
-                <td>
 
-                </td>
-                <td>
-                    {{scene.sceneWebLinks}}
-                </td>
             </tr>
         </table>
 
         <!--<td>-->
-        <div ng-repeat="link in sceneWeblinks">
-            <div class="col-md-3">
-                <img ng-src="{{link.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
-                <button class="btn-default btn-default-sm" ng-click="RemoveSceneLink(link._id)">Remove</button><br><span>Title:  {{link.link_title}}</span>
+        <div ng-repeat="link in sceneWebLinks">
+            <div class="col-md-2">
+
+                <a href="{{link.link_url}}" target="_blank"> <img ng-src="{{link.urlThumb}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png"><span>{{link.link_title}}</span></a> <br>
+                <button class="btn-default btn-default-sm" ng-click="RemoveWebLink(link.link_id)">Remove</button>
+
             </div>
         </div>
         <br>
@@ -543,7 +540,7 @@
             </table>
         </div>
 
-    <div class="col-md-5" style="margin-left: 30px;">
+    <div class="col-md-6" >
         <label>Scene Water: </label>
         <table class="table">
             <tr>

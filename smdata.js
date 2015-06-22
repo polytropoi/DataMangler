@@ -975,7 +975,9 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         $scope.pictureitems = [];
         $scope.audioitems = [];
         $scope.objectitems = [];
-        $scope.sceneWebLinks = [];
+        $scope.sceneWebLinks = []; //appended to scene obj on save
+        $scope.sceneLinks = []; //used for display
+//        $scope.sceneWebLinks = [];
 //        $scope.environments = [];
 
 
@@ -984,7 +986,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         $scope.sceneTime = {};
         $scope.sceneTargetEvent = {};
         $scope.sceneTargetObject = {};
-        $scope.sceneLinks = {};
+
 
         $scope.weblinkURL = "";
         $scope.weblinkTitle = "";
@@ -1118,11 +1120,16 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
             $scope.headermessage = "updated: " + $scope.scene.sceneLastUpdate;
 
+
 //            console.log("Weather obj: " + JSON.stringify($scope.scene.sceneWeather));
 //            $scope.sceneWeather = $scope.scene.sceneWeather;
     //		                    $scope.predicate = '-otimestamp';
 //            console.log("XXXX scene:", $scope.scene._id);
 //            console.log("XXX environments: " + $scope.environments[0]);
+            if ($scope.scene.sceneWebLinks != null && $scope.scene.sceneWebLinks != undefined && $scope.scene.sceneWebLinks.length) {
+                $scope.sceneWebLinks = $scope.scene.sceneWebLinks;
+            }
+
 
             $http.get('/userpics/' + $routeParams.user_id).success(function (data) {
                 $scope.pictureitems = data;
@@ -1236,8 +1243,16 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //            }
 
             var stump = {};
-            stump.link_title = $scope.weblinkTitle;
+            stump.link_orig_title = $scope.weblinkTitle;
+            stump.link_orig_user = $routeParams.user_id;
+            stump.orig_date = Date.now();
             stump.link_url = $scope.weblinkURL;
+
+            var link = {};
+            link.link_title =  $scope.weblinkTitle;
+            link.link_url = $scope.weblinkURL;
+
+
 
             console.log("tryna add scene weblink" + stump.link_title);
 
@@ -1246,7 +1261,21 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 if (response == "noauth") {
                     $scope.headermessage = "You must be logged in to do that!"
                 } else {
+                    if (response._id != null && response._id != undefined )
+
+                    link.link_id = response._id;
+                    link.urlThumb = response.urlThumb;
+                    link.urlHalf = response.urlHalf;
+                    link.urlStandard = response.urlStandard;
+
+
+                    $scope.sceneWebLinks.push(link);
+                    $scope.scene.sceneWebLinks = $scope.sceneWebLinks;
+
+                    //scene ref will use the returned ID, for the reference link in weblinks collection
+
                     console.log(response);
+//                    $scope.$apply($scope.sceneWebLinks);
 //                    $scope.headermessage = response;
                     // $location.path( "#/uscenes/" +
                     // $cookies._id.replace (/"/g,''));
