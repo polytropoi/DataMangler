@@ -1766,12 +1766,22 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
     var o_id = new ObjectId.createFromHexString(sceneID);
 
     console.log("tryna get scene: " + sceneID);
-    db.scenes.findOne({ _id : o_id}, function(err, scenes) {
-        if (err || !scenes) {
-            console.log("cain't get no scenes... " + err);
+    db.scenes.findOne({ _id : o_id}, function(err, scene) {
+        if (err || !scene) {
+            console.log("cain't get no scene... " + err);
         } else {
-            console.log(JSON.stringify(scenes));
-            res.send(scenes);
+//            console.log(JSON.stringify(scenes));
+            for (var i = 0; i < scene.sceneWebLinks.length; i++) { //refresh the
+                console.log("sceneWebLink id: " + scene.sceneWebLinks[i].link_id);
+                var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: scene.sceneWebLinks[i].link_id + ".thumb.jpg", Expires: 6000});
+                var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: scene.sceneWebLinks[i].link_id + ".half.jpg", Expires: 6000});
+                var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: scene.sceneWebLinks[i].link_id + ".standard.jpg", Expires: 6000});
+                scene.sceneWebLinks[i].urlThumb = urlThumb;
+                scene.sceneWebLinks[i].urlHalf = urlHalf;
+                scene.sceneWebLinks[i].urlStandard = urlStandard;
+
+            }
+            res.send(scene);
         }
     });
 });
@@ -2277,7 +2287,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
     });
 
 
-    app.get('/scene/:_id', function (req, res) { //TODO lock down w/ requiredAuthentication
+    app.get('/scene/:_id', requiredAuthentication, function (req, res) { //TODO lock down w/ requiredAuthentication
 
         console.log("tryna get scene id: ", req.params._id);
         var audioResponse = {};
@@ -2327,7 +2337,6 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                                 });
 
                                 requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneAmbientAudioID), BSON.ObjectID(sceneData[0].scenePrimaryAudioID)];
-
                                 sceneResponse = sceneData[0];
                                 callback(null, sceneData);
                             }
@@ -2378,6 +2387,21 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                         }
                     },
 
+
+                    function (callback) { //update link pic URLs //TODO check for freshness, and rescrape if needed
+
+                        for (var i = 0; i < sceneResponse.sceneWebLinks.length; i++) {
+                            console.log("sceneWebLink id: " + sceneResponse.sceneWebLinks[i].link_id);
+                            var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".thumb.jpg", Expires: 6000});
+                            var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".half.jpg", Expires: 6000});
+                            var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".standard.jpg", Expires: 6000});
+                            sceneResponse.sceneWebLinks[i].urlThumb = urlThumb;
+                            sceneResponse.sceneWebLinks[i].urlHalf = urlHalf;
+                            sceneResponse.sceneWebLinks[i].urlStandard = urlStandard;
+
+                        }
+                        callback(null);
+                    },
 
                     function (callback) { //fethc audio items
 
@@ -3100,7 +3124,7 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
             console.log(tempID + " = " + newShortID); 
             db.audio_items.update( { _id: o_id }, { $set: { short_id: newShortID }});
                     callback(null,tempID);
-                }
+            }
           
 
     ], //end async flow
@@ -3112,6 +3136,7 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
         }
       );  
     }); //end app.post /upload
+
 
 app.post('/uploadpicture', requiredAuthentication, function (req, res) {
 

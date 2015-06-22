@@ -210,8 +210,8 @@
         <!--<td>-->
         <div ng-repeat="link in sceneWebLinks">
             <div class="col-md-2">
-
-                <a href="{{link.link_url}}" target="_blank"> <img ng-src="{{link.urlThumb}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png"><span>{{link.link_title}}</span></a> <br>
+                <a href="{{link.urlStandard}}"><img ng-src="{{link.urlThumb}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png"></a>
+                <a href="{{link.link_url}}" target="_blank"> <span>{{link.link_title}}</span></a> <br>
                 <button class="btn-default btn-default-sm" ng-click="RemoveWebLink(link.link_id)">Remove</button>
 
             </div>
@@ -637,6 +637,7 @@
                             <div class="btn-group ">
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.gate1" btn-checkbox>Basic Gates</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.picobj" btn-checkbox>Picture Objects</label>
+                                <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.linkobj" btn-checkbox>Link Objects</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.textobj" btn-checkbox>Text Objects</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.key1" btn-checkbox>Keys</label>
                                 <label class="btn btn-primary" ng-model="scene.sceneScatterObjectLayers.bigpalm1" btn-checkbox>PalmTree</label>
