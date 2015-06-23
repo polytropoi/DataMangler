@@ -1771,15 +1771,17 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
             console.log("cain't get no scene... " + err);
         } else {
 //            console.log(JSON.stringify(scenes));
-            for (var i = 0; i < scene.sceneWebLinks.length; i++) { //refresh the
-                console.log("sceneWebLink id: " + scene.sceneWebLinks[i].link_id);
-                var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: scene.sceneWebLinks[i].link_id + ".thumb.jpg", Expires: 6000});
-                var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: scene.sceneWebLinks[i].link_id + ".half.jpg", Expires: 6000});
-                var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: scene.sceneWebLinks[i].link_id + ".standard.jpg", Expires: 6000});
-                scene.sceneWebLinks[i].urlThumb = urlThumb;
-                scene.sceneWebLinks[i].urlHalf = urlHalf;
-                scene.sceneWebLinks[i].urlStandard = urlStandard;
+            if (scene.sceneWebLinks != null && scene.sceneWebLinks.length > 0) {
+                for (var i = 0; i < scene.sceneWebLinks.length; i++) { //refresh themz
+                    console.log("sceneWebLink id: " + scene.sceneWebLinks[i].link_id);
+                    var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: scene.sceneWebLinks[i].link_id + ".thumb.jpg", Expires: 6000});
+                    var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: scene.sceneWebLinks[i].link_id + ".half.jpg", Expires: 6000});
+                    var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: scene.sceneWebLinks[i].link_id + ".standard.jpg", Expires: 6000});
+                    scene.sceneWebLinks[i].urlThumb = urlThumb;
+                    scene.sceneWebLinks[i].urlHalf = urlHalf;
+                    scene.sceneWebLinks[i].urlStandard = urlStandard;
 
+                }
             }
             res.send(scene);
         }
@@ -2103,8 +2105,8 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                             });
                         }
                     var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: savedlink._id + ".thumb.jpg", Expires: 6000});
-                    var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: links[0]._id + ".half.jpg", Expires: 6000});
-                    var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: links[0]._id + ".standard.jpg", Expires: 6000});
+                    var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: savedlink._id + ".half.jpg", Expires: 6000});
+                    var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: savedlink._id + ".standard.jpg", Expires: 6000});
                     savedlink.urlThumb = urlThumb;
                     savedlink.urlHalf = urlHalf;
                     savedlink.urlStandard = urlStandard;
@@ -2287,7 +2289,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
     });
 
 
-    app.get('/scene/:_id', requiredAuthentication, function (req, res) { //TODO lock down w/ requiredAuthentication
+    app.get('/scene/:_id', function (req, res) { //TODO lock down w/ requiredAuthentication
 
         console.log("tryna get scene id: ", req.params._id);
         var audioResponse = {};
@@ -2389,16 +2391,17 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
 
                     function (callback) { //update link pic URLs //TODO check for freshness, and rescrape if needed
+                        if (sceneResponse.sceneWebLinks != null && sceneResponse.sceneWebLinks.length > 0) {
+                            for (var i = 0; i < sceneResponse.sceneWebLinks.length; i++) {
+                                console.log("sceneWebLink id: " + sceneResponse.sceneWebLinks[i].link_id);
+                                var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".thumb.jpg", Expires: 6000});
+                                var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".half.jpg", Expires: 6000});
+                                var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".standard.jpg", Expires: 6000});
+                                sceneResponse.sceneWebLinks[i].urlThumb = urlThumb;
+                                sceneResponse.sceneWebLinks[i].urlHalf = urlHalf;
+                                sceneResponse.sceneWebLinks[i].urlStandard = urlStandard;
 
-                        for (var i = 0; i < sceneResponse.sceneWebLinks.length; i++) {
-                            console.log("sceneWebLink id: " + sceneResponse.sceneWebLinks[i].link_id);
-                            var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".thumb.jpg", Expires: 6000});
-                            var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".half.jpg", Expires: 6000});
-                            var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".standard.jpg", Expires: 6000});
-                            sceneResponse.sceneWebLinks[i].urlThumb = urlThumb;
-                            sceneResponse.sceneWebLinks[i].urlHalf = urlHalf;
-                            sceneResponse.sceneWebLinks[i].urlStandard = urlStandard;
-
+                            }
                         }
                         callback(null);
                     },
