@@ -1005,14 +1005,16 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             $scope.environments = [
 //                "genericFlat",
 //                "weatherTerrain",
-                "oceanScene",
+//                "oceanScene",
+                "spaceScene1",
                 "spaceScene1",
                 "islandScene2",
-                "desertScene",
+                "desertScene1",
                 "hellScene",
                 "winterScene1",
                 "caveScene",
-                "circleVillage",
+                "valleyScene1",
+                "villageScene1",
                 "graveyardScene1",
                 "dungeonScene1",
                 "alamo"
@@ -1020,6 +1022,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
         $scope.heightmaps = [
 
+            "http://strr.us/beach1.jpg",
             "http://strr.us/hm1.jpg",
             "http://strr.us/hm2.jpg",
             "http://strr.us/hm3.jpg",
@@ -1137,29 +1140,33 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 //  $scope.setPagingData(largeLoad,page,pageSize);
                 console.log("pictureitems.length: ", $scope.pictureitems.length);
 
-                for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
-                    for (var k = 0, kk = $scope.scene.scenePictures.length; k < kk; k++) {
-                        if ($scope.scene.scenePictures[k] === $scope.pictureitems[i]._id) {
-                            var stump = {};
-                            stump._id = $scope.pictureitems[i]._id;
-                            stump.thumbUrl = $scope.pictureitems[i].URLthumb;
-                            stump.title = $scope.pictureitems[i].title;
-                            stump.filename = $scope.pictureitems[i].filename;
-                            $scope.scenePictureThumbs.push(stump);
+//                if ($scope.pictureitems != null && $scope.pictureitems.length > 0) {
+                    for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
+                        for (var k = 0, kk = $scope.scene.scenePictures.length; k < kk; k++) {
+                            if ($scope.scene.scenePictures[k] === $scope.pictureitems[i]._id) {
+                                var stump = {};
+                                stump._id = $scope.pictureitems[i]._id;
+                                stump.thumbUrl = $scope.pictureitems[i].URLthumb;
+                                stump.title = $scope.pictureitems[i].title;
+                                stump.filename = $scope.pictureitems[i].filename;
+                                $scope.scenePictureThumbs.push(stump);
+                            }
+                        }
+//                    }
+//                }
+
+                    if ($scope.scene.scenePostcards != null && $scope.scene.scenePostcards.length > 0) {
+                        for (var k = 0, kk = $scope.scene.scenePostcards.length; k < kk; k++) {
+                            if ($scope.scene.scenePostcards[k] === $scope.pictureitems[i]._id) {
+                                var stump = {};
+                                stump._id = $scope.pictureitems[i]._id;
+                                stump.thumbUrl = $scope.pictureitems[i].URLthumb;
+                                stump.title = $scope.pictureitems[i].title;
+                                stump.filename = $scope.pictureitems[i].filename;
+                                $scope.scenePostcardThumbs.push(stump);
+                            }
                         }
                     }
-
-                    for (var k = 0, kk = $scope.scene.scenePostcards.length; k < kk; k++) {
-                        if ($scope.scene.scenePostcards[k] === $scope.pictureitems[i]._id) {
-                            var stump = {};
-                            stump._id = $scope.pictureitems[i]._id;
-                            stump.thumbUrl = $scope.pictureitems[i].URLthumb;
-                            stump.title = $scope.pictureitems[i].title;
-                            stump.filename = $scope.pictureitems[i].filename;
-                            $scope.scenePostcardThumbs.push(stump);
-                        }
-                    }
-
                 }
 
                 //   $scope.setPagingData(page,pageSize);
@@ -1167,7 +1174,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             }).error(function	(data) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
-                location.$path("/login");
+                $location.path("/login");
             });
 
 
