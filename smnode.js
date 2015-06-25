@@ -2586,10 +2586,13 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
                 if (validator.isEmail(req.body.sceneShareWith) == true) {
                     var htmlbody = req.session.user.userName + " has shared a guest pass on the Space/Time RailRoad with you!</h3><hr><br>" +
                     "Click here to access the scene: </br>" + "http://strr.us/?scene=" + req.body.short_id +
-                        "<br> Get the Android App here:  http://strr.us/strr.apk " +
+
+                        "<br> Get the updated Android App here:  http://spacetimerailroad.com/strr.apk " +
+                        "<br> Get the updated Windows 64bit app here :  http://spacetimerailroad.com/strr_windows.zip " +
+                        "<br> Get the updated OSX app here :  http://spacetimerailroad.com/strr.apk " +
 
 
-                            "<br> Scene Title: " + req.body.sceneTitle +
+                        "<br> Scene Title: " + req.body.sceneTitle +
                             "<br> Scene Key: " + req.body.short_id;
 
                     ses.sendEmail( { 
