@@ -474,10 +474,10 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
  		function UPicCtrl($scope, $http, $routeParams, $cookies, $location, usernav) {
             $scope.urls = usernav.urls;
-            $('#unityPlayer').toggleClass('hidden', true);
+//            $('#unityPlayer').toggleClass('hidden', true);
             $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
 
-            $('#unityPlayer').toggleClass('hidden', true);
+//            $('#unityPlayer').toggleClass('hidden', true);
             $scope.headermessage = "";
             $scope.user = {};
             $scope.updatestring = "";
@@ -968,7 +968,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
         $scope.scene = {};
 //        $scope.enviroments = [{name="genericFlat", "genericTerrain", "weatherTerrain", "oceanScene", "desertScene", "spaceScene1", "winterScene1"]
-
+        $scope.userID = $routeParams.user_id;
         $scope.scenePictures = [];
         $scope.scenePictureThumbs = [];
         $scope.scenePostcardThumbs = [];
@@ -2619,7 +2619,37 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
 		function NewAudioCtrl($scope, $http, $routeParams, $cookies, $location, $timeout, $upload, $route, usernav) {
 
-  			console.log("tryna load NewAudioCtrl controller");
+  			console.log("tryna load NewAudioCtrl controller with params: " + $routeParams);
+            $scope.tags = [];
+            $scope.AddTag = function (tag) {
+                console.log("tryna AddTag");
+                $scope.tags.push(tag);
+                console.log("tags: " + $scope.tags)
+            }
+
+
+            if ($routeParams.type != null) {
+
+                if ($routeParams.type == "primaryaudio" && ($routeParams.short_id.length > 5)) {
+
+                    $scope.AddTag($routeParams.short_id + "_primary");
+//                    $scope.type = "postcard"
+//                    $scope.postcardForScene = $routeParams.short_id;
+                }
+                if ($routeParams.type == "ambientaudio" && ($routeParams.short_id.length > 5)) {
+
+                    $scope.AddTag($routeParams.short_id + "_ambient");
+                    //                    $scope.type = "postcard"
+//                    $scope.postcardForScene = $routeParams.short_id;
+                }
+                if ($routeParams.type == "triggeraudio" && ($routeParams.short_id.length > 5)) {
+
+                    $scope.AddTag($routeParams.short_id + "_trigger");
+                    //                    $scope.type = "postcard"
+//                    $scope.postcardForScene = $routeParams.short_id;
+                }
+                console.log($scope.tags);
+            }
 
 		    $scope.inprogress = false;
   			$scope.upstatus = "choose a file (mp3, ogg, wav, or aif) or drag/drop into the outlined area";
@@ -2652,33 +2682,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 			delete $cookies._id; //if server session doesn't match, the client cookie is bad
 			}
 
-            $scope.tags = [];
-            $scope.AddTag = function (tag) {
-                console.log("tryna AddTag");
-                $scope.tags.push(tag);
-                console.log("tags: " + $scope.tags)
-            }
 
-
-            if ($routeParams.type != null) {
-
-                if ($routeParams.type == "primary" && ($routeParams.short_id.length > 5)) {
-
-                    $scope.AddTag($routeParams.short_id + "_primary")
-//                    $scope.type = "postcard"
-//                    $scope.postcardForScene = $routeParams.short_id;
-                }
-                if ($routeParams.type == "ambient" && ($routeParams.short_id.length > 5)) {
-
-                    $scope.AddTag($routeParams.short_id + "_ambient");
-
-                }
-                if ($routeParams.type == "trigger" && ($routeParams.short_id.length > 5)) {
-
-                    $scope.AddTag($routeParams.short_id + "_trigger");
-
-                }
-            }
 
   			//$scope.picture = {};
   		//	$scope.theFiles = [];
@@ -2686,7 +2690,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
   			$scope.uploadInProgress = false;
   			$scope.uploadComplete = false;
 
-  			$scope.tags = [];
+//  			$scope.tags = [];
 
   			//$scope.upload = [];
 
@@ -2722,8 +2726,9 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 		        url: '/uploadaudio', //node.js route
 
 		        // headers: {'headerKey': 'headerValue'}, withCredential: true,
-		        data: {title: "", tags: ""},
+		        data: {title: "", tags: $scope.tags},
 		        file: $scope.selectedFile,
+
 		        /* set file formData name for 'Content-Desposition' header. Default: 'file' */
 		        fileFormDataName: 'audio_upload'
 		        /* customize how data is added to formData. See #40#issuecomment-28612000 for example */
@@ -2783,7 +2788,7 @@ function NewPictureCtrl($scope, $http, $routeParams, $rootScope, $cookies, $loca
 
                 if ($routeParams.type == "postcard" && ($routeParams.short_id.length > 5)) {
 
-                    $scope.AddTag($routeParams.short_id + "_postcard")
+                    $scope.AddTag($routeParams.short_id + "_postcard");
 //                    $scope.type = "postcard"
                     $scope.postcardForScene = $routeParams.short_id;
                 }

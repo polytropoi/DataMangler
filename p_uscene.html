@@ -129,7 +129,7 @@
                 <!--<td>-->
                     <div ng-repeat="picture in scenePictureThumbs">
                         <div class="col-md-2">
-                            <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+                           <a href="#/upic/{{picture._id}}/"> <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png"></a>
                            <span>Title:  {{picture.title}}</span> <br><button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Remove</button>
                         </div>
                     </div>

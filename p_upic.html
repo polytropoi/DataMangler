@@ -14,17 +14,33 @@
       <h4 style="text-align: center">picture id: {{item._id}} </h4>
 
 
-       <label >Update Title: </label> 
+       <label >Title: </label>
       <input type="text" class="form-control" ng-model="item.title" name="imagetitle" placeholder="{{item.title}}"/> </br>
+          <label >Upper Caption: </label>
+          <input type="text" class="form-control" ng-model="item.captionUpper" name="captionUpper" placeholder="{{item.captionUpper}}"/> </br>
+          <label >Lower Caption: </label>
+          <input type="text" class="form-control" ng-model="item.captionLower" name="captionLower" placeholder="{{item.captionLower}}"/> </br>
 
-
-      <label>Update Status: </label>
+      <label>Status: </label>
             <div class="btn-group">
                 <button type="button" class="btn btn-primary" ng-model="item.item_status" btn-radio="'public'">Public</button>
                 <button type="button" class="btn btn-primary" ng-model="item.item_status" btn-radio="'private'">Private</button>
                 </br>
             </div>
-</br></br>
+      <label>Orientation: </label>
+      <div class="btn-group">
+          <button type="button" class="btn btn-primary" ng-model="item.orientation" btn-radio="'landscape'">Landscape</button>
+          <button type="button" class="btn btn-primary" ng-model="item.orientation" btn-radio="'portrait'">Portrait</button>
+          <button type="button" class="btn btn-primary" ng-model="item.orientation" btn-radio="'square'">Square</button>
+          </br>
+      </div>
+          </br></br>
+
+          <a class="btn pull-right"
+             ng-class="{true: 'btn-success ', false: 'btn-info '}[!item.hasAlphaChannel]"
+             ng-click="item.hasAlphaChannel = !item.hasAlphaChannel">{{!item.hasAlphaChannel && 'No Alpha Channel' || 'Has Alpha Channel'}}
+          </a>
+
 
       <!-- <div ng-repeat="t in item[0].tags"> --> 
        <label>Update Tags: </label>

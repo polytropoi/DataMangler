@@ -2159,7 +2159,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                 console.log("tryna update path " + req.body._id);
 
                 db.scenes.update( { "_id": o_id }, { $set: {
-                    sceneDomain : req.body.sceneDomain,
+                    sceneDomain : req.body.sceneDomain ,
                     sceneShareWithPublic : req.body.sceneShareWithPublic != null ? req.body.sceneShareWithPublic : false,
                     sceneShareWithUsers : req.body.sceneShareWithUsers != null ? req.body.sceneShareWithUsers : "",
                     sceneEnvironment : req.body.sceneEnvironment != null ? req.body.sceneEnvironment : {},
@@ -2501,6 +2501,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                             picture_items[i].urlQuarter = urlQuarter; //jack in teh signed urls into the object array
                             picture_items[i].urlHalf = urlHalf; //jack in teh signed urls into the object array
                             picture_items[i].urlStandard = urlStandard; //jack in teh signed urls into the object array
+                            if (picture_items[i].hasAlphaChannel == null) {picture_items[i].hasAlphaChannel = false}
                             //pathResponse.path.pictures.push(urlThumb, urlQuarter, urlHalf, urlStandard);
                             if (picture_items[i].tags.length < 1) {picture_items.tags = [""]}
                         }
@@ -2656,7 +2657,11 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
             console.log("tryna update " + req.body._id + " to status " + req.body.item_status);
             db.image_items.update( { _id: o_id }, { $set: { item_status: req.body.item_status,
                                                             tags: req.body.tags,
-                                                            title: req.body.title
+                                                            title: req.body.title,
+                                                            orientation: req.body.orientation,
+                                                            hasAlphaChannel: req.body.hasAlphaChannel,
+                                                            captionUpper: req.body.captionUpper,
+                                                            captionLower: req.body.captionLower
                                                                                              }});       
              } if (err) {res.send(error)} else {res.send("updated " + new Date())}
         });
@@ -2929,33 +2934,33 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
         }
     },
 
-
-    function(callback) { //#1 - parse ID3 tags if available
-        var fname_ext = getExtension(fname);
-        if (fname_ext === ".mp3") {
-        var parser = new mm(fs.createReadStream(fpath));
-        parser.on('metadata', function (result) {
-            parsedTags = result;
-            console.log("parsed file result: " + parsedTags);
-            callback(null, parsedTags);
-            });
-        } else {
-            parsedTags = "";
-            callback(null, parsedTags);
-            }
-
-    },
+//
+//    function(callback) { //#1 - parse ID3 tags if available
+//        var fname_ext = getExtension(fname);
+//        if (fname_ext === ".mp3") {
+//        var parser = new mm(fs.createReadStream(fpath));
+//        parser.on('metadata', function (result) {
+//            parsedTags = result;
+//            console.log("parsed file result: " + parsedTags);
+//            callback(null, parsedTags);
+//            });
+//        } else {
+//            parsedTags = "";
+//            callback(null, parsedTags);
+//            }
+//
+//    },
     
-    function(pTags, callback){ //#2 assign fields and parsed tags
-    if (pTags != null && pTags != undefined) {  
-        //res.json(JSON.stringify(pTags.title.toString()));
-        callback();
-        } else if (fname != null && fname.length > 2) { 
-        res.json(JSON.stringify(fname));
-        } else {
-        res.json(JSON.stringify("no name"));
-        }
-    },
+//    function(pTags, callback){ //#2 assign fields and parsed tags
+//    if (pTags != null && pTags != undefined) {
+//        //res.json(JSON.stringify(pTags.title.toString()));
+//        callback("fakeid3tags");
+//        } else if (fname != null && fname.length > 2) {
+//        res.json(JSON.stringify(fname));
+//        } else {
+//        res.json(JSON.stringify("no name"));
+//        }
+//    },
 
 
     function(callback) { //check that we gotsa bucket with this user's id
@@ -2963,7 +2968,7 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
        // var bucketFolder = 'elnoise1/' + req.session.user._id + '/';
 
         var bucketFolder = 'servicemedia.' + req.session.user._id;
-        console.log(bucketFolder);
+        console.log("butcketFOlder: " + bucketFolder);
         s3.headBucket({Bucket:bucketFolder},function(err,data){
           if(err){
               s3.createBucket({Bucket:bucketFolder},function(err2,data){
@@ -3015,26 +3020,29 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
 
         var itemTitle = "";
 
-        if (parsedTags == ""  || parsedTags.title.length < 3 || parsedTags.title === null || parsedTags.title === undefined ) {
+//        if (parsedTags == ""  || parsedTags.title.length < 3 || parsedTags.title === null || parsedTags.title === undefined ) {
             itemTitle = fname;
-        } else {
-            itemTitle = parsedTags.title.toString();
-        }
+//        } else {
+//            itemTitle = parsedTags.title.toString();
+//        }
 
     db.audio_items.save(
         {type : "uploadedUserAudio",
                 userID : req.session.user._id,
                 username : req.session.user.userName,
                 title : itemTitle,
-                artist : (parsedTags != "") ? parsedTags.artist.toString() : "",
-                album : (parsedTags != "") ? parsedTags.album.toString() : "",
-                year : (parsedTags != "") ? parsedTags.year.toString() : "",
+//                artist : (parsedTags != "") ? parsedTags.artist.toString() : "",
+//                album : (parsedTags != "") ? parsedTags.album.toString() : "",
+//                year : (parsedTags != "") ? parsedTags.year.toString() : "",
+            artist : "",
+                album :  "",
+                year :  "",
          filename : fname,
         item_type : 'audio',
         //alt_title : req.files.audio_upload.title,
         //alt_artist : req.files.audio_upload.artist,
         //alt_album : req.files.audio_upload.album,
-         tags: [],
+         tags: req.body.tags,
         item_status: "private",
         otimestamp : ts,
         ofilesize : fsize}, 
@@ -3060,17 +3068,17 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
                 if (theTags[i].search("_primary") != -1) {
                     var shortID = theTags[i].substring(0, 6);
                     console.log("tryna update scene " + shortID);
-                    db.scenes.update({short_id: shortID}, {$push: {scenePrimaryAudioID: itemID}} );
+                    db.scenes.update({short_id: shortID}, {$set: {scenePrimaryAudioID: itemID}} );
                 }
                 if (theTags[i].search("_ambient") != -1) {
                     var shortID = theTags[i].substring(0, 6);
                     console.log("tryna update scene " + shortID);
-                    db.scenes.update({short_id: shortID}, {$push: {sceneAmbientAudioID: itemID}} );
+                    db.scenes.update({short_id: shortID}, {$set: {sceneAmbientAudioID: itemID}} );
                 }
                 if (theTags[i].search("_trigger") != -1) {
                     var shortID = theTags[i].substring(0, 6);
                     console.log("tryna update scene " + shortID);
-                    db.scenes.update({short_id: shortID}, {$push: {sceneTriggerAudioID: itemID}} );
+                    db.scenes.update({short_id: shortID}, {$set: {sceneTriggerAudioID: itemID}} );
                 }
             };
             callback(null, itemID)
@@ -3142,7 +3150,7 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
     function(err, result) { // #last function, close async
         console.log("waterfall done: " + result);
     //  res.redirect('/upload.html');
-        res.send(result);
+//        res.send(result);
         }
       );  
     }); //end app.post /upload
