@@ -153,11 +153,18 @@
                         <option value="" selected="selected">Select Audio:</option>
                     </select>
 
+                    <span class="">Loop <a class="btn " ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneLoopPrimaryAudio]" ng-click="scene.sceneLoopPrimaryAudio = !scene.sceneLoopPrimaryAudio">{{!scene.sceneLoopPrimaryAudio && '' || ''}}
+                    </a></span>
 
+                    <span>  &nbsp;&nbsp;  Autoplay <a class="btn " ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneAutoplayPrimaryAudio]" ng-click="scene.sceneAutoplayPrimaryAudio = !scene.sceneAutoplayPrimaryAudio">{{!scene.sceneAutoplayPrimaryAudio && '' || ''}}
+                    </a></span>
+                    <span class="">  &nbsp;&nbsp; Trigger Events <a class="btn " ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.scenePrimaryAudioTriggerEvents]" ng-click="scene.scenePrimaryAudioTriggerEvents = !scene.scenePrimaryAudioTriggerEvents">{{!scene.scenePrimaryAudioTriggerEvents && '' || ''}}
+                    </a></span>
                 </td>
                 <td><a class="btn btn-primary btn-sm pull-left"target="_blank" href="#/uploadaudio/primaryaudio/{{scene.short_id}}">Upload Primary Audio</a></td>
-                <td><a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneLoopPrimaryAudio]" ng-click="scene.sceneLoopPrimaryAudio = !scene.sceneLoopPrimaryAudio">{{!scene.sceneLoopPrimaryAudio && ' Do Not Loop' || ' Loop'}}
-                </a></td>
+                <!--<td>-->
+
+                <!--</td>-->
 
             </tr>
             <tr>
@@ -834,14 +841,21 @@
             <div class="col-md-12">
 
                 <div class="form-group">
-                    <a class="btn pull-right" ng-class="{true: 'btn-info ', false: 'btn-success'}[!scene.sceneTextLoop]" ng-click="scene.sceneTextLoop = !scene.sceneTextLoop">{{!scene.sceneTextLoop && 'Do Not Loop Text' || 'Loop Text'}}
-                    </a>
+
+
                     <label for="scene_sceneTextInput" >Scene Text: (delimit with tilde "~" or tab)</label>
                     <textarea class="form-control" name="scene_sceneText" id="scene_sceneTextInput" ng-model="scene.sceneText" placeholder="Text" rows="5"></textarea></div>
+                    <div class="pull-right">  <span>Loop Text <a class="btn " ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneTextLoop]" ng-click="scene.sceneTextLoop = !scene.sceneTextLoop">{{!scene.sceneTextLoop && '' || ''}}
+                    </a></span>
+                   <span>Primary Audio Sync <a class="btn " ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneTextAudioSync]" ng-click="scene.sceneTextAudioSync = !scene.sceneTextAudioSync">{{!scene.sceneTextAudioSync && '' || ''}}
+                    </a></span></div>
+
                 <!--<button class="btn btn-primary btn-large pull-right" ng-click="Login()" ng-show="userstatus == 0" ng-disabled="!form.$valid">Login</button>-->
 
             </div>
+
     </form>
+        <br><br>
         <button class="btn btn-primary btn-sm pull-left" ng-click="onDeleteScene()" ng-hide="userstatus == 0 " >Delete Scene</button>
     <button class="btn btn-primary btn-lg pull-right " ng-click="onSaveScene()" >Save</button>
     </br></br>

@@ -2216,11 +2216,14 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                     sceneAmbientAudioID : req.body.sceneAmbientAudioID,
                     scenePrimaryAudioID : req.body.scenePrimaryAudioID,
                     sceneLoopPrimaryAudio : req.body.sceneLoopPrimaryAudio != null ? req.body.sceneLoopPrimaryAudio : false,
+                    sceneAutoplayPrimaryAudio : req.body.sceneAutoplayPrimaryAudio != null ? req.body.sceneAutoplayPrimaryAudio : false,
+                    scenePrimaryAudioTriggerEvents : req.body.scenePrimaryAudioTriggerEvents != null ? req.body.scenePrimaryAudioTriggerEvents : false,
 //                    sceneAmbientAudio2ID : req.body.sceneAmbientAudio2ID,
                     sceneKeynote : req.body.sceneKeynote,
                     sceneDescription : req.body.sceneDescription,
                     sceneText : req.body.sceneText,
                     sceneTextLoop : req.body.sceneTextLoop != null ? req.body.sceneTextLoop : false,
+                    sceneTextPrimaryAudioSync : req.body.sceneTextPrimaryAudioSync != null ? req.body.sceneTextPrimaryAudioSync : false,
                     sceneLastUpdate : lastUpdateTimestamp
 
 //                    sceneTextOptions : req.body.sceneTextOptions
