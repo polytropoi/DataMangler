@@ -2223,7 +2223,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                     sceneDescription : req.body.sceneDescription,
                     sceneText : req.body.sceneText,
                     sceneTextLoop : req.body.sceneTextLoop != null ? req.body.sceneTextLoop : false,
-                    sceneTextPrimaryAudioSync : req.body.sceneTextPrimaryAudioSync != null ? req.body.sceneTextPrimaryAudioSync : false,
+                    sceneTextAudioSync : req.body.sceneTextAudioSync != null ? req.body.sceneTextAudioSync : false,
                     sceneLastUpdate : lastUpdateTimestamp
 
 //                    sceneTextOptions : req.body.sceneTextOptions

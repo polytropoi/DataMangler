@@ -1361,6 +1361,30 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                     }
                 }
         };
+        $scope.RemoveSceneWeblink = function(id) {
+            if (id != undefined) {
+
+                if ($scope.sceneWebLinks != undefined) {
+                    console.log("tryna delete weblink " + id);
+//                    var sceneWebLinkIndex = $scope.sceneWebLinks.indexOf(id);
+//                    if (sceneWebLinkIndex != -1) {
+//                        $scope.sceneWebLinks.splice(scenePostcardIndex, 1);
+//                    }
+
+                    for (var i = 0, ii = $scope.sceneWebLinks.length; i < ii; i++) {
+//                        console.log("weblink " + $scope.sceneWebLinks[i].link_id);
+                        if ($scope.sceneWebLinks[i] != undefined && id ===  $scope.sceneWebLinks[i].link_id) {
+                            $scope.sceneWebLinks.splice(i, 1);
+                            console.log("removing weblink " + id);
+
+                        }
+                    }
+                    $scope.scene.sceneWebLinks = $scope.sceneWebLinks;
+                    $scope.form.$dirty = true;
+                }
+            }
+        };
+
         $scope.DeleteScenePostcard = function(id) {
             if (id != undefined) {
 
