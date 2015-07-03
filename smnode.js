@@ -2197,6 +2197,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                     sceneLongitude : req.body.sceneLongitude,
                     sceneUseSimpleWater : req.body.sceneUseSimpleWater != null ? req.body.sceneUseSimpleWater : false,
                     sceneUseOcean : req.body.sceneUseOcean != null ? req.body.sceneUseOcean : false,
+                    sceneUseFancyWater : req.body.sceneUseFancyWater != null ? req.body.sceneUseFancyWater : false,
                     sceneTime: req.body.sceneTime,
                     sceneTimescale: req.body.sceneTimescale,
                     sceneWeather: req.body.sceneWeather,

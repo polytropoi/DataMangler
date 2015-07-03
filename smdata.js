@@ -158,7 +158,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function HomeCtrl($scope, usernav, $http, $cookies, $timeout, $route) {
  			$('#unityPlayer').toggleClass('hidden', true);
 
-  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+  			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
   			$scope.user = {};
 //            $timeout( function () {
   			$scope.urls = usernav.urls;
@@ -198,7 +198,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
   		}
 
 		function LoginCtrl ($scope, $http, $routeParams, $cookies, $location, usernav) {
-			//$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			//$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
 			//console.log($cookies._id);
 			$scope.user = {};
 			$scope.updatestring = "";
@@ -271,7 +271,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 			}
 
 		function NewUserCtrl ($scope, $http, $routeParams, $cookies, $location) {
-			//$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			//$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
 
 			$scope.user = {}
 			$scope.headermessage = "Enter your desired credentials below";
@@ -316,7 +316,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
             $scope.user = {};
             console.log("tryna load aboutpage");
-            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+            $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
 
         }
 
@@ -325,7 +325,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 			$scope.user = {}
 			$scope.ready = true;
 			console.log("tryna load ResetPasswordController");
-			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
  			$scope.headermessage = "Enter your email to reset your password";
 
 
@@ -389,8 +389,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UProfileCtrl($scope, $http, $routeParams, usernav, $cookies, $location) {
 
  			$('#unityPlayer').toggleClass('hidden', true);
-//			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
-            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+//			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
+            $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
             $scope.user = {};
             $scope.userprofile = {};
 //            $timeout( function () {
@@ -438,7 +438,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
  			$('#unityPlayer').toggleClass('hidden', true);
  			$scope.urls = usernav.urls;
-			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
   			$http.get('/useraudio/' + $routeParams.u_id).success(function (data) {
 		                    $scope.audioitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -450,7 +450,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UAudioCtrl($scope, $http, $routeParams, usernav) {
  			$scope.urls = usernav.urls;
  			$('#unityPlayer').toggleClass('hidden', true);
-			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
   			$http.get('/useraudio/' + $routeParams.audio_id).success(function (data) {
 		                    $scope.audioitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -462,7 +462,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UPicsCtrl($scope, $http, $routeParams, usernav) {
  			$scope.urls = usernav.urls;
  			$('#unityPlayer').toggleClass('hidden', true);
-			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
   			$http.get('/userpics/' + $routeParams.u_id).success(function (data) {
 		                    $scope.imageitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -475,7 +475,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UPicCtrl($scope, $http, $routeParams, $cookies, $location, usernav) {
             $scope.urls = usernav.urls;
 //            $('#unityPlayer').toggleClass('hidden', true);
-            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+            $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
 
 //            $('#unityPlayer').toggleClass('hidden', true);
             $scope.headermessage = "";
@@ -571,7 +571,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
     function UObjsCtrl($scope, $http, $routeParams, usernav) {
         $scope.urls = usernav.urls;
         $('#unityPlayer').toggleClass('hidden', true);
-        $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+        $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
         $http.get('/userobjs/' + $routeParams.u_id).success(function (data) {
             $scope.obj_items = data;
             $scope.predicate = '-otimestamp';
@@ -584,7 +584,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
     function UObjCtrl($scope, $http, $routeParams, $cookies, $location, usernav) {
         $scope.urls = usernav.urls;
         $('#unityPlayer').toggleClass('hidden', true);
-        $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+        $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
 
         $('#unityPlayer').toggleClass('hidden', true);
         $scope.headermessage = "";
@@ -680,7 +680,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //            $scope.urls = usernav.urls;
             $scope.urls = usernav.urls;
             $('#unityPlayer').toggleClass('hidden', true);
-            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+            $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
             if ($cookies._id !== null && $cookies._id !== undefined) {
                 //$scope.path = {};
                 $scope.paths = [];
@@ -728,7 +728,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         //            $scope.urls = usernav.urls;
             $scope.urls = usernav.urls;
             $('#unityPlayer').toggleClass('hidden', true);
-            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+            $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
             if ($cookies._id !== null && $cookies._id !== undefined) {
                 //$scope.path = {};
                 $scope.paths = [];
@@ -774,7 +774,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
        
         function NewPathCtrl($scope, $http, $routeParams, $cookies, $location) {
             console.log("XXX NewPathControl load");
-            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+            $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
             if ($cookies._id !== null && $cookies._id !== undefined) {
                 $scope.path = {};
                 $scope.pictureitems = [];
@@ -965,7 +965,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
     function USceneCtrl($scope, $http, $routeParams, usernav, $location) {
         $scope.urls = usernav.urls;
         $('#unityPlayer').toggleClass('hidden', true);
-        $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+        $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
         $scope.scene = {};
 //        $scope.enviroments = [{name="genericFlat", "genericTerrain", "weatherTerrain", "oceanScene", "desertScene", "spaceScene1", "winterScene1"]
         $scope.userID = $routeParams.user_id;
@@ -1450,7 +1450,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
     function NewSceneCtrl($scope, $http, $routeParams, $cookies, $location) {
 
         console.log("XXXX tryan load new scene ctrl");
-        $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+        $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
         if ($cookies._id !== null && $cookies._id !== undefined) {
             $scope.scene = {};
             $scope.scene.scenePictures = [];
@@ -1681,7 +1681,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
     function PathCtrl($scope, $http, $routeParams, $cookies, $route, $location, usernav) {
         console.log("tryna load path");
         $scope.urls = usernav.urls;
-        $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+        $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
 
         $('#unityPlayer').toggleClass('hidden', true);
         $scope.headermessage = "";
@@ -1804,7 +1804,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         function UPathCtrl($scope, $http, $routeParams, $cookies, $location, usernav) {
             console.log("tryna load path");
             $scope.urls = usernav.urls;
-            $.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+            $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
 
             $('#unityPlayer').toggleClass('hidden', true);
             $scope.headermessage = "";
@@ -2094,7 +2094,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UKeysCtrl($scope, $http, $routeParams, usernav) {
  			$scope.urls = usernav.urls;
  			$('#unityPlayer').toggleClass('hidden', true);
-			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
   			$http.get('/useraudio/:' + $routeParams.u_id).success(function (data) {
 		                    $scope.audioitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -2106,7 +2106,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UKeyCtrl($scope, $http, $routeParams, usernav) {
  			$scope.urls = usernav.urls;
  			$('#unityPlayer').toggleClass('hidden', true);
-			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
   			$http.get('/useraudio/:' + $routeParams.audio_id).success(function (data) {
 		                    $scope.audioitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -2119,7 +2119,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
 		function DetailAudioCtrl($scope, $http, $routeParams, $cookies, $location, usernav) {
 
-			//$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			//$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
  			$('#unityPlayer').toggleClass('hidden', true);
  			$scope.headermessage = "";
   			$scope.user = {};
@@ -2221,7 +2221,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
 
  		function ItemDetailCtrl($scope, $http, $routeParams) {
- 			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+ 			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
  			$('#unityPlayer').toggleClass('hidden', true);
   			console.log("tryna load ItemDetailCtrl controller");
     		$scope.item_id = $routeParams.item_id;
@@ -2240,7 +2240,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
   		function ItemLongDetailCtrl($scope, $http, $routeParams) {
 
- 			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+ 			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
  			$('#unityPlayer').toggleClass('hidden', true);
 
 
@@ -2302,7 +2302,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function ItemPlayCtrl($scope, $http, $routeParams) {
 
 
- 			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+ 			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
 
 
  			//$('#unityPlayer').toggleClass('hidden', false);
@@ -2349,7 +2349,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function UnityPlayCtrl($scope, $http, $routeParams) {
 
 
- 			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+ 			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
 
 
  			$('#unityPlayer').toggleClass('hidden', false);
@@ -2393,19 +2393,19 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  		function AudioItemsCtrl($scope, $http) {
  			$('#unityPlayer').toggleClass('hidden', true);
   			console.log("tryna load HomeCtrl controller");
-  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+  			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
   		}
 
  		function PictureItemsCtrl($scope, $http) {
  			$('#unityPlayer').toggleClass('hidden', true);
   			console.log("tryna load HomeCtrl controller");
-  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+  			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
   		}
 
  		function TextItemsCtrl($scope, $http) {
  			$('#unityPlayer').toggleClass('hidden', true);
   			console.log("tryna load HomeCtrl controller");
-  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+  			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
   		}
 
 
@@ -2441,7 +2441,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
   		   			);
   		   		}
 			});
-			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
 
 			}
 
@@ -2496,7 +2496,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 				*/
 
 
-  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+  			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
 
 			$scope.myInterval = 5000;
 			var slides = $scope.slides = [];
@@ -2512,7 +2512,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
   		function ItemsCtrl($scope, $http) {
   			$('#unityPlayer').toggleClass('hidden', true);
-			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
   			$http.get('/audiodata.json').success(function (data) {
 		                    $scope.audioitems = data;
 		                    $scope.predicate = '-otimestamp';
@@ -2630,7 +2630,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 			  })
 			}
 
-			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");
+			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
   		}
 
   		function DetailCtrl($scope, $http) {
@@ -3052,7 +3052,7 @@ function NewPictureCtrl($scope, $http, $routeParams, $rootScope, $cookies, $loca
 
   		function UploadTextCtrl($scope, $http) {
   			$('#unityPlayer').toggleClass('hidden', true);
-  			$.backstretch("https://servicemedia.s3.amazonaws.com/1000px-Wallys_service_station_1024.jpg");	
+  			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");	
 
   		}
 /*
