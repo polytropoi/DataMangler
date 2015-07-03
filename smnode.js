@@ -2159,7 +2159,9 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                 console.log("tryna update path " + req.body._id);
 
                 db.scenes.update( { "_id": o_id }, { $set: {
-                    sceneDomain : req.body.sceneDomain ,
+                    sceneDomain : req.body.sceneDomain,
+                    sceneNumber : req.body.sceneNumber,
+                    sceneTitle : req.body.sceneTitle,
                     sceneShareWithPublic : req.body.sceneShareWithPublic != null ? req.body.sceneShareWithPublic : false,
                     sceneShareWithUsers : req.body.sceneShareWithUsers != null ? req.body.sceneShareWithUsers : "",
                     sceneEnvironment : req.body.sceneEnvironment != null ? req.body.sceneEnvironment : {},
@@ -2202,10 +2204,8 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                     sceneTimescale: req.body.sceneTimescale,
                     sceneWeather: req.body.sceneWeather,
                     sceneSeason: req.body.sceneSeason,
-                    scenePictures : req.body.scenePictures,
-                    sceneWebLinks : req.body.sceneWebLinks,
-                    sceneNumber : req.body.sceneNumber,
-                    sceneTitle : req.body.sceneTitle,
+                    scenePictures : req.body.scenePictures, //array of IDs only
+                    sceneWebLinks : req.body.sceneWebLinks, //custom object
                     sceneColor1 : req.body.sceneColor1,
                     sceneColor2 : req.body.sceneColor2,
                     sceneUseStreetMap : req.body.sceneUseStreetMap  != null ? req.body.sceneUseStreetMap : false,
