@@ -276,45 +276,12 @@
 
         </table>
     </div>
-        <!--<div class="col-md-2">-->
-            <!--<div class="form-group">-->
-                <!--<label for="scene_sceneDomainInput" > Domain: </label>-->
-                <!--<input type="text" class="form-control" ng-model="scene.sceneDomain" name="scene_sceneDomain" id="scene_sceneDomainInput" placeholder=" Domain" required>-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!--<div class="col-md-2">-->
-            <!--<div class="form-group">-->
-                <!--<label for="scene_sceneNumberInput" > Number: </label>-->
-                <!--<input type="text" class="form-control" ng-model="scene.sceneNumber" name="scene_sceneNumber" id="scene_sceneNumberInput" placeholder=" Number" required>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="col-md-3">-->
-            <!--<div class="form-group">-->
-                <!--<label for="scene_sceneTitleInput" >Scene Title: </label>-->
-                <!--<input type="text" class="form-control" ng-model="scene.sceneTitle" name="scene_sceneTitle" id="scene_sceneTitleInput" placeholder=" Title" required>-->
-            <!--</div>-->
-        <!--</div>-->
 
 
 
     <div class="col-md-12"><hr></div>
 
-    <!--<div class="col-md-12">-->
-        <!--<div class="row"><label> </label></div>-->
-        <!--<div class="col-md-2">-->
-            <!--<div class="form-group">-->
-                <!--<label >Scene Color1: </label>-->
-                <!--<input class="change-element-color" my-bgcolor="scene.sceneColor1" colorpicker ng-model="scene.sceneColor1" type="text" required>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="col-md-2">-->
-            <!--<div class="form-group">-->
-                <!--<label >Scene Color2: </label>-->
-                <!--<input class="change-element-color" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text">-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--</div><div class=row">-->
+
         <div class="col-md-6"><label>Scene Colors:</label>
             <table class="table">
                 <tr>
@@ -372,14 +339,17 @@
                 </a>
             </td>
             <td>
-                Environment:
+                Environment:  <input class="pull-right form-control" type="text" ng-model="scene.sceneEnvironment.name">
             </td>
             <td>
-
+                Select:
                 <select name="sceneEnviro" class="form-control" ng-model="scene.sceneEnvironment.name" ng-options="e as e for e in environments" >
                     <option value="" selected="{{sceneEnvironment.name}}">Select Environment:</option>
                 </select>
+
             </td>
+
+
         </tr>
             <tr>
                 <td>
