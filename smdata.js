@@ -1023,6 +1023,9 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         $scope.heightmaps = [
 
             "http://strr.us/beach1.jpg",
+            "http://strr.us/island1.jpg",
+            "http://strr.us/river1.jpg",
+            "http://strr.us/monument1.jpg",
             "http://strr.us/hm1.jpg",
             "http://strr.us/hm2.jpg",
             "http://strr.us/hm3.jpg",

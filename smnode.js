@@ -2180,7 +2180,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                     sceneTargetObjectHeading : req.body.sceneTargetObjectHeading != null ? req.body.sceneTargetObjectHeading : 0,
                     sceneTargetObject : req.body.sceneTargetObject,
                     sceneTargetEvent : req.body.sceneTargetEvent,
-                    sceneNextScene : req.body.sceneNextScene,
+                    sceneNextScene : req.body.sceneNextScene != null ? req.body.sceneNextScene : "",
                     scenePreviousScene : req.body.scenePreviousScene,
                     sceneUseDynamicSky : req.body.sceneUseDynamicSky != null ? req.body.sceneUseDynamicSky : false,
                     sceneUseCameraBackground : req.body.sceneUseCameraBackground != null ? req.body.sceneUseCameraBackground : false,
@@ -2230,7 +2230,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 //                    sceneTextOptions : req.body.sceneTextOptions
                     }
                 });
-            } if (err) {res.send(error)} else {res.send("updated " + new Date())}
+            } if (err) {res.send(err)} else {res.send("updated " + new Date())}
         });
     });
 
