@@ -10,9 +10,9 @@
     </div>
 
     <div class="col-md-6">Scene Postcards:
-    <div ng-repeat="picture in scenePostcardThumbs">
+    <div ng-repeat="picture in scene.postcards">
         <div class="col-md-2">
-            <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+            <img ng-src="{{picture.urlThumb}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
             <button class="btn-default btn-default-sm" ng-click="DeleteScenePostcard(picture._id)">Remove</button>
         </div>
     </div>

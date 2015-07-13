@@ -1112,14 +1112,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             console.log("XXXX sceneEnvironment: " + JSON.stringify(sceneEnv));
             $scope.scene.sceneEnvironment = sceneEnv;
         });
-//        $scope.$watch('sceneWeather', function(sceneWeather){
-//            console.log("XXXX sceneWeather: " + JSON.stringify(sceneWeather));
-//            $scope.scene.sceneWeather = sceneWeather;
-//        });
-//        $scope.$watch('sceneTime', function(sceneTime){
-//            console.log("XXXX sceneTime: " + JSON.stringify(sceneTime));
-//            $scope.scene.sceneTime = sceneTime;
-//        });
+
         $http.get('/uscene/:' + $routeParams.user_id + '/:' + $routeParams.scene_id).success(function (data) {
 
             $scope.scene = data;
@@ -1127,11 +1120,6 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             $scope.headermessage = "updated: " + $scope.scene.sceneLastUpdate;
 
 
-//            console.log("Weather obj: " + JSON.stringify($scope.scene.sceneWeather));
-//            $scope.sceneWeather = $scope.scene.sceneWeather;
-    //		                    $scope.predicate = '-otimestamp';
-//            console.log("XXXX scene:", $scope.scene._id);
-//            console.log("XXX environments: " + $scope.environments[0]);
             if ($scope.scene.sceneWebLinks != null && $scope.scene.sceneWebLinks != undefined && $scope.scene.sceneWebLinks.length) {
                 $scope.sceneWebLinks = $scope.scene.sceneWebLinks;
             }
@@ -1159,17 +1147,30 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //                }
 
                     if ($scope.scene.scenePostcards != null && $scope.scene.scenePostcards.length > 0) {
-                        for (var k = 0, kk = $scope.scene.scenePostcards.length; k < kk; k++) {
-                            if ($scope.scene.scenePostcards[k] === $scope.pictureitems[i]._id) {
-                                var stump = {};
-                                stump._id = $scope.pictureitems[i]._id;
-                                stump.thumbUrl = $scope.pictureitems[i].URLthumb;
-                                stump.title = $scope.pictureitems[i].title;
-                                stump.filename = $scope.pictureitems[i].filename;
-                                $scope.scenePostcardThumbs.push(stump);
+//                        for (var k = 0, kk = $scope.scene.scenePostcards.length; k < kk; k++) {
+//                            if ($scope.scene.scenePostcards[k] === $scope.pictureitems[i]._id) {
+//                                var stump = {};
+//                                stump._id = $scope.pictureitems[i]._id;
+//                                stump.thumbUrl = $scope.pictureitems[i].URLthumb;
+//                                stump.title = $scope.pictureitems[i].title;
+//                                stump.filename = $scope.pictureitems[i].filename;
+//                                $scope.scenePostcardThumbs.push(stump);
+//                            }
+//                        }
+                    }
+                        if ($scope.scene.postcards != null && $scope.scene.postcards.length > 0) {
+                            for (var k = 0, kk = $scope.scene.postcards.length; k < kk; k++) {
+//                                if ($scope.scene.scenePostcards[k] === $scope.pictureitems[i]._id) {
+                                    var stump = {};
+                                    console.log("postcard: " + $scope.scene.postcards[k]);
+                                    stump._id = $scope.scene.postcards[k]._id;
+                                    stump.thumbUrl = $scope.scene.postcards[k].URLthumb;
+//                                    stump.title = $scope.scene.postcards[k].title;
+//                                    stump.filename = $scope.pictureitems[i].filename;
+                                    $scope.scenePostcardThumbs.push(stump);
+//                                }
                             }
                         }
-                    }
                 }
 
                 //   $scope.setPagingData(page,pageSize);
@@ -2804,9 +2805,9 @@ function NewPictureCtrl($scope, $http, $routeParams, $rootScope, $cookies, $loca
 //            });
         $scope.tags = [];
         $scope.AddTag = function (tag) {
-            console.log("tryna AddTag");
+//            console.log("tryna AddTag");
             $scope.tags.push(tag);
-            console.log("tags: " + $scope.tags)
+            console.log("tags: " + $scope.tags);
         }
 
         $scope.postcardForScene = "";

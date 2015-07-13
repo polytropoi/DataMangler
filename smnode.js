@@ -1772,6 +1772,7 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
             console.log("cain't get no scene... " + err);
         } else {
 //            console.log(JSON.stringify(scenes));
+
             if (scene.sceneWebLinks != null && scene.sceneWebLinks.length > 0) {
                 for (var i = 0; i < scene.sceneWebLinks.length; i++) { //refresh themz
                     console.log("sceneWebLink id: " + scene.sceneWebLinks[i].link_id);
@@ -1784,7 +1785,85 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
 
                 }
             }
-            res.send(scene);
+
+            if (scene.scenePostcards != null && scene.scenePostcards.length > 0) {
+                var postcards = [];
+//                            for (var i = 0; i < sceneResponse.scenePostcards.length; i++) { //refresh themz
+                async.each (scene.scenePostcards, function (postcardID, callbackz) { //nested async-ery!
+//                                console.log("scenepostcard id: " + sceneResponse.scenePostcards[i]);
+                    console.log("scenepostcard id: " + postcardID);
+                    var oo_id = new BSON.ObjectID(postcardID);
+                    db.image_items.findOne({"_id": oo_id}, function (err, picture_item) {
+                        if (err || !picture_item) {
+                            console.log("error getting picture items: " + err);
+//                                        callback(err);
+//                                        callback(null);
+                            callbackz();
+                        } else {
+                            var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID,
+                                Key: picture_item._id + ".thumb." + picture_item.filename, Expires: 6000});
+                            var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID,
+                                Key: picture_item._id + ".half." + picture_item.filename, Expires: 6000});
+
+                            var postcard = {};
+                            postcard.userID = picture_item.userID;
+                            postcard._id = picture_item._id;
+                            postcard.sceneID = picture_item.postcardForScene;
+                            postcard.urlThumb = urlThumb;
+                            postcard.urlHalf = urlHalf;
+                            postcards.push(postcard);
+                            console.log("pushing postcard: " + JSON.stringify(postcard));
+                            callbackz();
+                        }
+
+                    });
+
+                }, function(err) {
+                    // if any of the file processing produced an error, err would equal that error
+                    if (err) {
+                        // One of the iterations produced an error.
+                        // All processing will now stop.
+                        console.log('A file failed to process');
+//                        callback(null, postcards);
+                    } else {
+                        console.log('All files have been processed successfully');
+//                        callback(null, postcards);
+//                                        };
+                        scene.postcards = postcards;
+                        res.send(scene);
+                    }
+                });
+//                scene.postcards = [];
+//
+//                for (var i = 0; i < scene.scenePostcards.length; i++) { //refresh themz
+//                    console.log("scenepostcard id: " + scene.scenePostcards[i]);
+//                    var oo_id = new BSON.ObjectID(scene.scenePostcards[i]);
+//                    db.image_items.findOne({"_id": oo_id}, function (err, picture_item) {
+//                        if (err || !picture_item) {
+//                            console.log("error getting picture items: " + err);
+//                        } else {
+//                            var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID,
+//                                Key: picture_item._id + ".thumb." + picture_item.filename, Expires: 6000});
+//                            var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID,
+//                                Key: picture_item._id + ".half." + picture_item.filename, Expires: 6000});
+//
+//                            var postcard = {};
+//                            postcard.userID = picture_item.userID;
+//                            postcard._id = picture_item._id;
+//                            postcard.sceneID = picture_item.postcardForScene;
+//                            postcard.urlThumb = urlThumb;
+//                            postcard.urlHalf = urlHalf;
+//
+//                            scene.postcards.push(postcard);
+//                            console.log("pushing postcard: " + JSON.stringify(postcard));
+//                        }
+//                    });
+//                }
+//            console.log(JSON.stringify(scene));
+
+            } else {
+                res.send(scene);
+            }
         }
     });
 });
@@ -2309,11 +2388,13 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
         console.log("tryna get scene id: ", req.params._id);
         var audioResponse = {};
         var pictureResponse = {};
+        var postcardResponse = {};
         var sceneResponse = {};
         var requestedPictureItems = [];
         var requestedAudioItems = [];
      sceneResponse.audio = [];
      sceneResponse.pictures = [];
+     sceneResponse.postcards = [];
 
         async.waterfall([
 
@@ -2347,7 +2428,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                                 console.log("error getting scenedata by shortcode: " + err);
                                 callback("", err);
                             } else {
-                                console.log("scene by shortcode: ", sceneData);
+//                                console.log("scene by shortcode: ", sceneData);
                                 sceneData[0].scenePictures.forEach(function (picture) {
                                     var p_id = new BSON.ObjectID(picture); //convert to binary to search by _id beloiw
                                     requestedPictureItems.push(p_id); //populate array
@@ -2474,7 +2555,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
 
 
-                    function(audioStuff, callback) {
+                    function(audioStuff, callback) { //return the pic items
                      //   console.log("audioStuff ", audioStuff);
                         db.image_items.find({_id: {$in: requestedPictureItems }}, function (err, pic_items)
                         {
@@ -2524,10 +2605,67 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                         callback(null);
 
                     },
-
                     function (callback) {
+//                        if (sceneResponse.scenePostcards != null && sceneResponse.scenePostcards.length > 0) {
+//                            sceneResponse.postcards = [];
+                            var postcards = [];
+//                            for (var i = 0; i < sceneResponse.scenePostcards.length; i++) { //refresh themz
+                                async.each (sceneResponse.scenePostcards, function (postcardID, callbackz) { //nested async-ery!
+//                                console.log("scenepostcard id: " + sceneResponse.scenePostcards[i]);
+                                    console.log("scenepostcard id: " + postcardID);
+                                var oo_id = new BSON.ObjectID(postcardID);
+                                db.image_items.findOne({"_id": oo_id}, function (err, picture_item) {
+                                    if (err || !picture_item) {
+                                        console.log("error getting picture items: " + err);
+//                                        callback(err);
+//                                        callback(null);
+                                        callbackz();
+                                    } else {
+                                        var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID,
+                                            Key: picture_item._id + ".thumb." + picture_item.filename, Expires: 6000});
+                                        var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID,
+                                            Key: picture_item._id + ".half." + picture_item.filename, Expires: 6000});
+
+                                        var postcard = {};
+                                        postcard.userID = picture_item.userID;
+                                        postcard._id = picture_item._id;
+                                        postcard.sceneID = picture_item.postcardForScene;
+                                        postcard.urlThumb = urlThumb;
+                                        postcard.urlHalf = urlHalf;
+                                        postcards.push(postcard);
+                                        console.log("pushing postcard: " + JSON.stringify(postcard));
+                                        callbackz();
+                                    }
+
+                                });
+
+                            }, function(err) {
+                                    // if any of the file processing produced an error, err would equal that error
+                                    if (err) {
+                                        // One of the iterations produced an error.
+                                        // All processing will now stop.
+                                        console.log('A file failed to process');
+                                        callback(null, postcards);
+                                    } else {
+                                        console.log('All files have been processed successfully');
+                                        callback(null, postcards);
+//                                        };
+                                    }
+                                });
+
+//                        postcardResponse = postcards;
+
+//                        }
+//                      callback(null);
+                    },
+
+
+
+                    function (postcardResponse, callback) {
+                        console.log("postcardResponse : " + postcardResponse);
                         sceneResponse.audio = audioResponse;
                         sceneResponse.pictures = pictureResponse;
+                        sceneResponse.postcards = postcardResponse;
                         callback(null);
                     }
                 ],
