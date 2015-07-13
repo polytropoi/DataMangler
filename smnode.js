@@ -25,7 +25,7 @@
 app = express();
 
 
-var whitelist = ['strr.us.s3.amazonaws.com', 'strr.us', 'elnoise.com', 'philosphersgarden.com', 'mvmv.us', 'servicemedia.net', 'kork.us', 'spacetimerailroad.com'];
+var whitelist = ['unityapp', 'strr.us.s3.amazonaws.com', 'strr.us', 'elnoise.com', 'philosphersgarden.com', 'mvmv.us', 'servicemedia.net', 'kork.us', 'spacetimerailroad.com'];
 var corsOptions = function (origin) {
     console.log("checking vs whitelist:" + origin);
     if ( whitelist.indexOf(origin) !== -1 ) {
@@ -82,7 +82,7 @@ var corsOptions = function (origin) {
         app.use(express.methodOverride());
         app.use(express.session({
             secret: 'permanententropy',
-//            path: '/',
+            path: '/',
             maxAge: 1000,
             httpOnly: false
         }));
@@ -117,10 +117,10 @@ var corsOptions = function (origin) {
                          });
 
   function requiredAuthentication(req, res, next) {
-
+    console.log("headers: " + JSON.stringify(req.headers) + " vs req.session.user: " + JSON.stringify(req.session));
     if (req.session.user) {
         next();
-    } else {
+    } else  {
         req.session.error = 'Access denied!';
         res.send('noauth');
         }
@@ -1761,6 +1761,7 @@ app.get('/uscenes/:_id',  requiredAuthentication, function (req, res) { //get sc
 
 app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, res) { //get a specific scene for this user
 
+
     console.log("tryna get scene " + req.params.scene_id);
     var sceneID = req.params.scene_id.toString().replace(":", "");
     var o_id = new ObjectId.createFromHexString(sceneID);
@@ -1790,11 +1791,13 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
 
 app.get('/availablescenes/:_id', requiredAuthentication, function (req, res) {
 
+
+
 //    if (amirite(req.body.userID)) {
 
 
 //        if (req.body.userID == req.cookie._id) { //cheap session check...
-            console.log("private scenes for userID " + req.params._id);
+//            console.log("private scenes for userID " + req.params._id);
         var availableScenesResponse = {};
         var availableScenes = [];
         availableScenesResponse.availableScenes = availableScenes;
@@ -1809,7 +1812,7 @@ app.get('/availablescenes/:_id', requiredAuthentication, function (req, res) {
                 async.each(scenes,
                     // 2nd param is the function that each item is passed to
                     function (scene, callback) {
-                        console.log(JSON.stringify(scene));
+//                        console.log(JSON.stringify(scene));
                         // Call an asynchronous function, often a save() to DB
 //            scene.someAsyncCall(function () {
                         // Async call is done, alert via callback
@@ -1819,7 +1822,7 @@ app.get('/availablescenes/:_id', requiredAuthentication, function (req, res) {
                                 console.log("error getting picture items: " + err);
 
                             } else {
-                                console.log("# " + picture_items.length);
+//                                console.log("# " + picture_items.length);
                                 for (var i = 0; i < 1; i++) {
 
                                     var item_string_filename = JSON.stringify(picture_items[i].filename);
@@ -2066,6 +2069,8 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
 
     app.post('/weblink/', requiredAuthentication, function (req, res) {
+
+        console.log("req.header: " + req.headers);
         console.log("checkin weblink: " + req.body.link_url);
         var lurl = "";
         lurl = req.body.link_url;
@@ -2148,6 +2153,8 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
     //app.get('/weblink')
     app.post('/update_scene/:_id', requiredAuthentication, function (req, res) {
+
+        console.log("req.header: " + JSON.stringify(req.headers));
         console.log(req.params._id);
         var lastUpdateTimestamp = new Date();
         var o_id = new BSON.ObjectID(req.body._id);  //convert to BSON for searchie
@@ -3162,14 +3169,19 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
 
 app.post('/uploadpicture', requiredAuthentication, function (req, res) {
 
-    console.log("tryna upload..." + JSON.stringify(req.body));
+    console.log("uploadpicture headers: " + JSON.stringify(req.headers));
 
         var returnString = "";
-            var uName = req.body.username;
-            var uPass = req.body.userpass;
-                var expires = new Date();
-                expires.setMinutes(expires.getMinutes() + 30);
-            var ts = Math.round(Date.now() / 1000); 
+//            var uName = req.body.username;
+//            var uPass = req.body.userpass;
+            var type = req.body.pictype;
+            var userID = req.body.userID;
+            var sceneID = req.body.sceneID;
+//            var tags = req.body.tags;
+            var expires = new Date();
+            expires.setMinutes(expires.getMinutes() + 30);
+            var ts = Math.round(Date.now() / 1000);
+
             var fname = req.files.picture_upload.name.toLowerCase();
             fname =  fname.replace(/ /g, "_");
             var fsize = req.files.picture_upload.size;
@@ -3213,7 +3225,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
     },
 */
 
-    function(callback) { //check that we gotsa bucket with this user's
+    function(callback) { //check that we gotsa bucket for this user
       
 
         var bucketFolder = 'servicemedia.' + req.session.user._id;
