@@ -392,40 +392,34 @@
 
         </table>
     </div>
-        <!--<div class="col-md-7"><label>Color Pickers:</label>-->
-            <!--<table class="table">-->
-                <!--<tr>-->
-                    <!--<td>Color 1</td>-->
-                    <!--<td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor1" colorpicker ng-model="scene.sceneColor1" type="text" ></td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>Color 2</td>-->
-                    <!--<td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneColor2" type="text"></td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td>Highlight Color</td>-->
-                    <!--<td>  <input class="change-element-color pull-right" my-bgcolor="scene.sceneColor2" colorpicker ng-model="scene.sceneHighlightColor" type="text"></td>-->
-                <!--</tr>-->
-            <!--</table>-->
-        <!--</div>-->
-        <!--<div class="btn-group" data-toggle="buttons">-->
-        <!--<label class="btn btn-primary active">-->
-            <!--<input type="checkbox" autocomplete="off" checked> Color Sky/Fog-->
-        <!--</label>-->
-        <!--<label class="btn btn-primary">-->
-            <!--<input type="checkbox" autocomplete="off"> Random Colors-->
-        <!--</label>-->
-        <!--<label class="btn btn-primary">-->
-            <!--<input type="checkbox" autocomplete="off"> Tweak Colors-->
-        <!--</label>-->
-        <!--</div>-->
 
-        <!--</div>-->
 
 
     <div class="col-md-6"  >
         <label>Scene Sky: </label>
         <table class="table">
+            <tr>
+                <td>
+                    Camera Path
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <label class="btn btn-primary" ng-model="scene.sceneCameraPath" btn-radio="'None'">None</label>
+                        <label class="btn btn-primary" ng-model="scene.sceneCameraPath" btn-radio="'Random'">Random</label>
+                        <label class="btn btn-primary" ng-model="scene.sceneCameraPath" btn-radio="'Cicle'">Circle</label>
+                        <label class="btn btn-primary" ng-model="scene.sceneCameraPath" btn-radio="'Square'">Square</label>
+                        <label class="btn btn-primary" ng-model="scene.sceneCameraPath" btn-radio="'Linear'">Linear</label>
+                        <label class="btn btn-primary" ng-model="scene.sceneCameraPath" btn-radio="'POI'">Points of Interest</label></div>
+                </td>
+                <td>
+                    Orient Camera to Path?
+                </td>
+                <td>
+                    <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneCameraOrientToPath]" ng-click="scene.sceneCameraOrientToPath = !scene.sceneCameraOrientToPath">{{!scene.sceneCameraOrientToPath && '' || ''}}
+                    </a>
+                </td>
+            </tr>
+
             <tr>
                 <td>
                     Use Dynamic Sky?
@@ -661,7 +655,7 @@
                         </tr>
                         </table>
                         </div>
-    <div class="col-md-6" style="margin-left: 0px;">
+    <div class="col-md-12" style="margin-left: 0px;">
         <label>Target Options: </label>
         <table class="table">
                     <tr>
@@ -671,22 +665,27 @@
                         <td>
                             <a class="btn pull-right" ng-class="{true: 'btn-danger glyphicon glyphicon-remove', false: 'btn-success glyphicon glyphicon-ok'}[!scene.sceneUseTargetObject]" ng-click="scene.sceneUseTargetObject = !scene.sceneUseTargetObject">{{!scene.sceneUseTargetObject && '' || ''}}
                             </a>  </td>
-
-                        <td>
-                        Target Heading: </td><td><select name="sceneTime" class="form-control" ng-model="scene.sceneTargetHeading" ng-options="e as e for e in headings" >
-                        <option value="" selected="selected">Select Heading:</option>
-                    </select>
-                        </td>
-                        </tr>
-                        <tr>
-                        <!--</td>-->
-                        <td>
-                        Target Object:
-                        </td>
+                        <td>Target Object: </td>
                         <td>
                             <select name="sceneTargetObject" class="form-control" ng-model="scene.sceneTargetObject.name" ng-options="e as e for e in targetobjex" >
                                 <option value="" selected="selected">Select Object:</option>
                             </select>
+
+
+    <!--Target Heading: </td><td><select name="sceneTargetHeading" class="form-control" ng-model="scene.sceneTargetHeading" ng-options="e as e for e in headings" >-->
+                        <!--<option value="" selected="selected">Select Heading:</option>-->
+                         <!--</select>-->
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <!--</td>-->
+                        <td>
+                        Target Object Text:
+                        </td>
+                        <td>
+                            <div class="form-group">
+                            <textarea class="form-control" name="scene_sceneTargetText" id="scene_sceneTargetTextInput" ng-model="scene.sceneTargetText" placeholder="Text" rows="5"></textarea></div>(delimit with tilde "~" or tab)
                         </td>
                             <td>
                                 Target Event:
@@ -699,11 +698,12 @@
                                     <option value="" selected="{{sceneTargetEvent.name}}">Select Event:</option>
                                 </select>
                             </td>
+
                     </tr>
                     </table>
             </div>
 
-    <div class="col-md-4" style="margin-left: 10px;">
+    <div class="col-md-12" style="margin-left: 10px;">
         <label>User Mesh Options: </label>
         <table class="table">
             <tr>
@@ -716,11 +716,11 @@
                     </div><br>
                 </td>
                 <td>
-                    <!--<div ng-repeat="picture in scenePictureThumbs">-->
-                    <!--<div class="col-md-2">-->
-                    <!--<img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">-->
-                    <!--<button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>-->
-                    <!--</div></div>-->
+                    <div ng-repeat="picture in scenePictureThumbs">
+                    <div class="col-md-2">
+                    <img ng-src="{{picture.thumbUrl}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+                    <button class="btn-default btn-default-sm" ng-click="DeleteScenePicture(picture._id)">Delete</button><br><span>Title:  {{picture.title}}</span>
+                    </div></div>
                 </td>
 
             </tr>
