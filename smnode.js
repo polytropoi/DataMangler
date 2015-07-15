@@ -1789,7 +1789,7 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
             if (scene.scenePostcards != null && scene.scenePostcards.length > 0) {
                 var postcards = [];
 //                            for (var i = 0; i < sceneResponse.scenePostcards.length; i++) { //refresh themz
-                async.each (scene.scenePostcards, function (postcardID, callbackz) { //nested async-ery!
+                async.each (scene.scenePostcards, function (postcardID, callbackz) {
 //                                console.log("scenepostcard id: " + sceneResponse.scenePostcards[i]);
                     console.log("scenepostcard id: " + postcardID);
                     var oo_id = new BSON.ObjectID(postcardID);
@@ -2422,7 +2422,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                                 console.log("error getting scene data by title: " + err);
                                 callback("", err);
                             } else { //make arrays of the pics and audio items
-                                console.log("scene by title: ", sceneData);
+//                                console.log("scene by title: ", sceneData);
                                 sceneData[0].scenePictures.forEach(function (picture){
                                     var p_id = new BSON.ObjectID(picture); //convert to binary to search by _id beloiw
                                     requestedPictureItems.push(p_id); //populate array
@@ -2507,7 +2507,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                     function (callback) { //update link pic URLs //TODO check for freshness, and rescrape if needed
                         if (sceneResponse.sceneWebLinks != null && sceneResponse.sceneWebLinks.length > 0) {
                             for (var i = 0; i < sceneResponse.sceneWebLinks.length; i++) {
-                                console.log("sceneWebLink id: " + sceneResponse.sceneWebLinks[i].link_id);
+//                                console.log("sceneWebLink id: " + sceneResponse.sceneWebLinks[i].link_id);
                                 var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".thumb.jpg", Expires: 6000});
                                 var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".half.jpg", Expires: 6000});
                                 var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.web', Key: sceneResponse.sceneWebLinks[i].link_id + ".standard.jpg", Expires: 6000});
@@ -2624,9 +2624,10 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
                     },
                     function (callback) {
+                        var postcards = [];
                         if (sceneResponse.scenePostcards != null && sceneResponse.scenePostcards.length > 0) {
 //                            sceneResponse.postcards = [];
-                            var postcards = [];
+
 //                            for (var i = 0; i < sceneResponse.scenePostcards.length; i++) { //refresh themz
                                 async.each (sceneResponse.scenePostcards, function (postcardID, callbackz) { //nested async-ery!
 //                                console.log("scenepostcard id: " + sceneResponse.scenePostcards[i]);
@@ -2676,9 +2677,10 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
 //                        postcardResponse = postcards;
 
-                        }
+                        } else {
 //                      callback(null);
-//                        callback(null, postcards);
+                            callback(null, postcards);
+                        }
                     },
 
 
