@@ -1928,10 +1928,10 @@ app.get('/availablescenes/:_id', requiredAuthentication, function (req, res) {
                                             sceneOwner: scene.userName,
                                             scenePostcardHalf: urlHalf
                                         };
-
+                                    availableScenesResponse.availableScenes.push(availableScene);
                                     }
 //                        console.log("publicScene: " + publicScene);
-                                    availableScenesResponse.availableScenes.push(availableScene);
+
 //                        console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
 //                            publicScenes.push(publicScene);
 //                                }
@@ -1947,7 +1947,7 @@ app.get('/availablescenes/:_id', requiredAuthentication, function (req, res) {
                     function (err) {
                         // All tasks are done now
 //            doSomethingOnceAllAreDone();
-//                console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
+                console.log("availableScenesResponse :" + JSON.stringify(availableScenesResponse));
                         res.send(availableScenesResponse);
                     }
                 );
@@ -2621,7 +2621,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
                     },
                     function (callback) {
-//                        if (sceneResponse.scenePostcards != null && sceneResponse.scenePostcards.length > 0) {
+                        if (sceneResponse.scenePostcards != null && sceneResponse.scenePostcards.length > 0) {
 //                            sceneResponse.postcards = [];
                             var postcards = [];
 //                            for (var i = 0; i < sceneResponse.scenePostcards.length; i++) { //refresh themz
@@ -2640,6 +2640,8 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                                             Key: picture_item._id + ".thumb." + picture_item.filename, Expires: 6000});
                                         var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID,
                                             Key: picture_item._id + ".half." + picture_item.filename, Expires: 6000});
+                                        var urlStandard = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID,
+                                            Key: picture_item._id + ".standard." + picture_item.filename, Expires: 6000});
 
                                         var postcard = {};
                                         postcard.userID = picture_item.userID;
@@ -2647,6 +2649,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                                         postcard.sceneID = picture_item.postcardForScene;
                                         postcard.urlThumb = urlThumb;
                                         postcard.urlHalf = urlHalf;
+                                        postcard.urlStandard = urlStandard;
                                         postcards.push(postcard);
                                         console.log("pushing postcard: " + JSON.stringify(postcard));
                                         callbackz();
@@ -2670,8 +2673,9 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
 //                        postcardResponse = postcards;
 
-//                        }
+                        }
 //                      callback(null);
+//                        callback(null, postcards);
                     },
 
 

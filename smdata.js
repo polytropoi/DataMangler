@@ -63,6 +63,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         when('/uploadobject', {controller:NewObjectCtrl, templateUrl:'p_add_object.html'}).
 	      when('/uploadtext', {controller:UploadTextCtrl, templateUrl:'p_uploadtext.html'}).
 	      when('/webplayer', {controller:WebplayerCtrl, templateUrl:'p_webplayer.html'}).
+            when('/s/:short_id', {controller:DisplaySceneCtrl, templateUrl:'p_displayscene.html'}).
 	      otherwise({redirectTo:'/'});
   		}]);
 
@@ -961,6 +962,18 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 delete $cookies._id; //if server session doesn't match, the client cookie is bad
             }
         }
+
+    function DisplaySceneCtrl($scope, $http, $routeParams, usernav, $location) {
+        $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
+        $scope.urls = usernav.urls;
+        console.log("tryna get display scene for " + $routeParams.short_id);
+        $http.get('/scene/' + $routeParams.short_id).success(function (data) {
+
+          $scope.scene = data;
+
+        });
+
+    }
 
     function USceneCtrl($scope, $http, $routeParams, usernav, $location) {
         $scope.urls = usernav.urls;
