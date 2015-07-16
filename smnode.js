@@ -2417,10 +2417,14 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
         async.waterfall([
 
                     function (callback) {
-                        db.scenes.find({ sceneTitle: req.params._id }, function (err, sceneData) { //fetch the path info by title TODO: urlsafe string
-                            if (err || !sceneData || !sceneData.length) {
+//                        var o_id = new BSON.ObjectID(req.params._id);
+                        db.scenes.find({$or: [{ sceneTitle: req.params._id },
+                                                { short_id : req.params._id }]},
+                                                function (err, sceneData) { //fetch the path info by title TODO: urlsafe string
+
+                                if (err || !sceneData || !sceneData.length) {
                                 console.log("error getting scene data by title: " + err);
-                                callback("", err);
+                                callback(err);
                             } else { //make arrays of the pics and audio items
 //                                console.log("scene by title: ", sceneData);
                                 sceneData[0].scenePictures.forEach(function (picture){
@@ -2431,77 +2435,78 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                                 requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneAmbientAudioID), BSON.ObjectID(sceneData[0].scenePrimaryAudioID)];
 
                                 sceneResponse = sceneData[0];
-                                callback(null, sceneData);
+                                callback(null);
                             }
 
                         });
 
                     },
-
-                    function (nScenes, callback) { //try shortcode
-                        if (!nScenes || !nScenes.length) {
-                        var shortID = req.params._id;
-                        db.scenes.find({ "short_id" : shortID}, function(err, sceneData) {
-                            if (err || !sceneData || !sceneData.length || sceneData == undefined) {
-                                console.log("error getting scenedata by shortcode: " + err);
-                                callback("", err);
-                            } else {
-//                                console.log("scene by shortcode: ", sceneData);
-                                sceneData[0].scenePictures.forEach(function (picture) {
-                                    var p_id = new BSON.ObjectID(picture); //convert to binary to search by _id beloiw
-                                    requestedPictureItems.push(p_id); //populate array
-                                });
-
-                                requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneAmbientAudioID), BSON.ObjectID(sceneData[0].scenePrimaryAudioID)];
-                                sceneResponse = sceneData[0];
-                                callback(null, sceneData);
-                            }
-                        });
-                        } else {
-                            //sceneResponse = nScenes[0];
-//                                pathResponse.audio = [];
-//                                pathResponse.pictures = [];
-                            callback(null, nScenes);
-
-                        }
-                    },
-
-                    function (nScenes, callback) { //if it didn't find it above, try the mongoID
-                        if (!nScenes || !nScenes.length) {
-
-                            //var o_id = new BSON.ObjectID(req.params._id);
-                            console.log("tryna get by mongo: " + req.params._id);
-
-                            if (Buffer.byteLength(req.params._id) == 24 || Buffer.byteLength(req.params._id) == 12) {
-                               // var o_id = new BSON.ObjectID(req.params._id);
-                                db.scenes.find({ _id: ObjectId(req.params._id) }, function (err, sceneData) { //fetch the path info
-                                    if (err || !sceneData || !sceneData.length) {
-                                        console.log("error getting scene items: " + err);
-                                        callback(err);
-                                    } else {
-                                        console.log("scene by ID: " + sceneData);
-                                        sceneData[0].scenePictures.forEach(function (picture){
-                                            var p_id = new BSON.ObjectID(picture); //convert to binary to search by _id beloiw
-                                            requestedPictureItems.push(p_id); //populate array
-                                        });
-
-                                        requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneAmbientAudioID), BSON.ObjectID(sceneData[0].scenePrimaryAudioID)];
-                                        sceneResponse = sceneData[0];
-                                        callback(null);
-                                    }
-
-                                });
-                            } else {
-                                callback("bad input");
-                            }
-                        } else {
-                            //sceneResponse = nScenes[0];
-//                                pathResponse.audio = [];
-//                                pathResponse.pictures = [];
-                            callback(null);
-
-                        }
-                    },
+//
+//                    function (nScenes, callback) { //try shortcode
+//                        console.log("tryn get scene data with shortcode");
+//                        if (!nScenes || !nScenes.length) {
+//                        var shortID = req.params._id;
+//                        db.scenes.find({ "short_id" : shortID}, function(err, sceneData) {
+//                            if (err || !sceneData || !sceneData.length || sceneData == undefined) {
+//                                console.log("error getting scenedata by shortcode: " + err);
+//                                callback("", err);
+//                            } else {
+////                                console.log("scene by shortcode: ", sceneData);
+//                                sceneData[0].scenePictures.forEach(function (picture) {
+//                                    var p_id = new BSON.ObjectID(picture); //convert to binary to search by _id beloiw
+//                                    requestedPictureItems.push(p_id); //populate array
+//                                });
+//
+//                                requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneAmbientAudioID), BSON.ObjectID(sceneData[0].scenePrimaryAudioID)];
+//                                sceneResponse = sceneData[0];
+//                                callback(null, sceneData);
+//                            }
+//                        });
+//                        } else {
+//                            //sceneResponse = nScenes[0];
+////                                pathResponse.audio = [];
+////                                pathResponse.pictures = [];
+//                            callback(null, nScenes);
+//
+//                        }
+//                    },
+//
+//                    function (nScenes, callback) { //if it didn't find it above, try the mongoID
+//                        if (!nScenes || !nScenes.length) {
+//
+//                            //var o_id = new BSON.ObjectID(req.params._id);
+//                            console.log("tryna get by mongo: " + req.params._id);
+//
+//                            if (Buffer.byteLength(req.params._id) == 24 || Buffer.byteLength(req.params._id) == 12) {
+//                               // var o_id = new BSON.ObjectID(req.params._id);
+//                                db.scenes.find({ _id: ObjectId(req.params._id) }, function (err, sceneData) { //fetch the path info
+//                                    if (err || !sceneData || !sceneData.length) {
+//                                        console.log("error getting scene items: " + err);
+//                                        callback(err);
+//                                    } else {
+//                                        console.log("scene by ID: " + sceneData);
+//                                        sceneData[0].scenePictures.forEach(function (picture){
+//                                            var p_id = new BSON.ObjectID(picture); //convert to binary to search by _id beloiw
+//                                            requestedPictureItems.push(p_id); //populate array
+//                                        });
+//
+//                                        requestedAudioItems = [ BSON.ObjectID(sceneData[0].sceneTriggerAudioID), BSON.ObjectID(sceneData[0].sceneAmbientAudioID), BSON.ObjectID(sceneData[0].scenePrimaryAudioID)];
+//                                        sceneResponse = sceneData[0];
+//                                        callback(null);
+//                                    }
+//
+//                                });
+//                            } else {
+//                                callback("bad input");
+//                            }
+//                        } else {
+//                            //sceneResponse = nScenes[0];
+////                                pathResponse.audio = [];
+////                                pathResponse.pictures = [];
+//                            callback(null);
+//
+//                        }
+//                    },
 
 
                     function (callback) { //update link pic URLs //TODO check for freshness, and rescrape if needed
