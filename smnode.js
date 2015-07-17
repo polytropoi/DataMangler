@@ -93,7 +93,7 @@ var corsOptions = function (origin) {
 
        // Create the http server and get it to listen on the specified port 8084                                                                                                                   
   var databaseUrl = "asterion:menatar@linus.mongohq.com:10093/servmed";
-  var collections = ["auth_req", "users", "audio_items", "audio_item_keys", "image_items", "obj_items", "paths", "keys", "scenes", "weblinks"];
+  var collections = ["auth_req", "users", "audio_items", "audio_item_keys", "image_items", "obj_items", "paths", "keys", "scores", "scenes", "weblinks"];
   var db = require("mongojs").connect(databaseUrl, collections);
   var BSON = mongo.BSONPure;
   
@@ -1676,6 +1676,22 @@ app.get('/upath/:u_id/:p_id',  requiredAuthentication, function (req, res) { //g
     });
 });
 
+app.post('/scores', requiredAuthentication, function (req, res) {
+console.log("tryna post scores");
+    db.scores.save(req.body, function (err, saved) {
+        if ( err || !saved ) {
+            console.log('path not saved..');
+            res.send("nilch");
+        } else {
+            var item_id = saved._id.toString();
+            console.log('new score id: ' + item_id);
+            res.send(item_id);
+
+        }
+    });
+
+});
+
 app.post('/newpath', requiredAuthentication, function (req, res) {
 
       db.paths.save(req.body, function (err, saved) {
@@ -1690,7 +1706,7 @@ app.post('/newpath', requiredAuthentication, function (req, res) {
           }
       });
 
-  }),
+  });
 
     app.post('/update_path/:_id', requiredAuthentication, function (req, res) {
         console.log(req.params._id);
