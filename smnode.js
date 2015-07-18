@@ -93,7 +93,7 @@ var corsOptions = function (origin) {
 
        // Create the http server and get it to listen on the specified port 8084                                                                                                                   
   var databaseUrl = "asterion:menatar@linus.mongohq.com:10093/servmed";
-  var collections = ["auth_req", "users", "audio_items", "audio_item_keys", "image_items", "obj_items", "paths", "keys", "scores", "scenes", "weblinks"];
+  var collections = ["auth_req", "users", "audio_items", "audio_item_keys", "image_items", "obj_items", "paths", "keys", "scores", "activity", "purchases", "scenes", "weblinks"];
   var db = require("mongojs").connect(databaseUrl, collections);
   var BSON = mongo.BSONPure;
   
@@ -1676,20 +1676,89 @@ app.get('/upath/:u_id/:p_id',  requiredAuthentication, function (req, res) { //g
     });
 });
 
-app.post('/scores', requiredAuthentication, function (req, res) {
+app.post('/score', requiredAuthentication, function (req, res) {
 console.log("tryna post scores");
     db.scores.save(req.body, function (err, saved) {
         if ( err || !saved ) {
-            console.log('path not saved..');
+            console.log('score not saved..');
             res.send("nilch");
         } else {
             var item_id = saved._id.toString();
             console.log('new score id: ' + item_id);
             res.send(item_id);
-
         }
     });
+});
+app.get('/scores/:u_id',  requiredAuthentication, function (req, res) {
 
+    console.log("tryna get scores for: ", req.params.u_id);
+    //var _id = new BSON.ObjectID(req.params.u_id);
+    db.scores.find({ userID : req.params.u_id}, function(err, scores) {
+        if (err || !scores) {
+            console.log("cain't get no scores... " + err);
+        } else {
+//            console.log(JSON.stringify(scores));
+            res.send(scores);
+        }
+    });
+});
+
+app.post('/purchase', requiredAuthentication, function (req, res) {
+    console.log("tryna post purchase");
+    db.purchases.save(req.body, function (err, saved) {
+        if ( err || !saved ) {
+            console.log('purchase not saved..');
+            res.send("nilch");
+        } else {
+            var item_id = saved._id.toString();
+            console.log('new score id: ' + item_id);
+            res.send(item_id);
+        }
+    });
+});
+
+app.get('/purchases/:u_id',  requiredAuthentication, function (req, res) {
+
+    console.log("tryna get scores for: ", req.params.u_id);
+    //var _id = new BSON.ObjectID(req.params.u_id);
+    db.purchases.find({ userID : req.params.u_id}, function(err, purchases) {
+        if (err || !purchases) {
+            console.log("cain't get no scores... " + err);
+            res.send(err);
+        } else {
+//            console.log(JSON.stringify(scores));
+            res.send(purchases);
+        }
+    });
+});
+
+app.post('/activity', requiredAuthentication, function (req, res) {
+    console.log("tryna post scores");
+    db.activity.save(req.body, function (err, saved) {
+        if ( err || !saved ) {
+            console.log('score not saved..');
+            res.send("nilch");
+        } else {
+            var item_id = saved._id.toString();
+            console.log('new score id: ' + item_id);
+            res.send(item_id);
+        }
+    });
+});
+
+app.get('/activities/:u_id',  requiredAuthentication, function (req, res) {
+
+    console.log("tryna get activities for: ", req.params.u_id);
+    //var _id = new BSON.ObjectID(req.params.u_id);
+    db.activity.find({ userID : req.params.u_id}, function(err, activities) {
+        if (err || !activities) {
+            console.log("cain't get no activities... " + err);
+            res.send(err);
+        } else {
+//            console.log(JSON.stringify(scores));
+            res.send(activities);
+        }
+    });
 });
 
 app.post('/newpath', requiredAuthentication, function (req, res) {
