@@ -1488,7 +1488,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 console.log(data);
                 $scope.userstatus = data;
     //                    $scope.path.user_id = $cookies._id;
-                $scope.scene.user_id = $cookies._id.replace(/"/g, '');
+                $scope.scene.user_id = $cookies._id.replace(/"/g, '')
+                $scope.scene.userName = $scope.userstatus;
                 if ($scope.userstatus != "0") {
                     $scope.headermessage = "You are logged in as " + $scope.userstatus; //a bit cornfusing, it's returning username
                 } else {
@@ -1502,186 +1503,186 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 delete $cookies._id; //if server session doesn't match, the client cookie is bad
             });
 
-            $http.get('/userpics/' + $routeParams.u_id).success(function (data) {
-                $scope.pictureitems = data;
-                $scope.predicate = '-otimestamp';
-                //  $scope.setPagingData(largeLoad,page,pageSize);
-                console.log("pictureitems.length: ", $scope.pictureitems.length);
-                //   $scope.setPagingData(page,pageSize);
-            }).error(function	(data) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                location.$path("/login");
-            });
-
-            $http.get('/useraudio/' + $routeParams.u_id).success(function (data) {
-                $scope.audioitems = data;
-                $scope.predicate = '-otimestamp';
-                //  $scope.setPagingData(largeLoad,page,pageSize);
-                console.log($scope.audioitems[0]);
-                //   $scope.setPagingData(page,pageSize);
-            }).error(function	(data) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                location.$path("/login");
-            });
-
-            $scope.AddTag = function(tag) {
-                if ($scope.flashcard.tags === null) {
-                    //	$scope.flashcard.tags = new Array();
-                }
-                if (tag != null && tag.length > 1) {
-                    console.log("tryna AddTag: " + tag);
-                    $scope.flashcard.tags.push(tag);
-                    $scope.tag = "";
-                } else {
-                    console.log("that ain't no tag!");
-                }
-            }
-
-            $scope.RemoveTag = function (tag) {
-                console.log("tryna RemoveTag...");
-                for (var i = 0, ii = $scope.flashcard.tags.length; i < ii; i++) {
-                    if (tag === $scope.flashcard.tags[i]) {
-                        $scope.flashcard.tags.splice(i, 1);
-                        $scope.tag = "";
-                    }
-                }
-            }
-
-
-            $scope.AddScenePicture = function(pictureID) {
-//                if (id != null && id != undefined && id.length > 0) {
-                console.log("XXX gotsa new pictureID: " + pictureID);
-                if (pictureID) {
-//                    pictures.forEach(function (picture) {
-//                console.log(pictureID);
-//                      $scope.scenePictureThumbs = [];
-                    if ($scope.scene.scenePictures) {
-                        if ($scope.scene.scenePictures.indexOf(pictureID) == -1)
-                            $scope.scene.scenePictures.push(pictureID);
-                        //TODO get the value directly from the pictureitems object?
-                        for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
-//                        if ($scope.scenePictureItems)
-                            //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
-                            if (pictureID === $scope.pictureitems[i]._id) {
-                                var stump = {};
-                                stump._id = $scope.pictureitems[i]._id;
-                                stump.thumbUrl = $scope.pictureitems[i].URLthumb;
-                                stump.title = $scope.pictureitems[i].title;
-                                stump.filename = $scope.pictureitems[i].filename;
-
-//                            $scope.scenePictureThumbs.push($scope.pictureitems[i].URLthumb);
-                                $scope.scenePictureThumbs.push(stump);
-                                console.log("XXXX scene pic thumbs: " + $scope.scenePictureThumbs);
-                            }
-                        }
-                    }
-                    //$scope.scene.scenePictures = $scope.scenePictures;
-                }
-            };
-            $scope.DeleteScenePicture = function(id) {
-
-//                if (id != null && id != undefined && id.length > 0) {
+//            $http.get('/userpics/' + $routeParams.u_id).success(function (data) {
+//                $scope.pictureitems = data;
+//                $scope.predicate = '-otimestamp';
+//                //  $scope.setPagingData(largeLoad,page,pageSize);
+//                console.log("pictureitems.length: ", $scope.pictureitems.length);
+//                //   $scope.setPagingData(page,pageSize);
+//            }).error(function	(data) {
+//                // called asynchronously if an error occurs
+//                // or server returns response with an error status.
+//                location.$path("/login");
+//            });
+//
+//            $http.get('/useraudio/' + $routeParams.u_id).success(function (data) {
+//                $scope.audioitems = data;
+//                $scope.predicate = '-otimestamp';
+//                //  $scope.setPagingData(largeLoad,page,pageSize);
+//                console.log($scope.audioitems[0]);
+//                //   $scope.setPagingData(page,pageSize);
+//            }).error(function	(data) {
+//                // called asynchronously if an error occurs
+//                // or server returns response with an error status.
+//                location.$path("/login");
+//            });
+//
+//            $scope.AddTag = function(tag) {
+//                if ($scope.flashcard.tags === null) {
+//                    //	$scope.flashcard.tags = new Array();
+//                }
+//                if (tag != null && tag.length > 1) {
+//                    console.log("tryna AddTag: " + tag);
+//                    $scope.flashcard.tags.push(tag);
+//                    $scope.tag = "";
+//                } else {
+//                    console.log("that ain't no tag!");
+//                }
+//            }
+//
+//            $scope.RemoveTag = function (tag) {
+//                console.log("tryna RemoveTag...");
+//                for (var i = 0, ii = $scope.flashcard.tags.length; i < ii; i++) {
+//                    if (tag === $scope.flashcard.tags[i]) {
+//                        $scope.flashcard.tags.splice(i, 1);
+//                        $scope.tag = "";
+//                    }
+//                }
+//            }
 
 
-                console.log("XXX gotsa new pictureID: " + id + " " + JSON.stringify($scope.scenePictureThumbs[0]));
-                if (id != undefined) {
-//                    pictures.forEach(function (picture) {
-//                console.log(pictureID);
-//                      $scope.scenePictureThumbs = [];
-                    if ($scope.scene.scenePictures) {
-                        var scenePicIndex = $scope.scene.scenePictures.indexOf(id);
-                        if (scenePicIndex != -1) {
-                            $scope.scene.scenePictures.splice(scenePicIndex, 1);
-                        }
-                        //TODO get the value directly from the pictureitems object?
+//            $scope.AddScenePicture = function(pictureID) {
+////                if (id != null && id != undefined && id.length > 0) {
+//                console.log("XXX gotsa new pictureID: " + pictureID);
+//                if (pictureID) {
+////                    pictures.forEach(function (picture) {
+////                console.log(pictureID);
+////                      $scope.scenePictureThumbs = [];
+//                    if ($scope.scene.scenePictures) {
+//                        if ($scope.scene.scenePictures.indexOf(pictureID) == -1)
+//                            $scope.scene.scenePictures.push(pictureID);
+//                        //TODO get the value directly from the pictureitems object?
+//                        for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
+////                        if ($scope.scenePictureItems)
+//                            //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
+//                            if (pictureID === $scope.pictureitems[i]._id) {
+//                                var stump = {};
+//                                stump._id = $scope.pictureitems[i]._id;
+//                                stump.thumbUrl = $scope.pictureitems[i].URLthumb;
+//                                stump.title = $scope.pictureitems[i].title;
+//                                stump.filename = $scope.pictureitems[i].filename;
+//
+////                            $scope.scenePictureThumbs.push($scope.pictureitems[i].URLthumb);
+//                                $scope.scenePictureThumbs.push(stump);
+//                                console.log("XXXX scene pic thumbs: " + $scope.scenePictureThumbs);
+//                            }
+//                        }
+//                    }
+//                    //$scope.scene.scenePictures = $scope.scenePictures;
+//                }
+//            };
+//            $scope.DeleteScenePicture = function(id) {
+//
+////                if (id != null && id != undefined && id.length > 0) {
+//
+//
+//                console.log("XXX gotsa new pictureID: " + id + " " + JSON.stringify($scope.scenePictureThumbs[0]));
+//                if (id != undefined) {
+////                    pictures.forEach(function (picture) {
+////                console.log(pictureID);
+////                      $scope.scenePictureThumbs = [];
+//                    if ($scope.scene.scenePictures) {
+//                        var scenePicIndex = $scope.scene.scenePictures.indexOf(id);
+//                        if (scenePicIndex != -1) {
+//                            $scope.scene.scenePictures.splice(scenePicIndex, 1);
+//                        }
+//                        //TODO get the value directly from the pictureitems object?
+//
+//                        for (var i = 0, ii = $scope.scenePictureThumbs.length - 1; i < ii; i++) {
+//                            if (($scope.scenePictureThumbs != undefined) && (id === $scope.scenePictureThumbs[i]._id)) {
+//                                $scope.scenePictureThumbs.splice(i, 1);
+//
+//                            }
+//                        }
+//                        $scope.form.$dirty = true;
+//                    }
+//                }
+//            };
 
-                        for (var i = 0, ii = $scope.scenePictureThumbs.length - 1; i < ii; i++) {
-                            if (($scope.scenePictureThumbs != undefined) && (id === $scope.scenePictureThumbs[i]._id)) {
-                                $scope.scenePictureThumbs.splice(i, 1);
-
-                            }
-                        }
-                        $scope.form.$dirty = true;
-                    }
-                }
-            };
-
-            $scope.$watch('nawScenePicture', function(pictureID){
-//                if (id != null && id != undefined && id.length > 0) {
-                console.log("XXX gotsa new pictureID: " + pictureID);
-                if (pictureID) {
-//                    pictures.forEach(function (picture) {
-                        console.log(pictureID);
-//                      $scope.scenePictureThumbs = [];
-                        $scope.scene.scenePictures.push(pictureID);
-                    //TODO get the value directly from the pictureitems object?
-                        for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
-                            //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
-                            if (pictureID === $scope.pictureitems[i]._id) {
-
-                                $scope.scenePictureThumbs.push($scope.pictureitems[i].URLthumb);
-//                                $scope.scenePictureThumbs[i] = $scope.pictureitems[i].URLthumb;
-                                console.log($scope.scenePictureThumbs[i]);
-                            }
-                        }
-//                    });
-                }
-            });
-
-            $scope.$watch('scene.triggerAudioID', function(id){
-                if (id != null && id != undefined && id.length > 2) {
-                    console.log(id);
-
-                    for (var i = 0, ii = $scope.audioitems.length; i < ii; i++) {
-                        //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
-                        if (id === $scope.audioitems[i]._id) {
-                            $scope.audioWaveformPngTrigger = $scope.audioitems[i].audioWaveformPng;
-                            console.log($scope.audioWaveformPngTrigger);
-                        }
-                    }
-                }
-            });
-            $scope.$watch('scene.sceneSpokenAudioID', function(id){
-                if (id != null && id != undefined && id.length > 2) {
-                    console.log(id);
-
-                    for (var i = 0, ii = $scope.audioitems.length; i < ii; i++) {
-                        //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
-                        if (id === $scope.audioitems[i]._id) {
-                            $scope.audioWaveformPngSpoken = $scope.audioitems[i].audioWaveformPng;
-                            console.log($scope.audioWaveformPngSpoken);
-                        }
-                    }
-                }
-            });
-            $scope.$watch('scene.sceneBackgroundAudioID', function(id){
-                if (id != null && id != undefined && id.length > 2) {
-                    console.log(id);
-
-                    for (var i = 0, ii = $scope.audioitems.length; i < ii; i++) {
-                        //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
-                        if (id === $scope.audioitems[i]._id) {
-                            $scope.audioWaveformPngBackground = $scope.audioitems[i].audioWaveformPng;
-                            console.log($scope.audioWaveformPngBackground);
-                        }
-                    }
-                }
-            });
-            $scope.$watch('scene.sceneEnvironmentAudioID', function(id){
-                if (id != null && id != undefined && id.length > 2) {
-                    console.log(id);
-
-                    for (var i = 0, ii = $scope.audioitems.length; i < ii; i++) {
-                        //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
-                        if (id === $scope.audioitems[i]._id) {
-                            $scope.audioWaveformPngEnvironment = $scope.audioitems[i].audioWaveformPng;
-                            console.log($scope.audioWaveformPngEnvironment);
-                        }
-                    }
-                }
-            });
+//            $scope.$watch('nawScenePicture', function(pictureID){
+////                if (id != null && id != undefined && id.length > 0) {
+//                console.log("XXX gotsa new pictureID: " + pictureID);
+//                if (pictureID) {
+////                    pictures.forEach(function (picture) {
+//                        console.log(pictureID);
+////                      $scope.scenePictureThumbs = [];
+//                        $scope.scene.scenePictures.push(pictureID);
+//                    //TODO get the value directly from the pictureitems object?
+//                        for (var i = 0, ii = $scope.pictureitems.length; i < ii; i++) {
+//                            //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
+//                            if (pictureID === $scope.pictureitems[i]._id) {
+//
+//                                $scope.scenePictureThumbs.push($scope.pictureitems[i].URLthumb);
+////                                $scope.scenePictureThumbs[i] = $scope.pictureitems[i].URLthumb;
+//                                console.log($scope.scenePictureThumbs[i]);
+//                            }
+//                        }
+////                    });
+//                }
+//            });
+//
+//            $scope.$watch('scene.triggerAudioID', function(id){
+//                if (id != null && id != undefined && id.length > 2) {
+//                    console.log(id);
+//
+//                    for (var i = 0, ii = $scope.audioitems.length; i < ii; i++) {
+//                        //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
+//                        if (id === $scope.audioitems[i]._id) {
+//                            $scope.audioWaveformPngTrigger = $scope.audioitems[i].audioWaveformPng;
+//                            console.log($scope.audioWaveformPngTrigger);
+//                        }
+//                    }
+//                }
+//            });
+//            $scope.$watch('scene.sceneSpokenAudioID', function(id){
+//                if (id != null && id != undefined && id.length > 2) {
+//                    console.log(id);
+//
+//                    for (var i = 0, ii = $scope.audioitems.length; i < ii; i++) {
+//                        //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
+//                        if (id === $scope.audioitems[i]._id) {
+//                            $scope.audioWaveformPngSpoken = $scope.audioitems[i].audioWaveformPng;
+//                            console.log($scope.audioWaveformPngSpoken);
+//                        }
+//                    }
+//                }
+//            });
+//            $scope.$watch('scene.sceneBackgroundAudioID', function(id){
+//                if (id != null && id != undefined && id.length > 2) {
+//                    console.log(id);
+//
+//                    for (var i = 0, ii = $scope.audioitems.length; i < ii; i++) {
+//                        //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
+//                        if (id === $scope.audioitems[i]._id) {
+//                            $scope.audioWaveformPngBackground = $scope.audioitems[i].audioWaveformPng;
+//                            console.log($scope.audioWaveformPngBackground);
+//                        }
+//                    }
+//                }
+//            });
+//            $scope.$watch('scene.sceneEnvironmentAudioID', function(id){
+//                if (id != null && id != undefined && id.length > 2) {
+//                    console.log(id);
+//
+//                    for (var i = 0, ii = $scope.audioitems.length; i < ii; i++) {
+//                        //console.log(i + " of " + $scope.pictureitems.length + "looking at " + $scope.pictureitems[i]._id);
+//                        if (id === $scope.audioitems[i]._id) {
+//                            $scope.audioWaveformPngEnvironment = $scope.audioitems[i].audioWaveformPng;
+//                            console.log($scope.audioWaveformPngEnvironment);
+//                        }
+//                    }
+//                }
+//            });
 
             $scope.onSaveScene = function() {
                 console.log("tryna update " + $scope.scene);
@@ -1694,14 +1695,15 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                         $scope.headermessage = response;
                         $location.path( "#/uscene/" + $routeParams.u_id + "/" + response);
                     }
-                });
-            }
+                 });
 
-        } else {
-            $scope.userstatus = "0";
-            $scope.headermesssage = "You are not logged in...";
-            delete $cookies._id; //if server session doesn't match, the client cookie is bad
-        }
+                }
+
+            } else {
+                $scope.userstatus = "0";
+                $scope.headermesssage = "You are not logged in...";
+                delete $cookies._id; //if server session doesn't match, the client cookie is bad
+            }
     }
     function PathCtrl($scope, $http, $routeParams, $cookies, $route, $location, usernav) {
         console.log("tryna load path");

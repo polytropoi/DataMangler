@@ -2350,11 +2350,12 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
             if (err || !scene) {
                 console.log("error getting path items: " + err);
             } else {
+
                 console.log("tryna update path " + req.body._id);
 
                 db.scenes.update( { "_id": o_id }, { $set: {
                     sceneDomain : req.body.sceneDomain,
-                    sceneOwner_id : scene.sceneOwnerName != null ? scene.sceneOwner : scene.user_id,
+//                    sceneUserName : scene.sceneUserName != null ? scene.sceneUserName : "",
                     sceneNumber : req.body.sceneNumber,
                     sceneTitle : req.body.sceneTitle,
                     sceneShareWithPublic : req.body.sceneShareWithPublic != null ? req.body.sceneShareWithPublic : false,
@@ -2493,7 +2494,67 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
 
     });
-
+//
+//    app.get('/updatesceneusernames', requiredAuthentication, function (req, res) {
+//
+//
+//        db.scenes.find({ }, function (err, scenes) {
+//            if (err || !scenes) {
+//                console.log("cain't get no scenes... " + err)
+//
+//            } else {
+//                async.each(scenes,
+//                    // 2nd param is the function that each item is passed to
+//                    function (scene, callback) {
+//
+//
+//                            var oo_id = new BSON.ObjectID(scene.user_id); //TODO randomize? or ensure latest?  or use assigned default?
+//                            db.users.findOne({"_id": oo_id}, function (err, user) {
+//
+//                                  db.scenes.update()
+//
+////                                if (err || !picture_item || picture_item.length == 0) {
+////                                    console.log("error getting picture items: " + err);
+////
+////                                } else {
+////
+////                                    var item_string_filename = JSON.stringify(picture_item.filename);
+////                                    item_string_filename = item_string_filename.replace(/\"/g, "");
+////                                    var item_string_filename_ext = getExtension(item_string_filename);
+////                                    var expiration = new Date();
+////                                    expiration.setMinutes(expiration.getMinutes() + 30);
+////                                    var baseName = path.basename(item_string_filename, (item_string_filename_ext));
+//////                                    console.log(baseName);
+////                                    var thumbName = 'thumb.' + baseName + item_string_filename_ext;
+////                                    var halfName = 'half.' + baseName + item_string_filename_ext;
+////                                    var standardName = 'standard.' + baseName + item_string_filename_ext;
+////
+//////                            var urlThumb = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_items[i].userID, Key: picture_items[i]._id + "." + thumbName, Expires: 6000}); //just send back thumbnail urls for list
+////                                    var urlHalf = s3.getSignedUrl('getObject', {Bucket: 'servicemedia.' + picture_item.userID, Key: picture_item._id + "." + halfName, Expires: 6000}); //just send back thumbnail urls for list
+////                                    var availableScene = {
+////                                        sceneTitle: scene.sceneTitle,
+////                                        sceneKey: scene.short_id,
+////                                        sceneStatus: scene.sceneShareWithPublic ? "public" : "private",
+////                                        sceneOwner: scene.userName,
+////                                        scenePostcardHalf: urlHalf
+//                                    });
+//
+////                                }
+////                        console.log("publicScene: " + publicScene);
+////                                availableScenesResponse.availableScenes.push(availableScene);
+////                        console.log("publicScenesResponse :" + JSON.stringify(publicScenesResponse));
+////                            publicScenes.push(publicScene);
+////                                }
+//
+//                                callback();
+//                            });
+////                        } else {
+////
+////                            callback();
+////
+////                        }
+////                    });
+//    });
 
     app.get('/scene/:_id', function (req, res) { //TODO lock down w/ requiredAuthentication
 
@@ -2790,7 +2851,26 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                         sceneResponse.pictures = pictureResponse;
                         sceneResponse.postcards = postcardResponse;
                         callback(null);
+                    },
+
+                function (callback) { //inject username, last step (since only id is in scene doc)
+
+                    if ((sceneResponse.userName == null || sceneResponse.userName.length < 1) && sceneResponse.user_id.length > 10) {
+
+                        var oo_id = new BSON.ObjectID(sceneResponse.user_id);
+                        db.users.findOne({_id: oo_id}, function (err, user) {
+                            if (!err || user != null) {
+                                console.log("tryna inject usrname: " + user.userName);
+                                sceneResponse.userName = user.userName;
+                                callback(null);
+                            }
+                        });
+
+                    } else  {
+                        callback(null);
                     }
+                }
+
                 ],
                 function (err, result) { // #last function, close async
                     res.json(sceneResponse);
