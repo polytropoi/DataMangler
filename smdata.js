@@ -966,12 +966,20 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
     function DisplaySceneCtrl($scope, $http, $routeParams, usernav, $location) {
         $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
         $scope.urls = usernav.urls;
+        $scope.postcard = {};
         console.log("tryna get display scene for " + $routeParams.short_id);
         $http.get('/scene/' + $routeParams.short_id).success(function (data) {
 
           $scope.scene = data;
+            $scope.postcard = $scope.scene.postcards[0];
 
         });
+
+        $scope.selectPostcard = function(postcard) {
+            $scope.postcard = postcard;
+        }
+
+
 
     }
 

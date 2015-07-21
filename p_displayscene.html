@@ -6,14 +6,25 @@
         <div class="col-md-3">
             <a class="btn btn-primary btn-lg "target="_blank" href="http://strr.us/?scene={{scene.short_id}}">Preview<img src="http://servicemedia.s3.amazonaws.com/unityicon.png"></a>
             <h4>Scene Key: <a target="_blank" href="http://servicemedia.net/scene/{{scene.short_id}}">{{scene.short_id}}</a></h4></span> <span ><h4>Scene Title: {{scene.sceneTitle}}</h4></span>
+            <h4>Scene Owner: {{scene.sceneOwner}}</h4>
             <!--<a class="btn btn-primary btn-sm "target="_blank" href="#/uploadpicture/postcard/{{scene.short_id}}">Upload Scene Postcard</a>-->
         </div>
+        <div class="col-md-3">
+            Description: {{scene.sceneDescription}}
+            </div>
+        <div class="col-md-3">
+            Views: {{scene.sceneKeynote}}
+        </div>
+    </div><div class="row">
 
+        <div class = "col-md-12 cccontainer"><img ng-src="{{postcard.urlStandard}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png"></div>
         <div class="col-md-12">Scene Postcards:
+            <div></div>
             <div ng-repeat="picture in scene.postcards">
-                <div class="col-md-12">
-                    <div class = "cccontainer"> <img ng-src="{{picture.urlStandard}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png"></div>
-
+                <div class="col-md-2">
+                    <div class = "cccontainer"> <button ng-click="selectPostcard(picture)">
+                        <img ng-src="{{picture.urlThumb}}" err-src="http://philgarden.s3.amazonaws.com/qholder.png">
+                    </button></div>
                     <!--<button class="btn-default btn-default-sm" ng-click="DeleteScenePostcard(picture._id)">Remove</button>-->
                 </div>
             </div>

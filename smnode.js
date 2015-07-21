@@ -2,6 +2,7 @@
 // // following modules                                                                                                                    
  var express = require("express")
 // , cors = require('cors')
+ , acl = require('acl')
  , http = require("http")
  , path = require("path")
  , fs = require("fs")
@@ -93,8 +94,9 @@ var corsOptions = function (origin) {
 
        // Create the http server and get it to listen on the specified port 8084                                                                                                                   
   var databaseUrl = "asterion:menatar@linus.mongohq.com:10093/servmed";
-  var collections = ["auth_req", "users", "audio_items", "audio_item_keys", "image_items", "obj_items", "paths", "keys", "scores", "activity", "purchases", "scenes", "weblinks"];
+  var collections = ["acl", "auth_req", "users", "audio_items", "audio_item_keys", "image_items", "obj_items", "paths", "keys", "scores", "activity", "purchases", "scenes", "weblinks"];
   var db = require("mongojs").connect(databaseUrl, collections);
+  acl = new acl (new acl.mongodbBackend(db, "acl"));
   var BSON = mongo.BSONPure;
   
 
@@ -111,13 +113,16 @@ var corsOptions = function (origin) {
 
   var appAuth = "noauth";
 
+
+    acl.allow('guest', 'public', 'view');
+
   http.createServer(app).listen(8092, function(){
     
 	console.log("Express server listening on port 8092");
                          });
 
   function requiredAuthentication(req, res, next) {
-    console.log("headers: " + JSON.stringify(req.headers) + " vs req.session.user: " + JSON.stringify(req.session));
+    console.log("headers: " + JSON.stringify(req.headers));
     if (req.session.user) {
         next();
     } else  {
@@ -2216,6 +2221,9 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
     app.post('/newscene', requiredAuthentication, function (req, res) {
 
+        var newScene = req.body;
+        newScene.sceneOwner_id = req.session.user._id;
+        newScene.sceneOwnerName = req.session.user.username;
     db.scenes.save(req.body, function (err, saved) {
         if ( err || !saved ) {
             console.log('scene not saved..');
@@ -2346,6 +2354,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
                 db.scenes.update( { "_id": o_id }, { $set: {
                     sceneDomain : req.body.sceneDomain,
+                    sceneOwner_id : scene.sceneOwnerName != null ? scene.sceneOwner : scene.user_id,
                     sceneNumber : req.body.sceneNumber,
                     sceneTitle : req.body.sceneTitle,
                     sceneShareWithPublic : req.body.sceneShareWithPublic != null ? req.body.sceneShareWithPublic : false,
