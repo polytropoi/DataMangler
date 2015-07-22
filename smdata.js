@@ -150,7 +150,6 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
     });
 
-
 		function CollapseCtrl($scope) {
 			console.log("tryna collapse");
   			$scope.isCollapsed = false;

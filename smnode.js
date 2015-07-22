@@ -183,6 +183,8 @@ var corsOptions = function (origin) {
 
             console.log("Logged in: " + req.session.user.userName);
             res.send(req.session.user.userName);
+
+
         } else {
            res.send("0");
         }
