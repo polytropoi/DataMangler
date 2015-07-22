@@ -131,14 +131,69 @@ var corsOptions = function (origin) {
         res.send('noauth');
         }
     }
-    
-    function amirite (id) { //check id against session
-    console.log("checking " + JSON.stringify(req.session));
-        if (JSON.stringify(req.session.user._id) == id) {
-            console.log("Logged in: " + req.session.user.userName);
-            return true;
+
+
+    function amirite (acl_rule, u_id) { //check user id against acl
+//        console.log("checking " + JSON.stringify(req.session));
+//        if (JSON.stringify(req.session.user._id) == u_id) {
+//            console.log("Logged in: " + req.session.user.userName);
+            //is there such a rule, and is this user id in it's userIDs array?
+//            var u_id = session.user._id;
+        console.log("lookin for u_id :" + u_id + " in " + acl_rule);
+            db.acl.findOne({$and: [{acl_rule: acl_rule}, {userIDs: {$in: [u_id]}}]}, function (err, rule) {
+                if (err || !rule) {
+                    //req.session.error = 'Access denied!';
+                    //res.send('noauth');
+                    console.log("sorry, that's not in the acl");
+                    return false;
+                } else {
+                    console.log("yep, that's in the acl");
+//                    next();
+                    return true;
+                }
+            });
+//        }
+    }
+
+    function admin (req, res, next) { //check user id against acl
+        var u_id = req.session.user._id;
+//        console.log("lookin for u_id :" + u_id + " in " + acl_rule);
+        db.acl.findOne({$and: [{acl_rule: "admin"}, {userIDs: {$in: [u_id]}}]}, function (err, rule) {
+            if (err || !rule) {
+                req.session.error = 'Access denied!';
+                res.send('noauth');
+                console.log("sorry, that's not in the acl");
+//                return false;
+            } else {
+                console.log("yep, that's in the acl");
+                        next();
+//                return true;
+            }
+        });
+    }
+
+    function uscene (req, res, next) { //check user id against acl
+        var u_id = req.session.user._id;
+        var req_u_id = req.params.user_id;
+        var scene_id = req.params.scene_id;
+        console.log("checkin " + u_id + " vs " + req_u_id);
+        if (u_id == req_u_id.toString().replace(":", "")) { //hrm.... dunno why the : needs trimming...
+            db.acl.findOne({$and: [{acl_rule: "write_scene_" + scene_id }, {userIDs: {$in: [u_id]}}]}, function (err, rule) {
+                if (err || !rule) {
+                    req.session.error = 'Access denied!';
+                    res.send('noauth');
+                    console.log("sorry, that's not in the acl");
+//                return false;
+                } else {
+                    console.log("yep, that's in the acl");
+                    next();
+//                return true;
+                }
+            });
+//            next();
         } else {
-            return false;
+            req.session.error = 'Access denied!';
+            res.send('noauth');
         }
     }
 
@@ -302,72 +357,95 @@ var corsOptions = function (origin) {
                         });
               });
 
+//    app.get('/profile/makehimlikeuntoagod',  function (req, res) {
+//        console.log("req" + req);
+//        db.acl.update(
+//            { acl_rule: "admin" },
+//            { $push: { userIDs: "5150540ab038969c24000008" } }
+//        );
+//        res.send('done');
+//    });
 
-   app.get('/profile/:_id', requiredAuthentication, function (req, res) {
-                console.log("tryna profile...");
-                var u_id = new BSON.ObjectID(req.params._id);
-                db.users.findOne({"_id": u_id}, function (err, user) {
-                  if (err || !user) {
-                          console.log("error getting user: " + err);
-                          } else {
-                      profileResponse = user;
-                        profileResponse.activity = {};
-                        profileResponse.scores = {};
-                        profileResponse.purchases = {};
-                          console.log("user profile for " + req.params._id);
 
-                      async.waterfall([
-                              function(callback) {
-                                  db.activity.find({"userID": req.params._id}, function (err, activities) {
-                                      if (err || !activities) {
-                                          console.log("no activities");
+    app.get('/getusers/', requiredAuthentication, admin, function (req, res) {
+        db.users.find({}, function (err, users) {
+            if (err | !users) {
+                res.send("wtf! no users!?!?!");
+            } else {
+                res.json(users);
+            }
+        });
+    });
+
+    app.get('/profile/:_id', requiredAuthentication, admin, function (req, res) {
+
+//       if (amirite("admin", req.session.user._id)) { //check the acl
+
+           console.log("tryna profile...");
+           var u_id = new BSON.ObjectID(req.params._id);
+           db.users.findOne({"_id": u_id}, function (err, user) {
+               if (err || !user) {
+                   console.log("error getting user: " + err);
+               } else {
+                   profileResponse = user;
+                   profileResponse.activity = {};
+                   profileResponse.scores = {};
+                   profileResponse.purchases = {};
+                   console.log("user profile for " + req.params._id);
+
+                   async.waterfall([
+                           function (callback) {
+                               db.activity.find({"userID": req.params._id}, function (err, activities) {
+                                   if (err || !activities) {
+                                       console.log("no activities");
 //                                      res.json(profileResponse);
-                                          callback();
-                                      } else {
-                                          console.log("user activitiesw: " + JSON.stringify(activities));
-                                          profileResponse.activity = activities;
-                                          callback();
-                                      }
-                                  });
-                              },
-                              function(callback) {
-                                  db.scores.find({"userID": req.params._id}, function (err, scores) {
-                                      if (err || !scores) {
-                                          console.log("no scores");
+                                       callback();
+                                   } else {
+                                       console.log("user activitiesw: " + JSON.stringify(activities));
+                                       profileResponse.activity = activities;
+                                       callback();
+                                   }
+                               });
+                           },
+                           function (callback) {
+                               db.scores.find({"userID": req.params._id}, function (err, scores) {
+                                   if (err || !scores) {
+                                       console.log("no scores");
 //                                      res.json(profileResponse);
-                                          callback();
-                                      } else {
-                                          console.log("user scores: " + JSON.stringify(scores));
-                                          profileResponse.scores = scores;
-                                          callback();
-                                      }
-                                  });
+                                       callback();
+                                   } else {
+                                       console.log("user scores: " + JSON.stringify(scores));
+                                       profileResponse.scores = scores;
+                                       callback();
+                                   }
+                               });
 
-                              },
-                              function(callback) {
-                                  db.purchases.find({"userID": req.params._id}, function (err, purchases) {
-                                      if (err || !purchases) {
-                                          console.log("no purchases");
+                           },
+                           function (callback) {
+                               db.purchases.find({"userID": req.params._id}, function (err, purchases) {
+                                   if (err || !purchases) {
+                                       console.log("no purchases");
 //                                      res.json(profileResponse);
-                                          callback();
-                                      } else {
-                                          console.log("user purchases: " + JSON.stringify(purchases));
-                                          profileResponse.purchases = purchases;
-                                          callback();
-                                      }
-                                  });
+                                       callback();
+                                   } else {
+                                       console.log("user purchases: " + JSON.stringify(purchases));
+                                       profileResponse.purchases = purchases;
+                                       callback();
+                                   }
+                               });
 
-                              }],
-                              function(err, result) { // #last function, close async
-                                  res.json(profileResponse);
-                                  console.log("waterfall done: " + result);
-                              }
-                      );
-
-
-                          }
-                        });
-              });
+                           }],
+                       function (err, result) { // #last function, close async
+                           res.json(profileResponse);
+                           console.log("waterfall done: " + result);
+                       }
+                   );
+               }
+           });
+//       } else {
+//           res.send("noauth");
+//       }
+      });
 
 
     app.post('/update_profile/:_id', function (req, res) {
@@ -2417,6 +2495,36 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
     //app.get('/weblink')
     app.post('/update_scene/:_id', requiredAuthentication, function (req, res) {
+
+        db.acl.save(
+            { acl_rule: "read_scene_" + req.body._id }, { $push: { userIDs: req.body.user_id } }, function (err, saved) {
+                if (err || !saved) {
+                } else {
+                    console.log("ok saved acl");
+                }
+            });
+
+
+        db.acl.save(
+            { acl_rule: "write_scene_" + req.body._id }, { $push: { userIDs: req.body.user_id } }, function (err, saved) {
+                if (err || !saved) {
+                } else {
+                    console.log("ok saved acl");
+                }
+            });
+
+//        db.acl.save(
+//            { acl_rule: "write_scene_" + req.body._id }, function (err, saved) {
+//                if (err || !saved) {
+//
+//                } else {
+//                    db.acl.update(
+//                        { acl_rule: "write_scene_" + req.body._id },
+//                        { $push: { userIDs: req.body.user_id } }
+//                    );
+//                }
+//
+//            });
 
         console.log("req.header: " + JSON.stringify(req.headers));
         console.log(req.params._id);

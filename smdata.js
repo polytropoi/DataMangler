@@ -64,6 +64,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 	      when('/uploadtext', {controller:UploadTextCtrl, templateUrl:'p_uploadtext.html'}).
 	      when('/webplayer', {controller:WebplayerCtrl, templateUrl:'p_webplayer.html'}).
             when('/s/:short_id', {controller:DisplaySceneCtrl, templateUrl:'p_displayscene.html'}).
+            when('/users', {controller:UsersCtrl, templateUrl:'p_users.html'}).
 	      otherwise({redirectTo:'/'});
   		}]);
 
@@ -385,6 +386,52 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
  			}
 
+    function UsersCtrl($scope, $http, $routeParams, usernav, $cookies, $location) {
+
+        $('#unityPlayer').toggleClass('hidden', true);
+    //			$.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
+        $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
+        $scope.user = {};
+        $scope.userprofile = {};
+    //            $timeout( function () {
+        $scope.urls = usernav.urls;
+    //            }, 0, true);
+    //            console.log(usernav.urls[0])
+    //            if (usernav.urls[0] == 0) {
+    //                $route.reload();
+    //            }
+        console.log("tryna load ProfileCtrl controller" + $scope.urls + " " + $cookies._id	);
+        if ($cookies._id !== null && $cookies._id !== undefined) {
+            $http.get('/amirite/' + $cookies._id).success(function (data) {  //check server if this cookie is still valid
+                console.log(data);
+
+                $scope.userstatus = data;
+                $scope.urls = usernav.urls;
+                if ($scope.userstatus != "0") {
+                    $scope.user._id = $cookies._id;
+                    $scope.user._id = $scope.user._id.replace (/"/g,'');
+                    $scope.headermessage = "You are logged in as " + $scope.userstatus;
+                    $http.get('/getusers/').success(function (data) {
+                        $scope.users = data;
+                    });
+
+                } else {
+                    $scope.headermessage = "You are not logged in...";
+                    delete $cookies._id; //if server session doesn't match, the client cookie is bad
+                }
+            }).error(function (errdata) {
+                console.log(errdata);
+                $scope.userstatus = "0";
+                $scope.headermessage = "You are not logged in...";
+                delete $cookies._id; //if server session doesn't match, the client cookie is bad
+            });
+        } else {
+            $scope.userstatus = "0";
+            $scope.headermesssage = "You are not logged in...";
+            delete $cookies._id; //if server session doesn't match, the client cookie is bad
+
+        }
+    }
 
  		function UProfileCtrl($scope, $http, $routeParams, usernav, $cookies, $location) {
 
@@ -1134,9 +1181,9 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 
         $http.get('/uscene/:' + $routeParams.user_id + '/:' + $routeParams.scene_id).success(function (data) {
 
-            $scope.scene = data;
-
-            $scope.headermessage = "updated: " + $scope.scene.sceneLastUpdate;
+            if (data != "noauth") {
+                $scope.scene = data;
+                $scope.headermessage = "updated: " + $scope.scene.sceneLastUpdate;
 
 
             if ($scope.scene.sceneWebLinks != null && $scope.scene.sceneWebLinks != undefined && $scope.scene.sceneWebLinks.length) {
@@ -1227,6 +1274,10 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 // or server returns response with an error status.
                 location.$path("/login");
             });
+
+        } else {
+            $scope.headermessage = "you are not authorized to access this resource";
+        }
 
         });
 
