@@ -401,11 +401,10 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 //            if (usernav.urls[0] == 0) {
 //                $route.reload();
 //            }
-            console.log("tryna load HomeCtrl controller" + $scope.urls + " " + $cookies._id	);
+            console.log("tryna load ProfileCtrl controller" + $scope.urls + " " + $cookies._id	);
             if ($cookies._id !== null && $cookies._id !== undefined) {
                 $http.get('/amirite/' + $cookies._id).success(function (data) {  //check server if this cookie is still valid
                     console.log(data);
-
 
                     $scope.userstatus = data;
                     $scope.urls = usernav.urls;

@@ -124,6 +124,7 @@ var corsOptions = function (origin) {
   function requiredAuthentication(req, res, next) {
     console.log("headers: " + JSON.stringify(req.headers));
     if (req.session.user) {
+        
         next();
     } else  {
         req.session.error = 'Access denied!';
@@ -300,18 +301,90 @@ var corsOptions = function (origin) {
               });
 
 
-   app.get('/profile/:auth_id', requiredAuthentication, function (req, res) {
+   app.get('/profile/:_id', requiredAuthentication, function (req, res) {
                 console.log("tryna profile...");
-                var u_id = new BSON.ObjectID(req.params.auth_id); 
+                var u_id = new BSON.ObjectID(req.params._id);
                 db.users.findOne({"_id": u_id}, function (err, user) {
                   if (err || !user) {
                           console.log("error getting user: " + err);
                           } else {
-                          console.log("user profile for " + req.params.auth_id);
-                          res.json(user);
+                      profileResponse = user;
+                        profileResponse.activity = {};
+                        profileResponse.scores = {};
+                        profileResponse.purchases = {};
+                          console.log("user profile for " + req.params._id);
+
+                      async.waterfall([
+                              function(callback) {
+                                  db.activity.find({"userID": req.params._id}, function (err, activities) {
+                                      if (err || !activities) {
+                                          console.log("no activities");
+//                                      res.json(profileResponse);
+                                          callback();
+                                      } else {
+                                          console.log("user activitiesw: " + JSON.stringify(activities));
+                                          profileResponse.activity = activities;
+                                          callback();
+                                      }
+                                  });
+                              },
+                              function(callback) {
+                                  db.scores.find({"userID": req.params._id}, function (err, scores) {
+                                      if (err || !scores) {
+                                          console.log("no scores");
+//                                      res.json(profileResponse);
+                                          callback();
+                                      } else {
+                                          console.log("user scores: " + JSON.stringify(scores));
+                                          profileResponse.scores = scores;
+                                          callback();
+                                      }
+                                  });
+
+                              },
+                              function(callback) {
+                                  db.purchases.find({"userID": req.params._id}, function (err, purchases) {
+                                      if (err || !purchases) {
+                                          console.log("no purchases");
+//                                      res.json(profileResponse);
+                                          callback();
+                                      } else {
+                                          console.log("user purchases: " + JSON.stringify(purchases));
+                                          profileResponse.purchases = purchases;
+                                          callback();
+                                      }
+                                  });
+
+                              }],
+                              function(err, result) { // #last function, close async
+                                  res.json(profileResponse);
+                                  console.log("waterfall done: " + result);
+                              }
+                      );
+
+
                           }
                         });
               });
+
+
+    app.post('/update_profile/:_id', function (req, res) {
+        var u_id = new BSON.ObjectID(req.params.auth_id);
+        db.users.findOne({"_id": u_id}, function (err, user) {
+            if (err || !user) {
+                console.log("error getting user: " + err);
+
+            } else {
+                console.log("users authlevel : " + user.authLevel);
+
+                db.users.update({ _id: o_id }, { $set: {
+                    authLevel : req.body.authLevel
+//                    profilePic : profilePic
+                }});
+            }
+            //}
+        });
+    });
 
    app.post('/resetcheck', function (req, res) {
         console.log(req.body.hzch);
@@ -330,6 +403,8 @@ var corsOptions = function (origin) {
                     }
             });
    });
+
+
 
    app.post('/savepw', function (req, res){
 
@@ -467,7 +542,7 @@ var corsOptions = function (origin) {
                 } else if (validator.isEmail(req.body.userEmail) == false) {  //check for valid email
 
                     console.log("bad email");
-                        res.send("bademail");
+                        res.send("bad email");
 
                 } else {
 
