@@ -172,7 +172,7 @@ var corsOptions = function (origin) {
         });
     }
 
-    function uscene (req, res, next) { //check user id against acl
+    function uscene (req, res, next) { //check user id against acl, for scene writing
         var u_id = req.session.user._id;
         var req_u_id = req.params.user_id;
         var scene_id = req.params.scene_id;
@@ -1996,7 +1996,46 @@ app.get('/uscenes/:_id',  requiredAuthentication, function (req, res) { //get sc
     db.scenes.find({ "user_id" : req.params._id}, function(err, scenes) {
         if (err || !scenes) {
             console.log("cain't get no scenes... " + err);
-        } else {
+            res.send("noscenes");
+        } else { //should externalize
+
+//            async.each(scenes,
+//                // 2nd param is the function that each item is passed to
+//                function (scene, callbackz) {
+//                 db.acl.save(
+//                        { acl_rule: "read_scene_" + scene._id },  function (err, saved) {
+//                            if (err || !saved) {
+//                            } else {
+//                                db.acl.update({ 'acl_rule': "read_scene_" + scene._id},{ $push: { 'userIDs': req.params._id } });
+//                                console.log("ok saved acl");
+//                            }
+//                        });
+//                 db.acl.save(
+//                            { 'acl_rule': "write_scene_" + scene._id }, function (err, saved) {
+//                                if (err || !saved) {
+//                                } else {
+//                                    db.acl.update({ 'acl_rule': "write_scene_" + scene._id },{ $push: { 'userIDs': req.params._id } });
+//                                    console.log("ok saved acl");
+//                                }
+//                            });
+//                        callbackz();
+////                    }
+//
+////                }
+////                );
+//
+//            }, function(err) {
+//                // if any of the file processing produced an error, err would equal that error
+//                if (err) {
+//                    // One of the iterations produced an error.
+//                    // All processing will now stop.
+//                    console.log('A file failed to process');
+////                        callback(null, postcards);
+//                } else {
+//                    console.log('All files have been processed successfully');
+//
+//                }
+//            });
 
             console.log(JSON.stringify(scenes));
             res.json(scenes);
@@ -2004,7 +2043,7 @@ app.get('/uscenes/:_id',  requiredAuthentication, function (req, res) { //get sc
     });
 });
 
-app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, res) { //get a specific scene for this user
+app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, res) { //view for updating scene for this user
 
 
     console.log("tryna get scene " + req.params.scene_id);
@@ -2377,8 +2416,8 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
     app.post('/newscene', requiredAuthentication, function (req, res) {
 
         var newScene = req.body;
-        newScene.sceneOwner_id = req.session.user._id;
-        newScene.sceneOwnerName = req.session.user.username;
+//        newScene.sceneOwner_id = req.session.user._id;
+//        newScene.sceneOwnerName = req.session.user.username;
     db.scenes.save(req.body, function (err, saved) {
         if ( err || !saved ) {
             console.log('scene not saved..');
@@ -2393,6 +2432,24 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
             var o_id = new BSON.ObjectID(tempID);
             console.log(tempID + " = " + newShortID);
             db.scenes.update( { _id: o_id }, { $set: { short_id: newShortID }});
+
+            db.acl.save(
+                    { acl_rule: "read_scene_" + saved._id },  function (err, acl) {
+                        if (err || !acl) {
+                        } else {
+                            db.acl.update({ 'acl_rule': "read_scene_" + saved._id},{ $push: { 'userIDs': req.session.user._id } });
+                            console.log("ok saved acl");
+                        }
+                    });
+            db.acl.save(
+                        { 'acl_rule': "write_scene_" + saved._id }, function (err, acl) {
+                            if (err || !acl) {
+                            } else {
+                                db.acl.update({ 'acl_rule': "write_scene_" + saved._id },{ $push: { 'userIDs': req.session.user._id } });
+                                console.log("ok saved acl");
+                            }
+                        });
+
 
             res.send(item_id);
 
@@ -2496,22 +2553,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
     //app.get('/weblink')
     app.post('/update_scene/:_id', requiredAuthentication, function (req, res) {
 
-        db.acl.save(
-            { acl_rule: "read_scene_" + req.body._id }, { $push: { userIDs: req.body.user_id } }, function (err, saved) {
-                if (err || !saved) {
-                } else {
-                    console.log("ok saved acl");
-                }
-            });
 
-
-        db.acl.save(
-            { acl_rule: "write_scene_" + req.body._id }, { $push: { userIDs: req.body.user_id } }, function (err, saved) {
-                if (err || !saved) {
-                } else {
-                    console.log("ok saved acl");
-                }
-            });
 
 //        db.acl.save(
 //            { acl_rule: "write_scene_" + req.body._id }, function (err, saved) {
