@@ -275,8 +275,11 @@ var corsOptions = function (origin) {
     console.log(JSON.stringify(req.session.user._id) + " " + req.params._id);
         if (JSON.stringify(req.session.user._id) == req.params._id) {
 
-            console.log("Logged in: " + req.session.user.userName);
-            res.send(req.session.user.userName);
+            console.log("Logged in: " + JSON.stringify(req.session.user));
+            var resp = {};
+            resp.auth = req.session.user.authLevel;
+            resp.userName = req.session.user.userName;
+            res.send(resp);
 
 
         } else {
@@ -404,6 +407,36 @@ var corsOptions = function (origin) {
 //        );
 //        res.send('done');
 //    });
+    app.get('/makedomainadmin/:domain/:_id',  requiredAuthentication, admin, function (req, res) {
+        console.log("req" + req)
+        var u_id = new BSON.ObjectID(req.params._id);
+        db.users.update(
+            { "_id": u_id },
+            {$set: { "authLevel" : "domain_admin_" + req.params.domain }}, function (err, done) {
+                if (err | !done) {
+                    console.log("proobalert");
+                    res.send("proobalert");
+                } else {
+                    db.acl.upsert(
+                        { acl_rule: "domain_admin_" + req.params.domain },  function (err, saved) {
+                            if (err || !saved) {
+                                console.log("prooblemo");
+                                res.send('prooblemo');
+                            } else {
+                                db.acl.update({ 'acl_rule': "domain_admin_" + req.params.domain},{ $push: { 'userIDs': req.params._id } });
+                                console.log("ok saved acl");
+                            }
+                            console.log("gold");
+                            res.send('gold');
+                        });
+
+                }
+            }
+        );
+
+    });
+
+
     app.get('/createdomain/:domain', requiredAuthentication, admin, function (req, res) {
         db.domains.save({"domain": req.params.domain, "domainStatus": "active", "dateCreated": new Date()}, function (err, domain) {
             if (err | !domain) {
