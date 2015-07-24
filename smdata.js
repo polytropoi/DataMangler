@@ -64,7 +64,9 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 	      when('/uploadtext', {controller:UploadTextCtrl, templateUrl:'p_uploadtext.html'}).
 	      when('/webplayer', {controller:WebplayerCtrl, templateUrl:'p_webplayer.html'}).
             when('/s/:short_id', {controller:DisplaySceneCtrl, templateUrl:'p_displayscene.html'}).
-            when('/users', {controller:UsersCtrl, templateUrl:'p_users.html'}).
+            when('/alldomains/', {controller:UsersCtrl, templateUrl:'p_domains.html'}).
+            when('/domain/:domain', {controller:UsersCtrl, templateUrl:'p_domain.html'}).
+//            when('/domain/:appID', {controller:UsersCtrl, templateUrl:'p_users.html'}).
 	      otherwise({redirectTo:'/'});
   		}]);
 
@@ -411,7 +413,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                     $scope.user._id = $cookies._id;
                     $scope.user._id = $scope.user._id.replace (/"/g,'');
                     $scope.headermessage = "You are logged in as " + $scope.userstatus;
-                    $http.get('/getusers/').success(function (data) {
+                    $http.get('/allusers/').success(function (data) {
                         $scope.users = data;
                     });
 

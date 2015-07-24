@@ -172,13 +172,51 @@ var corsOptions = function (origin) {
         });
     }
 
+    function usercheck (req, res, next) {
+        var u_id = req.session.user._id;
+        var req_u_id = req.params._id;
+//        var scene_id = req.params.scene_id;
+        console.log("checkin " + u_id + " vs " + req_u_id);
+        if (u_id == req_u_id.toString().replace(":", "")) { //hrm.... dunno why the : needs trimming...
+        next();
+        } else {
+            req.session.error = 'Access denied!';
+            res.send('noauth');
+        }
+    }
+
+    function domainadmin (req, res, next) {
+        var u_id = req.session.user._id;
+        var req_u_id = req.params.user_id;
+        var domain = req.params.domain;
+        console.log("checkin " + u_id + " vs " + req_u_id);
+        if (u_id == req_u_id.toString().replace(":", "")) { //hrm.... dunno why the : needs trimming...
+            db.acl.findOne({$and: [{acl_rule: "domain_admin_" + domain }, {userIDs: {$in: [u_id]}}]}, function (err, rule) {
+                if (err || !rule) {
+                    req.session.error = 'Access denied!';
+                    res.send('noauth');
+                    console.log("sorry, that's not in the domain_admin acl");
+    //                return false;
+                } else {
+                    console.log("yep, that's in the domain_admin acl");
+                    next();
+    //                return true;
+                }
+            });
+    //            next();
+        } else {
+            req.session.error = 'Access denied!';
+            res.send('noauth');
+        }
+    }
+
     function uscene (req, res, next) { //check user id against acl, for scene writing
         var u_id = req.session.user._id;
         var req_u_id = req.params.user_id;
-        var scene_id = req.params.scene_id;
-        console.log("checkin " + u_id + " vs " + req_u_id);
+        var scene_id = req.params.scene_id.toString().replace(":", "");
+        console.log("checkin " + u_id + " vs " + req_u_id + " for " + scene_id);
         if (u_id == req_u_id.toString().replace(":", "")) { //hrm.... dunno why the : needs trimming...
-            db.acl.findOne({$and: [{acl_rule: "write_scene_" + scene_id }, {userIDs: {$in: [u_id]}}]}, function (err, rule) {
+            db.acl.findOne({$and: [{"acl_rule": "write_scene_" + scene_id }, {"userIDs": {$in: [u_id]}}]}, function (err, rule) {
                 if (err || !rule) {
                     req.session.error = 'Access denied!';
                     res.send('noauth');
@@ -366,8 +404,28 @@ var corsOptions = function (origin) {
 //        res.send('done');
 //    });
 
+    app.get('/domain/:domain', requiredAuthentication, domainadmin, function (req, res) {
+        db.domains.findOne({"domain": req.params.domain}, function (err, domain) {
+            if (err | !domain) {
+                res.send("no domain for you");
+            } else {
+                res.json(domain);
+            }
+        });
+    });
 
-    app.get('/getusers/', requiredAuthentication, admin, function (req, res) {
+    app.get('/domain/:appID', requiredAuthentication, domainadmin, function (req, res) {
+        db.apps.find({"app": req.params.appID}, function (err, app) {
+            if (err | !users) {
+                res.send("no apps");
+            } else {
+                res.json(app);
+            }
+        });
+    });
+
+    app.get('/allusers/', requiredAuthentication, admin, function (req, res) {
+        console.log("tryna get users");
         db.users.find({}, function (err, users) {
             if (err | !users) {
                 res.send("wtf! no users!?!?!");
@@ -377,7 +435,18 @@ var corsOptions = function (origin) {
         });
     });
 
-    app.get('/profile/:_id', requiredAuthentication, admin, function (req, res) {
+    app.get('/alldomains/', requiredAuthentication, admin, function (req, res) {
+        console.log("tryna get users");
+        db.domains.find({}, function (err, users) {
+            if (err | !users) {
+                res.send("wtf! no domains!?!?!");
+            } else {
+                res.json(users);
+            }
+        });
+    });
+
+    app.get('/profile/:_id', requiredAuthentication, usercheck, function (req, res) {
 
 //       if (amirite("admin", req.session.user._id)) { //check the acl
 
@@ -483,8 +552,6 @@ var corsOptions = function (origin) {
                     }
             });
    });
-
-
 
    app.post('/savepw', function (req, res){
 
@@ -1130,7 +1197,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 console.log("error getting picture items: " + err);
 
                 } else {
-                console.log("# " + picture_items.length);
+//                console.log("# " + picture_items.length);
                    for (var i = 0; i < picture_items.length; i++) {
 
                     var item_string_filename = JSON.stringify(picture_items[i].filename);
@@ -1139,7 +1206,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                     var expiration = new Date();
                         expiration.setMinutes(expiration.getMinutes() + 30);
                     var baseName = path.basename(item_string_filename, (item_string_filename_ext));
-                        console.log(baseName);
+//                        console.log(baseName + "xxxxxxx");
                     var thumbName = 'thumb.' + baseName + item_string_filename_ext;
                     var halfName = 'half.' + baseName + item_string_filename_ext;
                     var standardName = 'standard.' + baseName + item_string_filename_ext;
@@ -1989,11 +2056,13 @@ app.get('/sceneinfo',  requiredAuthentication, function (req, res) { //get defau
     });
 });
 
-app.get('/uscenes/:_id',  requiredAuthentication, function (req, res) { //get scenes for this user
+app.get('/uscenes/:_id',  requiredAuthentication, usercheck, function (req, res) { //get scenes for this user
 
     console.log("tryna get user scenes: ",req.params._id);
     var o_id = new BSON.ObjectID(req.params._id);
-    db.scenes.find({ "user_id" : req.params._id}, function(err, scenes) {
+    var scenesResponse = {};
+
+    db.scenes.find({ "user_id" : req.params._id}, { sceneTitle: 1, short_id: 1 },  function(err, scenes) {
         if (err || !scenes) {
             console.log("cain't get no scenes... " + err);
             res.send("noscenes");
@@ -2018,11 +2087,16 @@ app.get('/uscenes/:_id',  requiredAuthentication, function (req, res) { //get sc
 //                                    console.log("ok saved acl");
 //                                }
 //                            });
-//                        callbackz();
-////                    }
+//                    var sceneTmp = {};
+
+//                    for(var key in scene) {
+////                        var value = objects[key];
+//                        if (key != "sceneTitle" && key != "scene_id") {
+//                            delete key;
+//                        }
 //
-////                }
-////                );
+//                    }
+//                    callbackz();
 //
 //            }, function(err) {
 //                // if any of the file processing produced an error, err would equal that error
@@ -2043,7 +2117,7 @@ app.get('/uscenes/:_id',  requiredAuthentication, function (req, res) { //get sc
     });
 });
 
-app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, res) { //view for updating scene for this user
+app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, uscene, function (req, res) { //view for updating scene for this user
 
 
     console.log("tryna get scene " + req.params.scene_id);
@@ -2075,7 +2149,7 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
 //                            for (var i = 0; i < sceneResponse.scenePostcards.length; i++) { //refresh themz
                 async.each (scene.scenePostcards, function (postcardID, callbackz) {
 //                                console.log("scenepostcard id: " + sceneResponse.scenePostcards[i]);
-                    console.log("scenepostcard id: " + postcardID);
+//                    console.log("scenepostcard id: " + postcardID);
                     var oo_id = new BSON.ObjectID(postcardID);
                     db.image_items.findOne({"_id": oo_id}, function (err, picture_item) {
                         if (err || !picture_item) {
@@ -2097,7 +2171,7 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, function (req, re
                             postcard.urlThumb = urlThumb;
                             postcard.urlHalf = urlHalf;
                             postcards.push(postcard);
-                            console.log("pushing postcard: " + JSON.stringify(postcard));
+//                            console.log("pushing postcard: " + JSON.stringify(postcard));
                             callbackz();
                         }
 
@@ -2552,21 +2626,6 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
     //app.get('/weblink')
     app.post('/update_scene/:_id', requiredAuthentication, function (req, res) {
-
-
-
-//        db.acl.save(
-//            { acl_rule: "write_scene_" + req.body._id }, function (err, saved) {
-//                if (err || !saved) {
-//
-//                } else {
-//                    db.acl.update(
-//                        { acl_rule: "write_scene_" + req.body._id },
-//                        { $push: { userIDs: req.body.user_id } }
-//                    );
-//                }
-//
-//            });
 
         console.log("req.header: " + JSON.stringify(req.headers));
         console.log(req.params._id);
