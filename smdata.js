@@ -447,8 +447,11 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                     $scope.user._id = $cookies._id;
                     $scope.user._id = $scope.user._id.replace (/"/g,'');
                     $scope.headermessage = "You are logged in as " + $scope.userstatus;
-                    $http.get('/domain/:domain').success(function (data) {
-                        $scope.domains = data;
+                    $http.get('/domain/'+ $routeParams.domain).success(function (domaindata) {
+                        $scope.domain = domaindata;
+//                        $http.get('/apps/' + $routeParams.domain+ '/).success(function (appdata) {
+//
+//                        }
                     });
 
                 } else {

@@ -15,13 +15,13 @@
 
 <div class="well" style="margin-top: 20px;">
     <!--{{userprofile}}-->
-    <div class=row">s
+    <div class=row">
     <!--{{users}}-->
-        <div class="col-md-4">
-            Activity:
+        <div class="col-md-12">
+            All Teh Uzers:
             <ul >
                 <li ng-repeat ="user in users">
-                  Username:  {{user.userName}} _id: {{user.user_id}}
+                  {{user.userName}} | {{user._id}}
 
                 </li>
             </ul>

@@ -188,11 +188,13 @@ var corsOptions = function (origin) {
 
     function domainadmin (req, res, next) {
         var u_id = req.session.user._id;
-        var req_u_id = req.params.user_id;
-        var domain = req.params.domain;
-        console.log("checkin " + u_id + " vs " + req_u_id);
-        if (u_id == req_u_id.toString().replace(":", "")) { //hrm.... dunno why the : needs trimming...
-            db.acl.findOne({$and: [{acl_rule: "domain_admin_" + domain }, {userIDs: {$in: [u_id]}}]}, function (err, rule) {
+//        var req_u_id = req.params.user_id;
+//        var domain = req.params.domain;
+//        console.log("checkin " + u_id + " vs " + req_u_id);
+//        if (u_id == req_u_id.toString().replace(":", "")) { //hrm.... dunno why the : needs trimming...
+        var rule = "domain_admin_" + req.params.domain.toString().replace(":", "");
+        console.log("acl rule check " + rule + " vs " + u_id);
+        db.acl.findOne({$and: [{acl_rule:rule }, {userIDs: {$in: [u_id]}}]}, function (err, rule) {
                 if (err || !rule) {
                     req.session.error = 'Access denied!';
                     res.send('noauth');
@@ -205,10 +207,10 @@ var corsOptions = function (origin) {
                 }
             });
     //            next();
-        } else {
-            req.session.error = 'Access denied!';
-            res.send('noauth');
-        }
+//        } else {
+//            req.session.error = 'Access denied!';
+//            res.send('noauth');
+//        }
     }
 
     function uscene (req, res, next) { //check user id against acl, for scene writing
@@ -408,7 +410,7 @@ var corsOptions = function (origin) {
 //        res.send('done');
 //    });
     app.get('/makedomainadmin/:domain/:_id',  requiredAuthentication, admin, function (req, res) {
-        console.log("req" + req)
+        console.log(" makedomainadmin req" + req)
         var u_id = new BSON.ObjectID(req.params._id);
         db.users.update(
             { "_id": u_id },
@@ -417,13 +419,13 @@ var corsOptions = function (origin) {
                     console.log("proobalert");
                     res.send("proobalert");
                 } else {
-                    db.acl.upsert(
-                        { acl_rule: "domain_admin_" + req.params.domain },  function (err, saved) {
+                    db.acl.update(
+                        { acl_rule: "domain_admin_" + req.params.domain }, { $push: { 'userIDs': req.params._id }}, {upsert : true},  function (err, saved) {
                             if (err || !saved) {
                                 console.log("prooblemo");
                                 res.send('prooblemo');
                             } else {
-                                db.acl.update({ 'acl_rule': "domain_admin_" + req.params.domain},{ $push: { 'userIDs': req.params._id } });
+//                                db.acl.update({ 'acl_rule': "domain_admin_" + req.params.domain},{ $push: { 'userIDs': req.params._id } });
                                 console.log("ok saved acl");
                             }
                             console.log("gold");
@@ -447,7 +449,16 @@ var corsOptions = function (origin) {
         });
     });
 
+    app.get('/create_app/:domain/:appname', requiredAuthentication, domainadmin, function (req, res) {
+        db.apps.save({"appname": req.params.appname, "appStatus": "active", "domain": req.params.domain, "dateCreated": new Date()}, function (err, app) {
+            if (err | !app) {
+                res.send("no app for you");
+            } else {
+                res.json(app);
 
+            }
+        });
+    });
 
 
     app.get('/domain/:domain', requiredAuthentication, domainadmin, function (req, res) {
@@ -455,7 +466,15 @@ var corsOptions = function (origin) {
             if (err | !domain) {
                 res.send("no domain for you");
             } else {
-                res.json(domain);
+                db.apps.find({"domain": req.params.domain}, function(err,apps) {
+                    if (err || !apps) {
+                        console.log("no apps for you!");
+                        res.json(domain);
+                    } else {
+                        domain.apps = apps;
+                        res.json(domain);
+                    }
+                })
             }
         });
     });
@@ -2188,6 +2207,9 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, uscene, function 
                     scene.sceneWebLinks[i].urlStandard = urlStandard;
 
                 }
+
+
+
             }
 
             if (scene.scenePostcards != null && scene.scenePostcards.length > 0) {
