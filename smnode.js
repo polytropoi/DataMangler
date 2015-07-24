@@ -94,7 +94,8 @@ var corsOptions = function (origin) {
 
        // Create the http server and get it to listen on the specified port 8084                                                                                                                   
   var databaseUrl = "asterion:menatar@linus.mongohq.com:10093/servmed";
-  var collections = ["acl", "auth_req", "users", "audio_items", "audio_item_keys", "image_items", "obj_items", "paths", "keys", "scores", "activity", "purchases", "scenes", "weblinks"];
+  var collections = ["acl", "auth_req", "domains", "apps", "users", "audio_items", "audio_item_keys", "image_items",
+      "obj_items", "paths", "keys", "scores", "activity", "purchases", "scenes", "weblinks"];
   var db = require("mongojs").connect(databaseUrl, collections);
   acl = new acl (new acl.mongodbBackend(db, "acl"));
   var BSON = mongo.BSONPure;
@@ -403,6 +404,18 @@ var corsOptions = function (origin) {
 //        );
 //        res.send('done');
 //    });
+    app.get('/createdomain/:domain', requiredAuthentication, admin, function (req, res) {
+        db.domains.save({"domain": req.params.domain, "domainStatus": "active", "dateCreated": new Date()}, function (err, domain) {
+            if (err | !domain) {
+                res.send("no domain for you");
+            } else {
+                res.json(domain);
+            }
+        });
+    });
+
+
+
 
     app.get('/domain/:domain', requiredAuthentication, domainadmin, function (req, res) {
         db.domains.findOne({"domain": req.params.domain}, function (err, domain) {
@@ -436,7 +449,7 @@ var corsOptions = function (origin) {
     });
 
     app.get('/alldomains/', requiredAuthentication, admin, function (req, res) {
-        console.log("tryna get users");
+        console.log("tryna get domains");
         db.domains.find({}, function (err, users) {
             if (err | !users) {
                 res.send("wtf! no domains!?!?!");

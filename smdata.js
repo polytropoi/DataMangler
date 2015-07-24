@@ -12,7 +12,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 		$routeProvider.
 		when('/', {controller:HomeCtrl, templateUrl:'p_home.html'}).
 		when('/home', {controller:HomeCtrl, templateUrl:'p_home.html'}).
-            when('/about', {controller:AboutCtrl, templateUrl:'p_about.html'}).
+        when('/about', {controller:AboutCtrl, templateUrl:'p_about.html'}).
 		when('/login', {controller:LoginCtrl, templateUrl:'p_login.html'}).
 		when('/register', {controller:NewUserCtrl, templateUrl:'p_newuser.html'}).
 		when('/reset', {controller:ResetPasswordCtrl, templateUrl:'p_resetpw.html'}).
@@ -64,9 +64,9 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 	      when('/uploadtext', {controller:UploadTextCtrl, templateUrl:'p_uploadtext.html'}).
 	      when('/webplayer', {controller:WebplayerCtrl, templateUrl:'p_webplayer.html'}).
             when('/s/:short_id', {controller:DisplaySceneCtrl, templateUrl:'p_displayscene.html'}).
-            when('/alldomains/', {controller:UsersCtrl, templateUrl:'p_domains.html'}).
-            when('/domain/:domain', {controller:UsersCtrl, templateUrl:'p_domain.html'}).
-//            when('/domain/:appID', {controller:UsersCtrl, templateUrl:'p_users.html'}).
+            when('/alldomains/', {controller:DomainsCtrl, templateUrl:'p_domains.html'}).
+            when('/domain/:domain', {controller:DomainCtrl, templateUrl:'p_domain.html'}).
+            when('/allusers/', {controller:UsersCtrl, templateUrl:'p_users.html'}).
 	      otherwise({redirectTo:'/'});
   		}]);
 
@@ -387,7 +387,87 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
  				}
 
  			}
+    function DomainsCtrl($scope, $http, $routeParams, usernav, $cookies, $location) {
 
+        $('#unityPlayer').toggleClass('hidden', true);
+        $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
+        $scope.user = {};
+        $scope.userprofile = {};
+        $scope.urls = usernav.urls;
+
+        console.log("tryna load DomainsCtrl controller" + $scope.urls + " " + $cookies._id	);
+        if ($cookies._id !== null && $cookies._id !== undefined) {
+            $http.get('/amirite/' + $cookies._id).success(function (data) {  //check server if this cookie is still valid
+                console.log(data);
+
+                $scope.userstatus = data;
+                $scope.urls = usernav.urls;
+                if ($scope.userstatus != "0") {
+                    $scope.user._id = $cookies._id;
+                    $scope.user._id = $scope.user._id.replace (/"/g,'');
+                    $scope.headermessage = "You are logged in as " + $scope.userstatus;
+                    $http.get('/alldomains/').success(function (data) {
+                        $scope.domains = data;
+                    });
+
+                } else {
+                    $scope.headermessage = "You are not logged in...";
+                    delete $cookies._id; //if server session doesn't match, the client cookie is bad
+                }
+            }).error(function (errdata) {
+                console.log(errdata);
+                $scope.userstatus = "0";
+                $scope.headermessage = "You are not logged in...";
+                delete $cookies._id; //if server session doesn't match, the client cookie is bad
+            });
+        } else {
+            $scope.userstatus = "0";
+            $scope.headermesssage = "You are not logged in...";
+            delete $cookies._id; //if server session doesn't match, the client cookie is bad
+
+        }
+    }
+
+    function DomainCtrl($scope, $http, $routeParams, usernav, $cookies, $location) {
+
+        $('#unityPlayer').toggleClass('hidden', true);
+        $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
+        $scope.user = {};
+        $scope.userprofile = {};
+        $scope.urls = usernav.urls;
+
+        console.log("tryna load DomainsCtrl controller" + $scope.urls + " " + $cookies._id	);
+        if ($cookies._id !== null && $cookies._id !== undefined) {
+            $http.get('/amirite/' + $cookies._id).success(function (data) {  //check server if this cookie is still valid
+                console.log(data);
+
+                $scope.userstatus = data;
+                $scope.urls = usernav.urls;
+                if ($scope.userstatus != "0") {
+                    $scope.user._id = $cookies._id;
+                    $scope.user._id = $scope.user._id.replace (/"/g,'');
+                    $scope.headermessage = "You are logged in as " + $scope.userstatus;
+                    $http.get('/domain/:domain').success(function (data) {
+                        $scope.domains = data;
+                    });
+
+                } else {
+                    $scope.headermessage = "You are not logged in...";
+                    delete $cookies._id; //if server session doesn't match, the client cookie is bad
+                }
+            }).error(function (errdata) {
+                console.log(errdata);
+                $scope.userstatus = "0";
+                $scope.headermessage = "You are not logged in...";
+                delete $cookies._id; //if server session doesn't match, the client cookie is bad
+            });
+        } else {
+            $scope.userstatus = "0";
+            $scope.headermesssage = "You are not logged in...";
+            delete $cookies._id; //if server session doesn't match, the client cookie is bad
+
+        }
+    }
     function UsersCtrl($scope, $http, $routeParams, usernav, $cookies, $location) {
 
         $('#unityPlayer').toggleClass('hidden', true);
