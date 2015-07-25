@@ -118,20 +118,31 @@ var corsOptions = function (origin) {
     acl.allow('guest', 'public', 'view');
 
   http.createServer(app).listen(8092, function(){
-    
+
 	console.log("Express server listening on port 8092");
-                         });
+    });
 
   function requiredAuthentication(req, res, next) {
     console.log("headers: " + JSON.stringify(req.headers));
     if (req.session.user) {
-        
-        next();
+        var a_id = new BSON.ObjectID(req.header.appID);
+        db.apps.findOne({_id : a_id }, function (err, app) {
+            if (err || !app) {
+                console.log("no app id!");
+//                req.session.error = 'Access denied!';
+//                res.send("noappauth");
+                next();
+            } else {
+                console.log("hey, gotsa appID!");
+                next();
+            }
+        });
     } else  {
         req.session.error = 'Access denied!';
         res.send('noauth');
         }
     }
+
 
 
     function amirite (acl_rule, u_id) { //check user id against acl

@@ -6,6 +6,12 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         }
     ]);
 
+
+
+    module.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.interceptors.push('sessionInjector');
+    }]);
+
 	smApp.config(['$routeProvider',
 
 		function ($routeProvider) {
@@ -83,6 +89,16 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 }
             }
 	});
+
+    smApp.factory('appID', function() {
+        var appID = {
+            request: function(config) {
+                config.headers['appID'] = SessionService.token;
+                return config;
+            }
+        };
+        return appID;
+    });
 
     smApp.factory('messages', function(){
         var messages = {};
@@ -1263,8 +1279,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             console.log("XXXX sceneEnvironment: " + JSON.stringify(sceneEnv));
             $scope.scene.sceneEnvironment = sceneEnv;
         });
-
-        $http.get('/uscene/:' + $routeParams.user_id + '/:' + $routeParams.scene_id).success(function (data) {
+        var headerMod = {headers: {'appID' : '55b2ecf840edea7583000001'}};
+        $http.get('/uscene/:' + $routeParams.user_id + '/:' + $routeParams.scene_id, headerMod).success(function (data) {
 
             if (data != "noauth") {
                 $scope.scene = data;
