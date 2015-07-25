@@ -125,21 +125,43 @@ var corsOptions = function (origin) {
   function requiredAuthentication(req, res, next) {
     console.log("headers: " + JSON.stringify(req.headers));
     if (req.session.user) {
-        var a_id = new BSON.ObjectID(req.header.appID);
-        db.apps.findOne({_id : a_id }, function (err, app) {
-            if (err || !app) {
-                console.log("no app id!");
-//                req.session.error = 'Access denied!';
-//                res.send("noappauth");
-                next();
-            } else {
-                console.log("hey, gotsa appID!");
-                next();
-            }
-        });
+//        var a_id = new BSON.ObjectID(req.headers.appid.toString().replace(":", ""));
+//        db.apps.findOne({_id : a_id }, function (err, app) {
+//            if (err || !app) {
+//                console.log("no app id!");
+////                req.session.error = 'Access denied!';
+////                res.send("noappauth");
+//                next();
+//            } else {
+//                console.log("hey, gotsa appID!");
+//                next();
+//            }
+//        });
+        next();
     } else  {
         req.session.error = 'Access denied!';
         res.send('noauth');
+        }
+    }
+
+    function checkAppID(req, res, next) {
+        if (req.headers.appid) {
+            var a_id = new BSON.ObjectID(req.headers.appid.toString().replace(":", ""));
+            db.apps.findOne({_id: a_id }, function (err, app) {
+                if (err || !app) {
+                    console.log("no app id!");
+                    req.session.error = 'Access denied!';
+                    res.send("noappauth");
+//                next();
+                } else {
+                    console.log("hey, gotsa appID!");
+                    next();
+                }
+            });
+        } else {
+            console.log("no app id!");
+            req.session.error = 'Access denied!';
+            res.send("noappauth");
         }
     }
 
@@ -308,13 +330,13 @@ var corsOptions = function (origin) {
 	});
 
 
-  app.post("/logout", requiredAuthentication, function (req, res) {
+  app.post("/logout", checkAppID, requiredAuthentication, function (req, res) {
         req.session.destroy();
         res.send("logged out");
         //res.redirect("/");
   });
 
-  app.post("/authreq", function (req, res) {
+  app.post("/authreq", checkAppID, function (req, res) {
         console.log('authRequest from: ' + req.body.uname + " " + req.body.umail  + " " + req.body.upass);
         var currentDate = Math.floor(new Date().getTime()/1000);
         
@@ -420,7 +442,7 @@ var corsOptions = function (origin) {
 //        );
 //        res.send('done');
 //    });
-    app.get('/makedomainadmin/:domain/:_id',  requiredAuthentication, admin, function (req, res) {
+    app.get('/makedomainadmin/:domain/:_id',  checkAppID, requiredAuthentication, admin, function (req, res) {
         console.log(" makedomainadmin req" + req)
         var u_id = new BSON.ObjectID(req.params._id);
         db.users.update(
@@ -450,7 +472,7 @@ var corsOptions = function (origin) {
     });
 
 
-    app.get('/createdomain/:domain', requiredAuthentication, admin, function (req, res) {
+    app.get('/createdomain/:domain', checkAppID, requiredAuthentication, admin, function (req, res) {
         db.domains.save({"domain": req.params.domain, "domainStatus": "active", "dateCreated": new Date()}, function (err, domain) {
             if (err | !domain) {
                 res.send("no domain for you");
@@ -460,7 +482,7 @@ var corsOptions = function (origin) {
         });
     });
 
-    app.get('/create_app/:domain/:appname', requiredAuthentication, domainadmin, function (req, res) {
+    app.get('/create_app/:domain/:appname', checkAppID, requiredAuthentication, domainadmin, function (req, res) {
         db.apps.save({"appname": req.params.appname, "appStatus": "active", "domain": req.params.domain, "dateCreated": new Date()}, function (err, app) {
             if (err | !app) {
                 res.send("no app for you");
@@ -472,7 +494,7 @@ var corsOptions = function (origin) {
     });
 
 
-    app.get('/domain/:domain', requiredAuthentication, domainadmin, function (req, res) {
+    app.get('/domain/:domain', checkAppID, requiredAuthentication, domainadmin, function (req, res) {
         db.domains.findOne({"domain": req.params.domain}, function (err, domain) {
             if (err | !domain) {
                 res.send("no domain for you");
@@ -490,7 +512,7 @@ var corsOptions = function (origin) {
         });
     });
 
-    app.get('/domain/:appID', requiredAuthentication, domainadmin, function (req, res) {
+    app.get('/domain/:appID', checkAppID, requiredAuthentication, domainadmin, function (req, res) {
         db.apps.find({"app": req.params.appID}, function (err, app) {
             if (err | !users) {
                 res.send("no apps");
@@ -500,7 +522,7 @@ var corsOptions = function (origin) {
         });
     });
 
-    app.get('/allusers/', requiredAuthentication, admin, function (req, res) {
+    app.get('/allusers/', checkAppID, requiredAuthentication, admin, function (req, res) {
         console.log("tryna get users");
         db.users.find({}, function (err, users) {
             if (err | !users) {
@@ -511,7 +533,7 @@ var corsOptions = function (origin) {
         });
     });
 
-    app.get('/alldomains/', requiredAuthentication, admin, function (req, res) {
+    app.get('/alldomains/', checkAppID, requiredAuthentication, admin, function (req, res) {
         console.log("tryna get domains");
         db.domains.find({}, function (err, users) {
             if (err | !users) {
@@ -522,7 +544,7 @@ var corsOptions = function (origin) {
         });
     });
 
-    app.get('/profile/:_id', requiredAuthentication, usercheck, function (req, res) {
+    app.get('/profile/:_id', checkAppID, requiredAuthentication, usercheck, function (req, res) {
 
 //       if (amirite("admin", req.session.user._id)) { //check the acl
 
@@ -1021,7 +1043,7 @@ app.get('backupdata', function (req, res) {
 //db.audio_items.find({userID: req.params.u_id}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, audio_items) {
       
 
-app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
+app.get('/newaudiodata.json', checkAppID, requiredAuthentication,  function(req, res) {
 	console.log('tryna return newaudiodata.json');
         db.audio_items.find({item_status: "public"}).sort({otimestamp: 1}).toArray( function(err,audio_items) {
         if (err || !audio_items) {
@@ -1078,7 +1100,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 
         });
 
-	app.get('/randomaudiodata.json', requiredAuthentication, function(req, res) {
+	app.get('/randomaudiodata.json', checkAppID, requiredAuthentication, function(req, res) {
         console.log('tryna return randomaudiodata.json');
 	db.audio_items.find({item_status: "public"}, function(err,audio_items) {
         if (err || !audio_items) {
@@ -1251,7 +1273,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 
     });
 
-//    app.get('/useraudio/:u_id', requiredAuthentication, function(req, res) {
+//    app.get('/useraudio/:u_id', checkAppID, requiredAuthentication, function(req, res) {
 //        console.log('tryna return useraudios for: ' + req.params.u_id);
 //    db.audio_items.find({userID: req.params.u_id}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, audio_items) {
 //        if (err || !audio_items) {
@@ -1265,7 +1287,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 //                });
 //    });
 
-    app.get('/userpics/:u_id', requiredAuthentication, function(req, res) {
+    app.get('/userpics/:u_id', checkAppID, requiredAuthentication, function(req, res) {
         console.log('tryna return userpics for: ' + req.params.u_id);
         db.image_items.find({userID: req.params.u_id}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, picture_items) {
 
@@ -1302,7 +1324,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 });
     });
 
-    app.get('/useraudio/:u_id', requiredAuthentication, function(req, res) {
+    app.get('/useraudio/:u_id', checkAppID, requiredAuthentication, function(req, res) {
         console.log('tryna return userpics for: ' + req.params.u_id);
         db.audio_items.find({userID: req.params.u_id}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, audio_items) {
 
@@ -1333,7 +1355,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
         });
     });
 
-    app.get('/userobjs/:u_id', requiredAuthentication, function(req, res) {
+    app.get('/userobjs/:u_id', checkAppID, requiredAuthentication, function(req, res) {
         console.log('tryna return userobjs for: ' + req.params.u_id);
         db.obj_items.find({userID: req.params.u_id}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, obj_items) {
 
@@ -1371,7 +1393,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
         });
     });
 
-    app.get('/userpics', requiredAuthentication, function(req, res) {
+    app.get('/userpics', checkAppID, requiredAuthentication, function(req, res) {
         console.log('tryna return userpics for: ' + req.body.userID);
     db.image_items.find({userID: req.params.u_id}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, picture_items) {
         if (err || !picture_items) {
@@ -1406,7 +1428,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 });
     });
 
-    app.get('/userpic/:p_id', requiredAuthentication, function(req, res) {
+    app.get('/userpic/:p_id', checkAppID, requiredAuthentication, function(req, res) {
 
         console.log('tryna return userpic : ' + req.params.p_id);
         var pID = req.params.p_id;
@@ -1446,7 +1468,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 });
     });
 
-    app.get('/userobj/:p_id', requiredAuthentication, function(req, res) {
+    app.get('/userobj/:p_id', checkAppID, requiredAuthentication, function(req, res) {
 
         console.log('tryna return userpic : ' + req.params.p_id);
         var pID = req.params.p_id;
@@ -1503,7 +1525,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
                 });
     });
 
-	app.get('/audiodata.json', requiredAuthentication, function (req, res) {	
+	app.get('/audiodata.json', checkAppID, requiredAuthentication, function (req, res) {	
 //	app.get("/audiodata.json", auth, function (req, res) {
     	db.audio_items.find({}, function(err,audio_items) {
       	if (err || !audio_items) {
@@ -1609,7 +1631,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 		});
 	});
 
-    app.post('/gen_short_code', requiredAuthentication, function (req, res) {
+    app.post('/gen_short_code', checkAppID, requiredAuthentication, function (req, res) {
         console.log(req.params);
         var audioID = req.params.id;
                 var o_id = new BSON.ObjectID(audioID);  //convert to BSON for searchie
@@ -1624,7 +1646,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
         });
     });
 
-	app.post('/update/:_id', requiredAuthentication, function (req, res) {
+	app.post('/update/:_id', checkAppID, requiredAuthentication, function (req, res) {
 		console.log(req.params._id);
 		
             var o_id = new BSON.ObjectID(req.params._id);  //convert to BSON for searchie
@@ -1797,7 +1819,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 	});
 
 
-	app.post('/savekeysall', requiredAuthentication, function (req, res) { //save item keys set oon client
+	app.post('/savekeysall', checkAppID, requiredAuthentication, function (req, res) { //save item keys set oon client
 	
 	console.log("tryna savekeys");
 	if (req.session.auth != "noauth") {
@@ -1835,7 +1857,7 @@ app.get('/newaudiodata.json', requiredAuthentication,  function(req, res) {
 		*/	
 	});
 	
-app.post('/savekeys', requiredAuthentication, function (req, res) { //save item keys set oon client
+app.post('/savekeys', checkAppID, requiredAuthentication, function (req, res) { //save item keys set oon client
   
   console.log("tryna savekeys");
   if (req.session.auth != "noauth") {
@@ -1869,7 +1891,7 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
  
   });
 
-	app.post('/savekey', requiredAuthentication, function (req, res) {
+	app.post('/savekey', checkAppID, requiredAuthentication, function (req, res) {
 
 	//if (req.session.auth != "noauth") { //maybe check if uid is valid? 
     var jObj = JSON.parse(req.body.json);
@@ -1907,7 +1929,7 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
 		});
 	*/
 
-  app.post('/delete_key', requiredAuthentication, function (req, res) {
+  app.post('/delete_key', checkAppID, requiredAuthentication, function (req, res) {
       console.log("tryna delete key: " + req.body.keyID);
       var o_id = new BSON.ObjectID(req.body.keyID);
       db.audio_item_keys.remove( { "_id" : o_id }, 1 );
@@ -1915,7 +1937,7 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
 
   });
 
-    app.post('/update_key', requiredAuthentication, function (req, res) {
+    app.post('/update_key', checkAppID, requiredAuthentication, function (req, res) {
       console.log("tryna delete key: " + req.body.keyID);
       var o_id = new BSON.ObjectID(req.body.keyID);
       //db.audio_item_keys.remove( { "_id" : o_id }, 1 );
@@ -1937,7 +1959,7 @@ app.post('/savekeys', requiredAuthentication, function (req, res) { //save item 
   
   });
 ///////////////
-app.get('/pathinfo',  requiredAuthentication, function (req, res) { //get default path info
+app.get('/pathinfo',  checkAppID, requiredAuthentication, function (req, res) { //get default path info
 
     console.log(req.params._id);
     var o_id = new BSON.ObjectID(req.params._id);
@@ -1951,7 +1973,7 @@ app.get('/pathinfo',  requiredAuthentication, function (req, res) { //get defaul
     });
 });
 
-app.get('/upaths/:_id',  requiredAuthentication, function (req, res) { //get default path info
+app.get('/upaths/:_id',  checkAppID, requiredAuthentication, function (req, res) { //get default path info
 
     console.log("tryna get userpaths: ",req.params._id);
     var o_id = new BSON.ObjectID(req.params._id);
@@ -1965,7 +1987,7 @@ app.get('/upaths/:_id',  requiredAuthentication, function (req, res) { //get def
     });
 });
 
-app.get('/upath/:u_id/:p_id',  requiredAuthentication, function (req, res) { //get default path info
+app.get('/upath/:u_id/:p_id',  checkAppID, requiredAuthentication, function (req, res) { //get default path info
 
     console.log("tryna get path: ", req.params.p_id);
     var _id = new BSON.ObjectID(req.params.p_id);
@@ -1979,7 +2001,7 @@ app.get('/upath/:u_id/:p_id',  requiredAuthentication, function (req, res) { //g
     });
 });
 
-app.post('/score', requiredAuthentication, function (req, res) {
+app.post('/score', checkAppID, requiredAuthentication, function (req, res) {
 console.log("tryna post scores");
     db.scores.save(req.body, function (err, saved) {
         if ( err || !saved ) {
@@ -1992,7 +2014,7 @@ console.log("tryna post scores");
         }
     });
 });
-app.get('/scores/:u_id',  requiredAuthentication, function (req, res) {
+app.get('/scores/:u_id',  checkAppID, requiredAuthentication, function (req, res) {
 
     console.log("tryna get scores for: ", req.params.u_id);
     //var _id = new BSON.ObjectID(req.params.u_id);
@@ -2006,7 +2028,7 @@ app.get('/scores/:u_id',  requiredAuthentication, function (req, res) {
     });
 });
 
-app.post('/purchase', requiredAuthentication, function (req, res) {
+app.post('/purchase', checkAppID, requiredAuthentication, function (req, res) {
     console.log("tryna post purchase");
     db.purchases.save(req.body, function (err, saved) {
         if ( err || !saved ) {
@@ -2020,7 +2042,7 @@ app.post('/purchase', requiredAuthentication, function (req, res) {
     });
 });
 
-app.get('/purchases/:u_id',  requiredAuthentication, function (req, res) {
+app.get('/purchases/:u_id',  checkAppID, requiredAuthentication, function (req, res) {
 
     console.log("tryna get scores for: ", req.params.u_id);
     //var _id = new BSON.ObjectID(req.params.u_id);
@@ -2035,7 +2057,7 @@ app.get('/purchases/:u_id',  requiredAuthentication, function (req, res) {
     });
 });
 
-app.post('/activity', requiredAuthentication, function (req, res) {
+app.post('/activity', checkAppID, requiredAuthentication, function (req, res) {
     console.log("tryna post scores");
     db.activity.save(req.body, function (err, saved) {
         if ( err || !saved ) {
@@ -2049,7 +2071,7 @@ app.post('/activity', requiredAuthentication, function (req, res) {
     });
 });
 
-app.get('/activities/:u_id',  requiredAuthentication, function (req, res) {
+app.get('/activities/:u_id',  checkAppID, requiredAuthentication, function (req, res) {
 
     console.log("tryna get activities for: ", req.params.u_id);
     //var _id = new BSON.ObjectID(req.params.u_id);
@@ -2064,7 +2086,7 @@ app.get('/activities/:u_id',  requiredAuthentication, function (req, res) {
     });
 });
 
-app.post('/newpath', requiredAuthentication, function (req, res) {
+app.post('/newpath', checkAppID, requiredAuthentication, function (req, res) {
 
       db.paths.save(req.body, function (err, saved) {
           if ( err || !saved ) {
@@ -2080,7 +2102,7 @@ app.post('/newpath', requiredAuthentication, function (req, res) {
 
   });
 
-    app.post('/update_path/:_id', requiredAuthentication, function (req, res) {
+    app.post('/update_path/:_id', checkAppID, requiredAuthentication, function (req, res) {
         console.log(req.params._id);
 
         var o_id = new BSON.ObjectID(req.body._id);  //convert to BSON for searchie
@@ -2118,7 +2140,7 @@ app.post('/newpath', requiredAuthentication, function (req, res) {
     });
 
 ///////////////
-app.get('/sceneinfo',  requiredAuthentication, function (req, res) { //get default scene info
+app.get('/sceneinfo',  checkAppID, requiredAuthentication, function (req, res) { //get default scene info
 
     console.log(req.params._id);
     var o_id = new BSON.ObjectID(req.params._id);
@@ -2132,7 +2154,7 @@ app.get('/sceneinfo',  requiredAuthentication, function (req, res) { //get defau
     });
 });
 
-app.get('/uscenes/:_id',  requiredAuthentication, usercheck, function (req, res) { //get scenes for this user
+app.get('/uscenes/:_id',  checkAppID, requiredAuthentication, usercheck, function (req, res) { //get scenes for this user
 
     console.log("tryna get user scenes: ",req.params._id);
     var o_id = new BSON.ObjectID(req.params._id);
@@ -2193,7 +2215,7 @@ app.get('/uscenes/:_id',  requiredAuthentication, usercheck, function (req, res)
     });
 });
 
-app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, uscene, function (req, res) { //view for updating scene for this user
+app.get('/uscene/:user_id/:scene_id',  checkAppID, requiredAuthentication, uscene, function (req, res) { //view for updating scene for this user
 
 
     console.log("tryna get scene " + req.params.scene_id);
@@ -2306,7 +2328,7 @@ app.get('/uscene/:user_id/:scene_id',  requiredAuthentication, uscene, function 
     });
 });
 
-app.get('/availablescenes/:_id', requiredAuthentication, function (req, res) {
+app.get('/availablescenes/:_id', checkAppID, requiredAuthentication, function (req, res) {
 
 
 
@@ -2566,7 +2588,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
 //});
 
-    app.post('/newscene', requiredAuthentication, function (req, res) {
+    app.post('/newscene', checkAppID, requiredAuthentication, function (req, res) {
 
         var newScene = req.body;
 //        newScene.sceneOwner_id = req.session.user._id;
@@ -2611,7 +2633,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
     });
 
-    app.post('/delete_scene/:_id', requiredAuthentication, function (req, res) {
+    app.post('/delete_scene/:_id', checkAppID, requiredAuthentication, function (req, res) {
         console.log("tryna delete key: " + req.body._id);
         var o_id = new BSON.ObjectID(req.body._id);
         db.scenes.remove( { "_id" : o_id }, 1 );
@@ -2620,7 +2642,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
     });
 
 
-    app.post('/weblink/', requiredAuthentication, function (req, res) {
+    app.post('/weblink/', checkAppID, requiredAuthentication, function (req, res) {
 
         console.log("req.header: " + req.headers);
         console.log("checkin weblink: " + req.body.link_url);
@@ -2704,7 +2726,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
     });
 
     //app.get('/weblink')
-    app.post('/update_scene/:_id', requiredAuthentication, function (req, res) {
+    app.post('/update_scene/:_id', checkAppID, requiredAuthentication, function (req, res) {
 
         console.log("req.header: " + JSON.stringify(req.headers));
         console.log(req.params._id);
@@ -2849,18 +2871,18 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
     });
 
     //return a short code that will be unique for the spec'd type (scene, pic, audio)
-    app.get('/newshortcode/:type', requiredAuthentication, function (req, res) {
+    app.get('/newshortcode/:type', checkAppID, requiredAuthentication, function (req, res) {
 
 
     });
 
     //check uniqueness and websafeness (can be used as path) of title for the spec'd type, return bool
-    app.get('/checktitle/:type', requiredAuthentication, function (req, res) {
+    app.get('/checktitle/:type', checkAppID, requiredAuthentication, function (req, res) {
 
 
     });
 //
-//    app.get('/updatesceneusernames', requiredAuthentication, function (req, res) {
+//    app.get('/updatesceneusernames', checkAppID, requiredAuthentication, function (req, res) {
 //
 //
 //        db.scenes.find({ }, function (err, scenes) {
@@ -2921,7 +2943,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 ////                    });
 //    });
 
-    app.get('/scene/:_id', function (req, res) { //TODO lock down w/ requiredAuthentication
+    app.get('/scene/:_id', function (req, res) { //TODO lock down w/ checkAppID, requiredAuthentication
 
         console.log("tryna get scene id: ", req.params._id);
         var audioResponse = {};
@@ -3245,7 +3267,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 //            });
         });
 
-app.post('/delete_path', requiredAuthentication, function (req, res) {
+app.post('/delete_path', checkAppID, requiredAuthentication, function (req, res) {
     console.log("tryna delete key: " + req.body._id);
     var o_id = new BSON.ObjectID(req.body._id);
     db.paths.remove( { "_id" : o_id }, 1 );
@@ -3253,7 +3275,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
 
 });
 //
-//  app.post('/savepath', requiredAuthentication, function (req, res) {
+//  app.post('/savepath', checkAppID, requiredAuthentication, function (req, res) {
 
           //if (req.session.auth != "noauth") { //maybe check if uid is valid?
             //console.log(req.body);
@@ -3288,7 +3310,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
 //              });
 //      });
 
-  app.post('/share_scene/:_id', requiredAuthentication, function (req, res) {
+  app.post('/share_scene/:_id', checkAppID, requiredAuthentication, function (req, res) {
       console.log("share node: " + req.body._id + " wmail: " + req.body.sceneShareWith);
 
 //      var o_id = new BSON.ObjectID(req.body._id);
@@ -3362,7 +3384,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
          });
     }
 */
-    app.post('/update_pic/:_id', requiredAuthentication, function (req, res) {
+    app.post('/update_pic/:_id', checkAppID, requiredAuthentication, function (req, res) {
         console.log(req.params._id);
         
             var o_id = new BSON.ObjectID(req.params._id);  //convert to BSON for searchie
@@ -3385,7 +3407,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
     });
 
 
-    app.post('/update_obj/:_id', requiredAuthentication, function (req, res) {
+    app.post('/update_obj/:_id', checkAppID, requiredAuthentication, function (req, res) {
         console.log(req.params._id);
 
         var o_id = new BSON.ObjectID(req.params._id);  //convert to BSON for searchie
@@ -3403,7 +3425,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
         });
     });
 
-    app.post('/update_audio/:_id', requiredAuthentication, function (req, res) {
+    app.post('/update_audio/:_id', checkAppID, requiredAuthentication, function (req, res) {
         console.log(req.params._id);
         
             var o_id = new BSON.ObjectID(req.params._id);  //convert to BSON for searchie
@@ -3424,7 +3446,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
         });
     });
 
-    app.get('/audioitems/:tag', requiredAuthentication, function(req, res) {
+    app.get('/audioitems/:tag', checkAppID, requiredAuthentication, function(req, res) {
         console.log('tryna return playlist: ' + req.params.tag);
     db.audio.find({tags: req.params.tag, item_status: "public"}).sort({otimestamp: -1}).limit(maxItems).toArray( function(err, audio_items) {
         if (err || !audio_items) {
@@ -3476,7 +3498,7 @@ app.post('/delete_path', requiredAuthentication, function (req, res) {
     });
 
 
-app.post('/delete_audio/', requiredAuthentication, function (req, res){
+app.post('/delete_audio/', checkAppID, requiredAuthentication, function (req, res){
 
         console.log('tryna delete audioID : ' + req.body._id);      
         var audio_id = req.body._id;
@@ -3542,7 +3564,7 @@ app.post('/delete_audio/', requiredAuthentication, function (req, res){
                             });
     });
 
-app.post('/delete_picture/', requiredAuthentication, function (req, res){
+app.post('/delete_picture/', checkAppID, requiredAuthentication, function (req, res){
     console.log(req.body);
 
     console.log('tryna delete pictureID : ' + req.body._id);
@@ -3611,7 +3633,7 @@ app.post('/delete_picture/', requiredAuthentication, function (req, res){
 });
 
 
-app.post('/uploadaudio', requiredAuthentication, function (req, res) {
+app.post('/uploadaudio', checkAppID, requiredAuthentication, function (req, res) {
     /*
         req.files.audio_upload.on('progress', function(bytesReceived, bytesExpected) {
         console.log(((bytesReceived / bytesExpected)*100) + "% uploaded");
@@ -3873,7 +3895,7 @@ app.post('/uploadaudio', requiredAuthentication, function (req, res) {
     }); //end app.post /upload
 
 
-app.post('/uploadpicture', requiredAuthentication, function (req, res) {
+app.post('/uploadpicture', checkAppID, requiredAuthentication, function (req, res) {
 
     console.log("uploadpicture headers: " + JSON.stringify(req.headers));
 
@@ -4098,7 +4120,7 @@ app.post('/uploadpicture', requiredAuthentication, function (req, res) {
     }); //end app.post /upload
 
 
-app.post('/uploadobject', requiredAuthentication, function (req, res) {
+app.post('/uploadobject', checkAppID, requiredAuthentication, function (req, res) {
 
 
     console.log("tryna upload obj");

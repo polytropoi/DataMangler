@@ -6,12 +6,6 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         }
     ]);
 
-
-
-    module.config(['$httpProvider', function($httpProvider) {
-        $httpProvider.interceptors.push('sessionInjector');
-    }]);
-
 	smApp.config(['$routeProvider',
 
 		function ($routeProvider) {
@@ -90,15 +84,19 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             }
 	});
 
-    smApp.factory('appID', function() {
-        var appID = {
+    smApp.factory('app_id', function() {
+        var app_id = {
             request: function(config) {
-                config.headers['appID'] = SessionService.token;
+                config.headers['appid'] = "55b2ecf840edea7583000001";
                 return config;
             }
         };
-        return appID;
+        return app_id;
     });
+
+    smApp.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.interceptors.push('app_id');
+    }]);
 
     smApp.factory('messages', function(){
         var messages = {};
@@ -1279,8 +1277,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             console.log("XXXX sceneEnvironment: " + JSON.stringify(sceneEnv));
             $scope.scene.sceneEnvironment = sceneEnv;
         });
-        var headerMod = {headers: {'appID' : '55b2ecf840edea7583000001'}};
-        $http.get('/uscene/:' + $routeParams.user_id + '/:' + $routeParams.scene_id, headerMod).success(function (data) {
+//        var headerMod = {headers: {'appID' : '55b2ecf840edea7583000001'}};
+        $http.get('/uscene/:' + $routeParams.user_id + '/:' + $routeParams.scene_id).success(function (data) {
 
             if (data != "noauth") {
                 $scope.scene = data;
