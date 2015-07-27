@@ -145,6 +145,7 @@ var corsOptions = function (origin) {
     }
 
     function checkAppID(req, res, next) {
+        console.log("req.headers: " + JSON.stringify(req.headers));
         if (req.headers.appid) {
             var a_id = new BSON.ObjectID(req.headers.appid.toString().replace(":", ""));
             db.apps.findOne({_id: a_id }, function (err, app) {
@@ -3178,7 +3179,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 //                            for (var i = 0; i < sceneResponse.scenePostcards.length; i++) { //refresh themz
                                 async.each (sceneResponse.scenePostcards, function (postcardID, callbackz) { //nested async-ery!
 //                                console.log("scenepostcard id: " + sceneResponse.scenePostcards[i]);
-                                    console.log("scenepostcard id: " + postcardID);
+//                                    console.log("scenepostcard id: " + postcardID);
                                 var oo_id = new BSON.ObjectID(postcardID);
                                 db.image_items.findOne({"_id": oo_id}, function (err, picture_item) {
                                     if (err || !picture_item) {
@@ -3202,7 +3203,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
                                         postcard.urlHalf = urlHalf;
                                         postcard.urlStandard = urlStandard;
                                         postcards.push(postcard);
-                                        console.log("pushing postcard: " + JSON.stringify(postcard));
+//                                        console.log("pushing postcard: " + JSON.stringify(postcard));
                                         callbackz();
                                     }
 
@@ -3233,7 +3234,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
 
                     function (postcardResponse, callback) {
-                        console.log("postcardResponse : " + postcardResponse);
+//                        console.log("postcardResponse : " + postcardResponse);
                         sceneResponse.audio = audioResponse;
                         sceneResponse.pictures = pictureResponse;
                         sceneResponse.postcards = postcardResponse;
