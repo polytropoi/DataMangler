@@ -2,7 +2,7 @@
 // // following modules                                                                                                                    
  var express = require("express")
 // , cors = require('cors')
- , acl = require('acl')
+// , acl = require('acl')
  , http = require("http")
  , path = require("path")
  , fs = require("fs")
@@ -24,7 +24,6 @@
 			bucket: 'servicemedia'}),
 
 app = express();
-
 
 var whitelist = ['unityapp', 'strr.us.s3.amazonaws.com', 'strr.us', 'elnoise.com', 'philosphersgarden.com', 'mvmv.us', 'servicemedia.net', 'kork.us', 'spacetimerailroad.com'];
 var corsOptions = function (origin) {
@@ -97,7 +96,7 @@ var corsOptions = function (origin) {
   var collections = ["acl", "auth_req", "domains", "apps", "users", "audio_items", "audio_item_keys", "image_items",
       "obj_items", "paths", "keys", "scores", "activity", "purchases", "scenes", "weblinks"];
   var db = require("mongojs").connect(databaseUrl, collections);
-  acl = new acl (new acl.mongodbBackend(db, "acl"));
+//  acl = new acl (new acl.mongodbBackend(db, "acl"));
   var BSON = mongo.BSONPure;
   
 
@@ -115,7 +114,7 @@ var corsOptions = function (origin) {
   var appAuth = "noauth";
 
 
-    acl.allow('guest', 'public', 'view');
+//    acl.allow('guest', 'public', 'view');
 
   http.createServer(app).listen(8092, function(){
 
@@ -2004,6 +2003,7 @@ app.get('/upath/:u_id/:p_id',  checkAppID, requiredAuthentication, function (req
 
 app.post('/score', checkAppID, requiredAuthentication, function (req, res) {
 console.log("tryna post scores");
+
     db.scores.save(req.body, function (err, saved) {
         if ( err || !saved ) {
             console.log('score not saved..');
@@ -2024,7 +2024,9 @@ app.get('/scores/:u_id',  checkAppID, requiredAuthentication, function (req, res
             console.log("cain't get no scores... " + err);
         } else {
 //            console.log(JSON.stringify(scores));
-            res.send(scores);
+            var scoresResponse = {};
+            scoresResponse.scores = scores;
+            res.json(scoresResponse);
         }
     });
 });
@@ -2053,7 +2055,9 @@ app.get('/purchases/:u_id',  checkAppID, requiredAuthentication, function (req, 
             res.send(err);
         } else {
 //            console.log(JSON.stringify(scores));
-            res.send(purchases);
+            var purchasesResponse = {};
+            purchasesResponse.purchases = purchases;
+            res.json(purchasesResponse);
         }
     });
 });
@@ -2081,8 +2085,10 @@ app.get('/activities/:u_id',  checkAppID, requiredAuthentication, function (req,
             console.log("cain't get no activities... " + err);
             res.send(err);
         } else {
-//            console.log(JSON.stringify(scores));
-            res.send(activities);
+            console.log(JSON.stringify(activities));
+            var activitiesResponse = {};
+            activitiesResponse.activities = activities;
+            res.json(activitiesResponse);
         }
     });
 });
