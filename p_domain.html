@@ -16,25 +16,26 @@
 <div class="well" style="margin-top: 20px;">
     <!--{{userprofile}}-->
     <div class=row">
-        {{domain}}
+
         <!--{{users}}-->
         <div class="col-md-4">
             Domain Apps:
             <ul >
-                <li ng-repeat ="app in apps">
-                    {{user.userName}}
+                <li ng-repeat ="app in domain.apps">
+                    {{app.appname}} | {{app._id}}
 
                 </li>
             </ul>
         </div>
-
+</div>
         <div class=row">
-
+            <form>new app name: <input name="input" ng-model="appname" required></form>
+        <button class="btn-primary" ng-click="CreateApp(appname)">create app</button>
 
         </div>
 
-        <div class="row"></div>
+        <div class="row"><hr>{{domain}}</div>
 
         <!--</div>-->
 
-    </div>
+    </div></div>

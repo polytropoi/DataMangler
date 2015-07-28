@@ -227,7 +227,8 @@ var corsOptions = function (origin) {
 //        if (u_id == req_u_id.toString().replace(":", "")) { //hrm.... dunno why the : needs trimming...
         var rule = "domain_admin_" + req.params.domain.toString().replace(":", "");
         console.log("acl rule check " + rule + " vs " + u_id);
-        db.acl.findOne({$and: [{acl_rule:rule }, {userIDs: {$in: [u_id]}}]}, function (err, rule) {
+                        //either admin or domain admin, admin can do everything
+        db.acl.findOne({$or :[{$and: [{acl_rule:rule }, {userIDs: {$in: [u_id]}}]}, {$and: [{acl_rule: "admin"}, {userIDs: {$in: [u_id]}}]}]}, function (err, rule) {
                 if (err || !rule) {
                     req.session.error = 'Access denied!';
                     res.send('noauth');
@@ -651,7 +652,7 @@ var corsOptions = function (origin) {
             });
    });
 
-   app.post('/savepw', function (req, res){
+   app.post('/savepw', checkAppID, function (req, res){
 
                 db.users.findOne({"resetHash": req.body.hzch}, function (err, user) {
                 if (err || !user) {
@@ -675,7 +676,7 @@ var corsOptions = function (origin) {
             });
    });
 
-   app.post('/resetpw', function (req, res) {
+   app.post('/resetpw', checkAppID, function (req, res) {
 
                 console.log('reset request from: ' + req.body.email);
                 // ws.send("authorized");
@@ -777,6 +778,9 @@ var corsOptions = function (origin) {
               }); 
 */
     app.post('/newuser', function (req, res) {
+        $scope.user.domain = "servicmedia";
+        $scope.user.appid = "55b2ecf840edea7583000001";
+
 
                 console.log('newUser request from: ' + req.body.userName);
                 // ws.send("authorized");
@@ -793,7 +797,7 @@ var corsOptions = function (origin) {
 
                 db.users.findOne({userName: req.body.userName}, function(err, existingUserName) { //check if the username already exists
                     
-                    if (err || !existingUserName) {  //should combine these queries into an "$or"
+                    if (err || !existingUserName) {  //should combine these queries into an "$or" //but then couldn't respond separately
                         
                         db.users.findOne({email: req.body.userEmail}, function(err, existingUserEmail) { //check if the email already exists
 
@@ -822,7 +826,11 @@ var corsOptions = function (origin) {
                             createDate : timestamp,
                             validationHash : cleanhash,
                             createIP : ip,
-                            password : hash}, function (err, newUser){
+                            odomain : req.body.domain, //original domain
+                            oappid : req.headers.appid.toString().replace(":", ""), //original app id
+                            password : hash
+                            },
+                            function (err, newUser){
                                 if ( err || !newUser ){
                                 console.log("db error, new user not saved", err);
                                 res.send("error");
@@ -865,11 +873,11 @@ var corsOptions = function (origin) {
                             });
                             } else {
                             console.log("that email already exists or something went wrong");
-                            res.send("emailtaken");
+                            res.send("that email is already in use, reset password if needed");
                             }
                             });
                             } else {
-                        console.log("that name already exists or something went wrong");
+                        console.log("that name is already taken or something went wrong");
                         res.send("nametaken");
                         }
                     });
@@ -2019,7 +2027,8 @@ app.get('/scores/:u_id',  checkAppID, requiredAuthentication, function (req, res
 
     console.log("tryna get scores for: ", req.params.u_id);
     //var _id = new BSON.ObjectID(req.params.u_id);
-    db.scores.find({ userID : req.params.u_id}, function(err, scores) {
+    var appid = req.headers.appid.toString().replace(":", "");
+    db.scores.find({$and : [{userID : req.params.u_id}, {appID : appid}]}, function(err, scores) {
         if (err || !scores) {
             console.log("cain't get no scores... " + err);
         } else {
@@ -2047,9 +2056,10 @@ app.post('/purchase', checkAppID, requiredAuthentication, function (req, res) {
 
 app.get('/purchases/:u_id',  checkAppID, requiredAuthentication, function (req, res) {
 
-    console.log("tryna get scores for: ", req.params.u_id);
+    console.log("tryna get purchases for: ", req.params.u_id);
     //var _id = new BSON.ObjectID(req.params.u_id);
-    db.purchases.find({ userID : req.params.u_id}, function(err, purchases) {
+    var appid = req.headers.appid.toString().replace(":", "");
+    db.purchases.find({$and : [{userID : req.params.u_id}, {appID : appid}]}, function(err, purchases) {
         if (err || !purchases) {
             console.log("cain't get no scores... " + err);
             res.send(err);
@@ -2080,7 +2090,8 @@ app.get('/activities/:u_id',  checkAppID, requiredAuthentication, function (req,
 
     console.log("tryna get activities for: ", req.params.u_id);
     //var _id = new BSON.ObjectID(req.params.u_id);
-    db.activity.find({ userID : req.params.u_id}, function(err, activities) {
+    var appid = req.headers.appid.toString().replace(":", "");
+    db.activity.find({$and : [{userID : req.params.u_id}, {appID : appid}]}, function(err, activities) {
         if (err || !activities) {
             console.log("cain't get no activities... " + err);
             res.send(err);

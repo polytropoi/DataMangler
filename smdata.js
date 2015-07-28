@@ -293,6 +293,7 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 			$scope.user = {}
 			$scope.headermessage = "Enter your desired credentials below";
 			$scope.Register = function() {
+
 			$http.post('/newuser', $scope.user).success(function(response){
 
 				if (response == "badpassword") {
@@ -442,14 +443,14 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
         }
     }
 
-    function DomainCtrl($scope, $http, $routeParams, usernav, $cookies, $location) {
+    function DomainCtrl($scope, $http, $routeParams, usernav, $cookies, $route) {
 
         $('#unityPlayer').toggleClass('hidden', true);
         $.backstretch("http://mvmv.us.s3.amazonaws.com/issUndock.jpg");
         $scope.user = {};
         $scope.userprofile = {};
         $scope.urls = usernav.urls;
-
+        $scope.appname = "";
         console.log("tryna load DomainsCtrl controller" + $scope.urls + " " + $cookies._id	);
         if ($cookies._id !== null && $cookies._id !== undefined) {
             $http.get('/amirite/' + $cookies._id).success(function (data) {  //check server if this cookie is still valid
@@ -482,8 +483,22 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
             $scope.userstatus = "0";
             $scope.headermesssage = "You are not logged in...";
             delete $cookies._id; //if server session doesn't match, the client cookie is bad
-
         }
+
+        $scope.CreateApp = function (appname) {
+            console.log("tryna create app " + appname);
+            $http.get('/create_app/' + $scope.domain.domain + '/' + appname).success(function (response) {
+                console.log("submit response:  " + response);
+                if (response == "noauth") {
+                    $scope.headermessage = "You must be logged in to do that!"
+                } else {
+                    $scope.headermessage = response;
+                    $route.reload();
+                }
+            });
+        }
+
+
     }
     function UsersCtrl($scope, $http, $routeParams, usernav, $cookies, $location) {
 

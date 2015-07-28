@@ -21,14 +21,15 @@
             Activity:
             <ul >
                 <li ng-repeat ="domain in domains">
-                    {{domain.domain}}
+                    <a href="/#/domain/{{domain.domain}}">{{domain.domain}}</a>
 
                 </li>
             </ul>
         </div>
 
         <div class=row">
-
+            <!--<form>domain admin user id: <input name="input" ng-model="userid" required></form>-->
+            <!--<button class="btn-primary" ng-click="MakeDomainAdmin(appname)">create</button>-->
 
         </div>
 

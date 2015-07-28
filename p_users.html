@@ -21,7 +21,7 @@
             All Teh Uzers:
             <ul >
                 <li ng-repeat ="user in users">
-                  {{user.userName}} | {{user._id}}
+                    <a href="/#/uprofile/{{user._id}}">{{user.userName}} | {{user._id}} | {{user.authLevel}}</a>
 
                 </li>
             </ul>
