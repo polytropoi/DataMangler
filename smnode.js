@@ -338,15 +338,15 @@ var corsOptions = function (origin) {
   });
 
   app.post("/authreq", checkAppID, function (req, res) {
-        console.log('authRequest from: ' + req.body.uname + " " + req.body.umail  + " " + req.body.upass);
+        console.log('authRequest from: ' + req.body.uname);
         var currentDate = Math.floor(new Date().getTime()/1000);
         
         //if (1 == 1) {
         //no facebook login
         if (req.body.fbID != null || req.body.fbID != "noFacebookID" || req.body.fbID.length < 8  ) {
 
-                db.users.find(
-                { $or: [{userName: req.body.uname}, {email: req.body.uname}] }, //mongo-lian "OR" syntax...
+                db.users.findOne(
+                { $or: [{userName: req.body.uname}, {email: req.body.umail}] }, //mongo-lian "OR" syntax...
                 //password: req.body.upass},
                 //{password:0}, 
                 function(err, authUser) {
@@ -355,19 +355,20 @@ var corsOptions = function (origin) {
                         res.send("user not found");
                         req.session.auth = "noauth";
                 } else {
+                    console.log("authuser[0] : " + JSON.stringify(authUser))
+                        if (authUser !== null && authUser !== undefined && authUser.status == "validated") {
 
-                        if (authUser[0].status !== "unvalidated") {
                         var pass = req.body.upass;
-                        var hash = authUser[0].password;
-                        console.log("hash = " + authUser[0].password);
+                        var hash = authUser.password;
+                        console.log("hash = " + authUser.password);
                         bcrypt.compare(pass, hash, function(err, match) {  //check password vs hash
                                 if (match) { 
-                                req.session.user = authUser[0];
+                                req.session.user = authUser;
 //                                res.send(req.session.sid);
                                 res.cookie('_id', req.session.user._id, { maxAge: 900000, httpOnly: false});
                                 res.json(req.session.user._id);
                                 // req.session.auth = authUser[0]._id;
-                                appAuth = authUser[0]._id;
+                                appAuth = authUser._id;
                                 console.log("auth = " + JSON.stringify(req.session.sid));
                                 } else {
                                 console.log("auth fail");
@@ -777,11 +778,12 @@ var corsOptions = function (origin) {
                         });
               }); 
 */
-    app.post('/newuser', function (req, res) {
-        $scope.user.domain = "servicmedia";
-        $scope.user.appid = "55b2ecf840edea7583000001";
+    app.post('/newuser', checkAppID, function (req, res) {
+//        $scope.user.domain = "servicmedia";
+//        $scope.user.appid = "55b2ecf840edea7583000001";
 
-
+                var appid = req.headers.appid;
+                var domain = req.body.domain;
                 console.log('newUser request from: ' + req.body.userName);
                 // ws.send("authorized");
                 if (req.body.userPass.length < 7) {  //weak
@@ -850,7 +852,7 @@ var corsOptions = function (origin) {
                                      Destination: { ToAddresses: [req.body.userEmail, "polytropoi@gmail.com"] },
                                      Message: {
                                          Subject: {
-                                            Data: 'ServiceMedia New User'
+                                            Data: domain + ' New User'
                                          },
                                          Body: {
                                              Html: {
@@ -873,7 +875,7 @@ var corsOptions = function (origin) {
                             });
                             } else {
                             console.log("that email already exists or something went wrong");
-                            res.send("that email is already in use, reset password if needed");
+                            res.send("emailtaken");
                             }
                             });
                             } else {
@@ -2034,6 +2036,7 @@ app.get('/scores/:u_id',  checkAppID, requiredAuthentication, function (req, res
         } else {
 //            console.log(JSON.stringify(scores));
             var scoresResponse = {};
+
             scoresResponse.scores = scores;
             res.json(scoresResponse);
         }
@@ -2178,7 +2181,7 @@ app.get('/uscenes/:_id',  checkAppID, requiredAuthentication, usercheck, functio
     var o_id = new BSON.ObjectID(req.params._id);
     var scenesResponse = {};
 
-    db.scenes.find({ "user_id" : req.params._id}, { sceneTitle: 1, short_id: 1 },  function(err, scenes) {
+    db.scenes.find({ "user_id" : req.params._id}, { sceneTitle: 1, short_id: 1, sceneLastUpdate: 1 },  function(err, scenes) {
         if (err || !scenes) {
             console.log("cain't get no scenes... " + err);
             res.send("noscenes");
