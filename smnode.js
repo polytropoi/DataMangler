@@ -344,9 +344,13 @@ var corsOptions = function (origin) {
         //if (1 == 1) {
         //no facebook login
         if (req.body.fbID != null || req.body.fbID != "noFacebookID" || req.body.fbID.length < 8  ) {
+            var un_query = req.body.uname ? {userName: req.body.uname} : {};
+            var em_query = req.body.umail ? {user_email: req.body.umail} : {};
+//            var em_query = {};
+//            if req.body.uname ? un_query = {userName: req.body.uname} : un_query = un_query;
 
                 db.users.findOne(
-                { $or: [{userName: req.body.uname}, {email: req.body.umail}] }, //mongo-lian "OR" syntax...
+                { $or: [un_query, em_query] }, //mongo-lian "OR" syntax...
                 //password: req.body.upass},
                 //{password:0}, 
                 function(err, authUser) {
@@ -355,9 +359,9 @@ var corsOptions = function (origin) {
                         res.send("user not found");
                         req.session.auth = "noauth";
                 } else {
-                    console.log("authuser[0] : " + JSON.stringify(authUser))
+                    console.log("authuser: " + JSON.stringify(authUser));
+//                && (req.body.uname.length > 2 && req.body.uname != authUser.userName) && (req.body.umail.length > 6 && req.body.umail != authUser.email)
                         if (authUser !== null && authUser !== undefined && authUser.status == "validated") {
-
                         var pass = req.body.upass;
                         var hash = authUser.password;
                         console.log("hash = " + authUser.password);
@@ -843,7 +847,7 @@ var corsOptions = function (origin) {
                                 req.session.auth = user_id;
                                 req.session.user = newUser;
                                 res.cookie('_id', user_id, { maxAge: 900000, httpOnly: false});
-                                res.send(user_id);
+                                res.send("validation email sent");
                                     //send validation email
                                     
                                     htmlbody = "Welcome, " + req.body.userName + ".<a href=\"http://servicemedia.net/validate/" + cleanhash + "\"> click here to validate account</a>"
