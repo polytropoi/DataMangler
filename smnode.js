@@ -338,18 +338,20 @@ var corsOptions = function (origin) {
   });
 
   app.post("/authreq", checkAppID, function (req, res) {
-        console.log('authRequest from: ' + req.body.uname);
+        console.log('authRequest from: ' + req.body.uname + " " + req.body.umail);
         var currentDate = Math.floor(new Date().getTime()/1000);
         
         //if (1 == 1) {
         //no facebook login
         if (req.body.fbID != null || req.body.fbID != "noFacebookID" || req.body.fbID.length < 8  ) {
-            var un_query = req.body.uname ? {userName: req.body.uname} : {};
-            var em_query = req.body.umail ? {user_email: req.body.umail} : {};
+//            var un_query = req.body.uname.length > 2 ? {userName: req.body.uname} : {userName: req.body.uname};
+//            var em_query = req.body.umail.length > 6 ? {email: req.body.umail} : {email: req.body.umail};
+            var un_query = {userName: req.body.uname};
+            var em_query = {email: req.body.umail};
 //            var em_query = {};
 //            if req.body.uname ? un_query = {userName: req.body.uname} : un_query = un_query;
 
-                db.users.findOne(
+                db.users.find(
                 { $or: [un_query, em_query] }, //mongo-lian "OR" syntax...
                 //password: req.body.upass},
                 //{password:0}, 
@@ -359,20 +361,21 @@ var corsOptions = function (origin) {
                         res.send("user not found");
                         req.session.auth = "noauth";
                 } else {
-                    console.log("authuser: " + JSON.stringify(authUser));
+                    console.log("authuser: " + JSON.stringify(authUser[0]));
 //                && (req.body.uname.length > 2 && req.body.uname != authUser.userName) && (req.body.umail.length > 6 && req.body.umail != authUser.email)
-                        if (authUser !== null && authUser !== undefined && authUser.status == "validated") {
+                        if (authUser[0] !== null && authUser[0] !== undefined && authUser[0].status == "validated") {
+//                            (req.body.uname.length > 2 && req.body.uname == authUser[0].userName) && (req.body.umail.length > 6 && req.body.umail == authUser[0].email)) {
                         var pass = req.body.upass;
-                        var hash = authUser.password;
-                        console.log("hash = " + authUser.password);
+                        var hash = authUser[0].password;
+                        console.log("hash = " + authUser[0].password);
                         bcrypt.compare(pass, hash, function(err, match) {  //check password vs hash
                                 if (match) { 
-                                req.session.user = authUser;
+                                req.session.user = authUser[0];
 //                                res.send(req.session.sid);
                                 res.cookie('_id', req.session.user._id, { maxAge: 900000, httpOnly: false});
                                 res.json(req.session.user._id);
                                 // req.session.auth = authUser[0]._id;
-                                appAuth = authUser._id;
+                                appAuth = authUser[0]._id;
                                 console.log("auth = " + JSON.stringify(req.session.sid));
                                 } else {
                                 console.log("auth fail");
