@@ -2033,185 +2033,76 @@ console.log("tryna post scores");
     });
 });
 
-
-
 app.get('/topscores/:appid', function (req, res) {
 
     console.log("tryna get scores for: ", req.params.u_id);
-    //var _id = new BSON.ObjectID(req.params.u_id);
-//    var appid = req.headers.appid.toString().replace(":", "");
     var appid = req.params.appid.toString().replace(":", "");
     var scoresResponse = {};
-//    db.scores.find({appID : appid}, function(err, scores) {
-//        if (err || !scores) {
-//            console.log("cain't get no scores... " + err);
-//        } else {
-//            console.log("scores: " + JSON.stringify(scores));
-//            scoresResponse.scores = scores;
+    var appScores = {};
 
-//            for(var score in scores){
-//            console.log(score.userID+": "+s[attributename]);
-//            }
-//
-//            var scoreTotals = [];
-//            var lookup = {};
-//            var items = scores;
-//            var userIDs = [];
-//
-//            for (var item, i = 0; item = items[i++];) {
-//                var name = item.userID;
-//                var score = parseInt(item.score);
-//
-//                if (!(name in lookup)) {
-//                    lookup[name] = 1;
-//                    userIDs.push(name);
-//                }
-//            }
     async.waterfall([
 
-    function (callback) {
+    function (callback) { //get all scores for this app
         db.scores.find({appID : appid}, function(err, scores) {
             if (err || !scores) {
                 console.log("cain't get no scores... " + err);
+                callback(err);
             } else {
-//                console.log("scores: " + JSON.stringify(scores));
-                    callback(null, scores);
-                }
-            });
-    },
 
-    function (items, callback) {
+                appScores = scores;
+                console.log("scores: " + JSON.stringify(appScores));
+                callback(null, scores);
+            }
+
+            });
+    }, //pull unique userIDs
+    function (userScores, callback) {
+        var items = userScores;
         var uids = [];
+        var lookup = {};
         for (var item, i = 0; item = items[i++];) {
             var uid = item.userID;
-            var score = parseInt(item.score);
-            scoretemp = scoretemp + score;
-            if (!(name in lookup)) {
-                lookup[name] = 1;
-                uids.push(name);
-//                scoretemp = scoretemp + score;
-
+            if (!(uid in lookup)) {
+                lookup[uid] = 1;
+                uids.push(uid);
             }
         }
-        callback(items, uids);
-    },
-
-        function (scores, uids, callback) {
-
-            async.each (scores, function (score, callbackz) {
-                var uscores = {};
-                var scoretemp = 0;
-                var lookup = {};
-                var items = scores;
-
-                for (var item, i = 0; item = items[i++];) {
-                    var uid = item.userID;
-                    var score = parseInt(item.score);
-                    scoretemp = scoretemp + score;
-                        if (!(name in lookup)) {
-                        lookup[name] = 1;
-                        scoretemp = scoretemp + score;
-                    }
+        console.log(JSON.stringify(uids));
+        callback(null, userScores, uids);
+    }, //loop through again to aggregate scores for each user
+    function (scores, uids, callback) {
+        var topscores = [];
+        async.each (uids, function (uid, callbackz) {
+            var uscores = {};
+            var scoretemp = 0;
+            for (var entry in appScores) {
+                if (uid == appScores[entry].userID) {
+                scoretemp = scoretemp + parseInt(appScores[entry].score);
                 }
-                uscores.user = uid;
-                uscores.scoreTotal = scoretemp;
+            }
+            uscores.user = uid;
+            uscores.scoreTotal = scoretemp;
+            topscores.push(uscores);
+            callbackz();
+        }, function(err) {
+            // if any of the file processing produced an error, err would equal that error
+            if (err) {
+                console.log('A file failed to process');
+                callbackz(err);
+            } else {
+                console.log('All files have been processed successfully');
+                scoresResponse.topscores = topscores;
+                callback(null);
+            }
+        });
+    }
 
-
-
-            }, function(err) {
-                // if any of the file processing produced an error, err would equal that error
-                if (err) {
-                    // One of the iterations produced an error.
-                    // All processing will now stop.
-                    console.log('A file failed to process');
-                    callbackz(err);
-                } else {
-                    console.log('All files have been processed successfully');
-
-                    scoreTotals.push(uscores);
-                    callbackz();
-
-                }
-            });
-            callback();
-        }
-
-        ],
+        ], //end of async.waterfall
         function (err, result) { // #last function, close async
-            res.json(sceneResponse);
+            res.json(scoresResponse);
             console.log("waterfall done: " + result);
-        }
-
-            res.json(userIDs);
-        }
+        })
     });
-
-//    var scores = function() {
-//    return db.scores.aggregate(
-//            [
-//                { $group: { _id: "appID", score: { $sum: 1 } } }
-//            ]
-//        );
-//    }
-
-//    var scores = function(db, callback) {
-//        db.collection('scores').aggregate(
-//            [
-//                { $group: { _id: "appID", appID: { $sum: 1 } } }
-//            ]
-//        ).toArray(function(err, result) {
-////                assert.equal(err, null);
-//                console.log(result);
-//                callback(result);
-//            });
-//    };
-
-
-//    var scores = db.scores.aggregate(
-//        [
-//            {
-//                $group:
-//               {
-//                    _id: { userid: "$userID"},
-//                    totalScore: { $sum: 1 }
-////                    count: { $sum: 1 }
-//                }
-//            }
-//        ]
-//    );
-
-
-//
-//    db.scores.aggregate(
-//        [
-//            {
-//                $group: {
-//                userID : {score appid}, function(err, scores) {
-//            }
-//        }
-//        }
-//    ]
-//)
-//
-//    if (!scores) {
-//        console.log("cain't get no scores... ");
-//    } else {
-////            console.log(JSON.stringify(scores));
-////        var scorescores.Count
-
-//        for(var score in scores){
-//            console.log(score.id+": "+myobject[attributename]);
-//        }
-//    scores(db, function() {
-//        db.close();
-//    });
-
-
-//    }
-
-//    });
-});
-
 
 app.get('/scores/:u_id',  checkAppID, requiredAuthentication, function (req, res) {
 
