@@ -206,7 +206,7 @@ var corsOptions = function (origin) {
         });
     }
 
-    function usercheck (req, res, next) {
+    function usercheck (req, res, next) { //gotsta beez the owner of requested resource
         var u_id = req.session.user._id;
         var req_u_id = req.params._id;
 //        var scene_id = req.params.scene_id;
@@ -373,7 +373,8 @@ var corsOptions = function (origin) {
                                 req.session.user = authUser[0];
 //                                res.send(req.session.sid);
                                 res.cookie('_id', req.session.user._id, { maxAge: 900000, httpOnly: false});
-                                res.json(req.session.user._id);
+                                var authResp = req.session.user._id + "~" + req.session.user.userName;
+                                res.json(authResp);
                                 // req.session.auth = authUser[0]._id;
                                 appAuth = authUser[0]._id;
                                 console.log("auth = " + JSON.stringify(req.session.sid));
@@ -805,28 +806,19 @@ var corsOptions = function (origin) {
                 } else {
 
                 db.users.findOne({userName: req.body.userName}, function(err, existingUserName) { //check if the username already exists
-                    
                     if (err || !existingUserName) {  //should combine these queries into an "$or" //but then couldn't respond separately
-                        
                         db.users.findOne({email: req.body.userEmail}, function(err, existingUserEmail) { //check if the email already exists
-
                         if (err || !existingUserEmail || req.body.userEmail == "polytropoi@gmail.com") {
-                        
                         console.log('dinna find tha name');
-
                         var from = "polytropoi@gmail.com";
-
                         var timestamp = Math.round(Date.now() / 1000);
                         var ip = req.headers['x-forwarded-for'] || 
                                  req.connection.remoteAddress || 
                                  req.socket.remoteAddress ||
                                  req.connection.socket.remoteAddress;
-
                         bcrypt.genSalt(10, function(err, salt) {
                         bcrypt.hash(req.body.userPass, salt, function(err, hash) {
                         var cleanhash = validator.blacklist(hash, ['/','.','$']); //make it URL safe
-                        
-
                         db.users.save(
                             {type : 'webuser',
                             status : 'unvalidated',
@@ -2018,10 +2010,37 @@ app.get('/upath/:u_id/:p_id',  checkAppID, requiredAuthentication, function (req
     });
 });
 
+///!!!DANGER!!!
+//app.get('/scoresremove/:appid',  function (req, res) { //get default path info
+//
+//    console.log("nuke all score data for this application!: ", req.params.appid);
+////    var _id = new BSON.ObjectID(req.params.p_id);
+//    db.scores.remove({appID : req.params.appid}, function (err, saved) {
+//        if (err || !saved) {
+//            console.log('nuke fail');
+//            res.send("nuke fail");
+//        } else {
+//
+//            console.log('nuked');
+//            res.send("nuked");
+//        }
+//    });
+//});
+
 app.post('/score', checkAppID, requiredAuthentication, function (req, res) {
 console.log("tryna post scores");
 
-    db.scores.save(req.body, function (err, saved) {
+    var scorePost = {
+        scoreType : req.body.scoreType,
+        scoreDateTime : new Date(),
+        scoreInt : parseInt(req.body.scoreInt),
+        userID : req.body.userID,
+        userName : req.body.userName,
+        appID : req.body.appID,
+        domain : req.body.domain
+    };
+    console.log("tryna post score: " + scorePost);
+    db.scores.save(scorePost, function (err, saved) {
         if ( err || !saved ) {
             console.log('score not saved..');
             res.send("nilch");
