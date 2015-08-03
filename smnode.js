@@ -309,7 +309,7 @@ var corsOptions = function (origin) {
   app.get("/amirite/:_id", function (req, res) {
     if (req.session.user) {
     console.log(JSON.stringify(req.session.user._id) + " " + req.params._id);
-        if (JSON.stringify(req.session.user._id) == req.params._id) {
+        if (req.session.user._id == req.params._id) {
 
             console.log("Logged in: " + JSON.stringify(req.session.user));
             var resp = {};
@@ -2052,7 +2052,7 @@ console.log("tryna post scores");
     });
 });
 
-app.get('/topscores/:appid', function (req, res) {
+app.get('/totalscores/:appid', function (req, res) {
 
     console.log("tryna get scores for: ", req.params.u_id);
     var appid = req.params.appid.toString().replace(":", "");
@@ -2122,6 +2122,26 @@ app.get('/topscores/:appid', function (req, res) {
             console.log("waterfall done: " + result);
         })
     });
+
+app.get('/topscores/:appid', function (req, res) {
+
+    console.log("tryna get scores for: ", req.params.u_id);
+    //var _id = new BSON.ObjectID(req.params.u_id);
+    var appid = req.params.appid.toString().replace(":", "");
+    db.scores.find({appID : appid}, function(err, scores) {
+        if (err || !scores) {
+            console.log("cain't get no scores... " + err);
+        } else {
+//            console.log(JSON.stringify(scores));
+            var scoresResponse = {};
+            scores.sort(function(a, b) {
+                return b.scoreInt - a.scoreInt;
+            });
+            scoresResponse.scores = scores;
+            res.json(scoresResponse);
+        }
+    });
+});
 
 app.get('/scores/:u_id',  checkAppID, requiredAuthentication, function (req, res) {
 

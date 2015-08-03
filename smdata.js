@@ -262,7 +262,9 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
 				} else {
                    // $scope.user._id = response;
                    // $scope.user._id = $scope.user._id.replace (/"/g,'');
-				$cookies._id = response;
+                    var r = response.replace(/["']/g, ""); //cleanup
+                    var resp = r.split('~');
+				$cookies._id = resp[0];
 				console.log("login cookie: " + $cookies._id);
 				$scope.headermessage = "successful login!";
 				$location.path( "#/login");
