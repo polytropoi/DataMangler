@@ -361,22 +361,29 @@ var corsOptions = function (origin) {
                         res.send("user not found");
                         req.session.auth = "noauth";
                 } else {
-                    console.log("authuser: " + JSON.stringify(authUser[0]));
+                    console.log("found " + authUser.length + " users like dat");
+                    authUserIndex = 0;
+                    for (var i = 0; i < authUser.length; i++) {
+                        if (authUser[i].userName == req.body.uname) { //only for cases where multiple accounts on one email, match on the name
+                            authUserIndex = i;
+                        }
+                    }
+                    console.log("authuser: " + JSON.stringify(authUser[authUserIndex]));
 //                && (req.body.uname.length > 2 && req.body.uname != authUser.userName) && (req.body.umail.length > 6 && req.body.umail != authUser.email)
-                        if (authUser[0] !== null && authUser[0] !== undefined && authUser[0].status == "validated") {
+                        if (authUser[authUserIndex] !== null && authUser[authUserIndex] !== undefined && authUser[authUserIndex].status == "validated") {
 //                            (req.body.uname.length > 2 && req.body.uname == authUser[0].userName) && (req.body.umail.length > 6 && req.body.umail == authUser[0].email)) {
                         var pass = req.body.upass;
-                        var hash = authUser[0].password;
-                        console.log("hash = " + authUser[0].password);
+                        var hash = authUser[authUserIndex].password;
+                        console.log("hash = " + authUser[authUserIndex].password);
                         bcrypt.compare(pass, hash, function(err, match) {  //check password vs hash
                                 if (match) { 
-                                req.session.user = authUser[0];
+                                req.session.user = authUser[authUserIndex];
 //                                res.send(req.session.sid);
                                 res.cookie('_id', req.session.user._id, { maxAge: 900000, httpOnly: false});
                                 var authResp = req.session.user._id + "~" + req.session.user.userName;
                                 res.json(authResp);
                                 // req.session.auth = authUser[0]._id;
-                                appAuth = authUser[0]._id;
+                                appAuth = authUser[authUserIndex]._id;
                                 console.log("auth = " + JSON.stringify(req.session.sid));
                                 } else {
                                 console.log("auth fail");
@@ -2054,8 +2061,10 @@ console.log("tryna post scores");
 
 app.get('/totalscores/:appid', function (req, res) {
 
-    console.log("tryna get scores for: ", req.params.u_id);
     var appid = req.params.appid.toString().replace(":", "");
+
+    console.log("tryna get total user scores for app: " + appid);
+
     var scoresResponse = {};
     var appScores = {};
 
@@ -2090,7 +2099,7 @@ app.get('/totalscores/:appid', function (req, res) {
         callback(null, userScores, uids);
     }, //loop through again to aggregate scores for each user
     function (scores, uids, callback) {
-        var topscores = [];
+        var totalscores = [];
         async.each (uids, function (uid, callbackz) {
             var uscores = {};
             var scoretemp = 0;
@@ -2101,7 +2110,7 @@ app.get('/totalscores/:appid', function (req, res) {
             }
             uscores.user = uid;
             uscores.scoreTotal = scoretemp;
-            topscores.push(uscores);
+            totalscores.push(uscores);
             callbackz();
         }, function(err) {
             // if any of the file processing produced an error, err would equal that error
@@ -2128,7 +2137,7 @@ app.get('/topscores/:appid', function (req, res) {
     console.log("tryna get scores for: ", req.params.u_id);
     //var _id = new BSON.ObjectID(req.params.u_id);
     var appid = req.params.appid.toString().replace(":", "");
-    db.scores.find({appID : appid}, function(err, scores) {
+    db.scores.find({appID : appid}, { userName: 1, scoreType: 1, scoreDateTime: 1, scoreInt: 1, _id:0 }, function(err, scores) {
         if (err || !scores) {
             console.log("cain't get no scores... " + err);
         } else {
