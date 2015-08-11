@@ -6,6 +6,7 @@
  , http = require("http")
  , path = require("path")
  , fs = require("fs")
+ , entities = require("entities")
  //, passport = require("passport")
  , validator = require('validator')
  , util = require('util')
@@ -166,6 +167,10 @@ var corsOptions = function (origin) {
     }
 
 
+    function checkSceneTitle(titleString) {
+
+
+    }
 
     function amirite (acl_rule, u_id) { //check user id against acl
 //        console.log("checking " + JSON.stringify(req.session));
@@ -2739,6 +2744,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
     app.post('/newscene', checkAppID, requiredAuthentication, function (req, res) {
 
         var newScene = req.body;
+        newScene.title = newScene.title
 //        newScene.sceneOwner_id = req.session.user._id;
 //        newScene.sceneOwnerName = req.session.user.username;
     db.scenes.save(req.body, function (err, saved) {
@@ -3093,7 +3099,9 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
     app.get('/scene/:_id', function (req, res) { //TODO lock down w/ checkAppID, requiredAuthentication
 
-        console.log("tryna get scene id: ", req.params._id);
+        console.log("tryna get scene id: ", req.params._id + " excaped " + entities.d(req.params._id));
+
+        var reqstring = entities.decodeHTML(req.params._id);
         var audioResponse = {};
         var pictureResponse = {};
         var postcardResponse = {};
@@ -3108,8 +3116,8 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
                     function (callback) {
 //                        var o_id = new BSON.ObjectID(req.params._id);
-                        db.scenes.find({$or: [{ sceneTitle: req.params._id },
-                                                { short_id : req.params._id }]},
+                        db.scenes.find({$or: [{ sceneTitle: reqstring },
+                                                { short_id : reqstring }]},
                                                 function (err, sceneData) { //fetch the path info by title TODO: urlsafe string
 
                                 if (err || !sceneData || !sceneData.length) {
@@ -3390,7 +3398,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
                 function (callback) { //inject username, last step (since only id is in scene doc)
 
-                    if ((sceneResponse.userName == null || sceneResponse.userName.length < 1) && sceneResponse.user_id.length > 10) {
+                    if ((sceneResponse.userName == null || sceneResponse.userName.length < 1) && (sceneResponse.user_id != null)) {
 
                         var oo_id = new BSON.ObjectID(sceneResponse.user_id);
                         db.users.findOne({_id: oo_id}, function (err, user) {
