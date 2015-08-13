@@ -3099,7 +3099,7 @@ app.get('/publicscenes', function (req, res) { //deprecated, see available scene
 
     app.get('/scene/:_id', function (req, res) { //TODO lock down w/ checkAppID, requiredAuthentication
 
-        console.log("tryna get scene id: ", req.params._id + " excaped " + entities.d(req.params._id));
+        console.log("tryna get scene id: ", req.params._id + " excaped " + entities.decodeHTML(req.params._id));
 
         var reqstring = entities.decodeHTML(req.params._id);
         var audioResponse = {};
