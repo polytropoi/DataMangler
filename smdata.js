@@ -1199,7 +1199,8 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'co
                 "villageScene1",
                 "graveyardScene1",
                 "dungeonScene1",
-                "alamo"
+                "alamo",
+                "underwater1"
             ];
 
         $scope.heightmaps = [
