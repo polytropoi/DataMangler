@@ -2075,67 +2075,67 @@ app.get('/totalscores/:appid', function (req, res) {
 
     async.waterfall([
 
-    function (callback) { //get all scores for this app
-        db.scores.find({appID : appid}, function(err, scores) {
-            if (err || !scores) {
-                console.log("cain't get no scores... " + err);
-                callback(err);
-            } else {
+            function (callback) { //get all scores for this app
+                db.scores.find({appID : appid}, function(err, scores) {
+                    if (err || !scores) {
+                        console.log("cain't get no scores... " + err);
+                        callback(err);
+                    } else {
 
-                appScores = scores;
-                console.log("scores: " + JSON.stringify(appScores));
-                callback(null, scores);
-            }
+                        appScores = scores;
+                        console.log("scores: " + JSON.stringify(appScores));
+                        callback(null, scores);
+                    }
 
-            });
-    }, //pull unique userIDs
-    function (userScores, callback) {
-        var items = userScores;
-        var uids = [];
-        var lookup = {};
-        for (var item, i = 0; item = items[i++];) {
-            var uid = item.userID;
-            if (!(uid in lookup)) {
-                lookup[uid] = 1;
-                uids.push(uid);
-            }
-        }
-        console.log(JSON.stringify(uids));
-        callback(null, userScores, uids);
-    }, //loop through again to aggregate scores for each user
-    function (scores, uids, callback) {
-        var totalscores = [];
-        async.each (uids, function (uid, callbackz) {
-            var uscores = {};
-            var scoretemp = 0;
-            for (var entry in appScores) {
-                if (uid == appScores[entry].userID) {
-                scoretemp = scoretemp + parseInt(appScores[entry].score);
+                });
+            }, //pull unique userIDs
+            function (userScores, callback) {
+                var items = userScores;
+                var uids = [];
+                var lookup = {};
+                for (var item, i = 0; item = items[i++];) {
+                    var uid = item.userID;
+                    if (!(uid in lookup)) {
+                        lookup[uid] = 1;
+                        uids.push(uid);
+                    }
                 }
+                console.log(JSON.stringify(uids));
+                callback(null, userScores, uids);
+            }, //loop through again to aggregate scores for each user
+            function (scores, uids, callback) {
+                var totalscores = [];
+                async.each (uids, function (uid, callbackz) {
+                    var uscores = {};
+                    var scoretemp = 0;
+                    for (var entry in appScores) {
+                        if (uid == appScores[entry].userID) {
+                            scoretemp = scoretemp + parseInt(appScores[entry].score);
+                        }
+                    }
+                    uscores.user = uid;
+                    uscores.scoreTotal = scoretemp;
+                    totalscores.push(uscores);
+                    callbackz();
+                }, function(err) {
+                    // if any of the file processing produced an error, err would equal that error
+                    if (err) {
+                        console.log('A file failed to process');
+                        callbackz(err);
+                    } else {
+                        console.log('All files have been processed successfully');
+                        scoresResponse.topscores = topscores;
+                        callback(null);
+                    }
+                });
             }
-            uscores.user = uid;
-            uscores.scoreTotal = scoretemp;
-            totalscores.push(uscores);
-            callbackz();
-        }, function(err) {
-            // if any of the file processing produced an error, err would equal that error
-            if (err) {
-                console.log('A file failed to process');
-                callbackz(err);
-            } else {
-                console.log('All files have been processed successfully');
-                scoresResponse.topscores = topscores;
-                callback(null);
-            }
-        });
-    }
 
         ], //end of async.waterfall
         function (err, result) { // #last function, close async
             res.json(scoresResponse);
             console.log("waterfall done: " + result);
         })
-    });
+});
 
 app.get('/topscores/:appid', function (req, res) {
 
@@ -2237,6 +2237,80 @@ app.get('/activities/:u_id',  checkAppID, requiredAuthentication, function (req,
             res.json(activitiesResponse);
         }
     });
+});
+
+
+app.get('/activitytotals/:appid', function (req, res) {
+
+    var appid = req.params.appid.toString().replace(":", "");
+
+    console.log("tryna get total user scores for app: " + appid);
+
+    var scoresResponse = {};
+    var appScores = {};
+
+    async.waterfall([
+
+            function (callback) { //get all scores for this app
+                db.scores.find({appID : appid}, function(err, activities) {
+                    if (err || !scores) {
+                        console.log("cain't get no scores... " + err);
+                        callback(err);
+                    } else {
+
+                        appScores = scores;
+                        console.log("scores: " + JSON.stringify(appScores));
+                        callback(null, scores);
+                    }
+
+                });
+            }, //pull unique userIDs
+            function (userScores, callback) {
+                var items = userScores;
+                var uids = [];
+                var lookup = {};
+                for (var item, i = 0; item = items[i++];) {
+                    var uid = item.userID;
+                    if (!(uid in lookup)) {
+                        lookup[uid] = 1;
+                        uids.push(uid);
+                    }
+                }
+                console.log(JSON.stringify(uids));
+                callback(null, userScores, uids);
+            }, //loop through again to aggregate scores for each user
+            function (scores, uids, callback) {
+                var totalscores = [];
+                async.each (uids, function (uid, callbackz) {
+                    var uscores = {};
+                    var scoretemp = 0;
+                    for (var entry in appScores) {
+                        if (uid == appScores[entry].userID) {
+                            scoretemp = scoretemp + parseInt(appScores[entry].score);
+                        }
+                    }
+                    uscores.user = uid;
+                    uscores.scoreTotal = scoretemp;
+                    totalscores.push(uscores);
+                    callbackz();
+                }, function(err) {
+                    // if any of the file processing produced an error, err would equal that error
+                    if (err) {
+                        console.log('A file failed to process');
+                        callbackz(err);
+                    } else {
+                        console.log('All files have been processed successfully');
+                        scoresResponse.topscores = topscores;
+                        callback(null);
+                    }
+                });
+            }
+
+        ], //end of async.waterfall
+        function (err, result) { // #last function, close async
+            res.json(scoresResponse);
+            console.log("waterfall done: " + result);
+        })
 });
 
 app.post('/newpath', checkAppID, requiredAuthentication, function (req, res) {
