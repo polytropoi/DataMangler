@@ -270,7 +270,7 @@ var corsOptions = function (origin) {
         res.send("logged out");
         //res.redirect("/");
   });
-
+ 
 
   app.post("/authreq", checkAppID, function (req, res) {
         console.log('authRequest from: ' + req.body.uname + " " + req.body.umail);
