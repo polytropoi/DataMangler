@@ -1,4 +1,4 @@
-var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'colorpicker.module']);
+var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap' ]);
 
     smApp.config(['$compileProvider',  //so custom urls will work on mobile, i.e. strr://blahblah
     function ($compileProvider) {
