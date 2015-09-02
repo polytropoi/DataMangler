@@ -78,7 +78,7 @@ var corsOptions = function (origin) {
     });
 
        // Create the http server and get it to listen on the specified port 8084                                                                                                                   
-  var databaseUrl = "asterion:menatar@linus.mongohq.com:10093/servmed";
+  var databaseUrl = "";
   var collections = ["acl", "auth_req", "domains", "apps", "users", "scores", "activity", "purchases"];
   var db = require("mongojs").connect(databaseUrl, collections);
   var BSON = mongo.BSONPure;
