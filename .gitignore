@@ -1,3 +1,6 @@
 /node_module
+/node_module/
+node_module/
+node_module
 /.idea
 .idea/workspace.xml
