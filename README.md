@@ -12,7 +12,7 @@ requires node.js and mongodb
 
 to install: 
 1. run npm install in the app directory, to install node dependencies.
-2. enter your database connection string in the server.js
+2. enter your database connection string in the server.js (~ line 80)
 3. run node server.js in the app directory, to launch the server
 4. In the unity client, enter localhost:8092 in the "host" variable field under the DataMangler object
 5. play the demo project, and you should be able to create users, sign in, test scoring, activities, and purchases
