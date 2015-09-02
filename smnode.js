@@ -271,6 +271,7 @@ var corsOptions = function (origin) {
         //res.redirect("/");
   });
 
+
   app.post("/authreq", checkAppID, function (req, res) {
         console.log('authRequest from: ' + req.body.uname + " " + req.body.umail);
         var currentDate = Math.floor(new Date().getTime()/1000);
