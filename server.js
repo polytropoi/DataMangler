@@ -5,8 +5,6 @@
  , http = require("http")
  , path = require("path")
  , validator = require('validator')
- , mm = require('musicmetadata')
-// , ObjectId = require('mongodb').ObjectID
  , async = require('async')
  , mongo = require('mongodb')
  , bcrypt = require('bcrypt');
@@ -80,17 +78,14 @@ var corsOptions = function (origin) {
     });
 
        // Create the http server and get it to listen on the specified port 8084                                                                                                                   
-  var databaseUrl = "asterion:menatar@linus.mongohq.com:10093/servmed";
+  var databaseUrl = "your database connection string";
   var collections = ["acl", "auth_req", "domains", "apps", "users", "scores", "activity", "purchases"];
   var db = require("mongojs").connect(databaseUrl, collections);
   var BSON = mongo.BSONPure;
 
   var maxItems = 1000;
 
-  var aws = require('aws-sdk');
-  aws.config.loadFromPath('./mgmt/conf.json');
-  var ses = new aws.SES({apiVersion : '2010-12-01'});
-  var s3 = new aws.S3.Client();
+
 
 
   var appAuth = "noauth";
