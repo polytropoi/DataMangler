@@ -8,24 +8,24 @@ var smApp = angular.module('smApp', ['ngRoute', 'ngCookies', 'ui.bootstrap' ]);
 
 	smApp.config(['$routeProvider',
 
-		function ($routeProvider) {
-		$routeProvider.
-		when('/', {controller:HomeCtrl, templateUrl:'p_home.html'}).
-		when('/home', {controller:HomeCtrl, templateUrl:'p_home.html'}).
+    function ($routeProvider) {
+    $routeProvider.
+        when('/', {controller:HomeCtrl, templateUrl:'p_home.html'}).
+        when('/home', {controller:HomeCtrl, templateUrl:'p_home.html'}).
         when('/about', {controller:AboutCtrl, templateUrl:'p_about.html'}).
-		when('/login', {controller:LoginCtrl, templateUrl:'p_login.html'}).
-		when('/register', {controller:NewUserCtrl, templateUrl:'p_newuser.html'}).
-		when('/reset', {controller:ResetPasswordCtrl, templateUrl:'p_resetpw.html'}).
-		when('/resetter/:hzch', {controller:ResetterCtrl, templateUrl:'p_resetter.html'}).
+        when('/login', {controller:LoginCtrl, templateUrl:'p_login.html'}).
+        when('/register', {controller:NewUserCtrl, templateUrl:'p_newuser.html'}).
+        when('/reset', {controller:ResetPasswordCtrl, templateUrl:'p_resetpw.html'}).
+        when('/resetter/:hzch', {controller:ResetterCtrl, templateUrl:'p_resetter.html'}).
 
-//      when('/uprofile/:user_id', {controller:UProfileCtrl, templateUrl:'p_uprofile.html'}).
-		when('/uprofile/:u_id', {controller:UProfileCtrl, templateUrl:'p_profile.html'}).
+    //      when('/uprofile/:user_id', {controller:UProfileCtrl, templateUrl:'p_uprofile.html'}).
+        when('/uprofile/:u_id', {controller:UProfileCtrl, templateUrl:'p_profile.html'}).
 
         when('/alldomains/', {controller:DomainsCtrl, templateUrl:'p_domains.html'}).
         when('/domain/:domain', {controller:DomainCtrl, templateUrl:'p_domain.html'}).
         when('/allusers/', {controller:UsersCtrl, templateUrl:'p_users.html'}).
         otherwise({redirectTo:'/'});
-  		}]);
+    }]);
 
 	smApp.factory('usernav', function() {
             return {
