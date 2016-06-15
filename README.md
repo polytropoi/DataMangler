@@ -18,3 +18,5 @@ to install:
 5. play the demo project, and you should be able to create users, sign in, test scoring, activities, and purchases
 
 Download the Unity demo client at https://servicemedia.s3.amazonaws.com/smDataMangler_5x.zip  - note, the Unity client requires the JSON.net package, available on the Unity Asset store. 
+
+released under MIT license https://opensource.org/licenses/MIT
